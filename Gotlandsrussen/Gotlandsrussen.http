@@ -1,0 +1,6 @@
+@Gotlandsrussen_HostAddress = http://localhost:5264
+
+GET {{Gotlandsrussen_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
