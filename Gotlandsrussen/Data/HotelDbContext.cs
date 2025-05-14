@@ -5,11 +5,6 @@ namespace Gotlandsrussen.Data
 {
     public class HotelDbContext : DbContext
     {
-        //private static IConfiguration _configuration = new ConfigurationBuilder()
-        //    .SetBasePath(Directory.GetCurrentDirectory())
-        //    .AddJsonFile("appsettings.json")
-        //    .Build();
-
         public HotelDbContext(DbContextOptions<HotelDbContext> options) : base(options) { }
 
         public DbSet<Booking> Bookings { get; set; }
