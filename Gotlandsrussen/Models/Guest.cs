@@ -13,5 +13,8 @@ namespace Gotlandsrussen.Models
         public string Email { get; set; }
         [Phone]
         public string Phone { get; set; }
+
+        // Navigation properties
+        public ICollection<Booking> Bookings { get; set; }
     }
 }
