@@ -8,13 +8,10 @@ namespace Gotlandsrussen.Models
         public int Id { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
-        
-
 
         [EmailAddress]
         public string Email { get; set; }
         [Phone]
         public string Phone { get; set; }
-
     }
 }
