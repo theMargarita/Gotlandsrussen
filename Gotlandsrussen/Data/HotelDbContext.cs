@@ -11,6 +11,16 @@ namespace Gotlandsrussen.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Guest> Guests { get; set; }
         public DbSet<RoomType> RoomTypes { get; set; }
+        public DbSet<BookingRoom> BookingRooms { get; set; }
+        public DbSet<BreakfastOption> BreakfastOptions { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            SeedData.Seed(modelBuilder);
+        }
     }
 }
+
+    
