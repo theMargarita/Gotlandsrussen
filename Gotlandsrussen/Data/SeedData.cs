@@ -100,11 +100,11 @@ namespace Gotlandsrussen.Data
 
             // BookingRooms
             modelBuilder.Entity<BookingRoom>().HasData(
-                new BookingRoom { BookingId = 1, RoomId = 2 }, // Alice -> Room 102
-                new BookingRoom { BookingId = 2, RoomId = 3 },  // Bob -> Room 103
-                new BookingRoom { BookingId = 3, RoomId = 4 },  // Tom -> Room 104
-                new BookingRoom { BookingId = 4, RoomId = 1 },  // Lisa -> Room 101
-                new BookingRoom { BookingId = 5, RoomId = 5 }   // Kalle -> Room 105
+                new BookingRoom {Id = 1, BookingId = 1, RoomId = 2 }, // Alice -> Room 102
+                new BookingRoom {Id = 2, BookingId = 2, RoomId = 3 },  // Bob -> Room 103
+                new BookingRoom {Id = 3, BookingId = 3, RoomId = 4 },  // Tom -> Room 104
+                new BookingRoom {Id = 4, BookingId = 4, RoomId = 1 },  // Lisa -> Room 101
+                new BookingRoom {Id = 5, BookingId = 5, RoomId = 5 }   // Kalle -> Room 105
 
             );
 

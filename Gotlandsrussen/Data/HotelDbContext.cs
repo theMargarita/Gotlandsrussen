@@ -19,6 +19,9 @@ namespace Gotlandsrussen.Data
             base.OnModelCreating(modelBuilder);
 
             SeedData.Seed(modelBuilder);
+
+            //modelBuilder.Entity<BookingRoom>()
+            //.HasKey(br => new { br.BookingId, br.RoomId });
         }
     }
 }
