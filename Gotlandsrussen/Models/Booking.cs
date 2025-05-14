@@ -9,11 +9,10 @@
         public int NumberOfAdults { get; set; }
         public int NumberOfChildren { get; set; }
         public bool Breakfast { get; set; }
-        public decimal BreakfastPrice { get; set; }
-
         public bool BookingIsCancelled { get; set; } = false; // if gest wants to cancel the booking. 
 
         //Nagivation properties
+        public Breakfast BreakfastPrice { get; set; }
         public Guest Guest { get; set; } 
         public ICollection<Room> Room { get; set; }
     }
