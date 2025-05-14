@@ -8,7 +8,7 @@
         public int RoomTypeId { get; set; } // Foreign key to RoomType
 
         //Navigation properties
-        public RoomType RoomType { get; set; } // 
-        public ICollection<Booking> Bookings { get; set; }
+        public RoomType RoomType { get; set; }
+        public ICollection<BookingRoom> BookingRooms { get; set; }
     }
 }
