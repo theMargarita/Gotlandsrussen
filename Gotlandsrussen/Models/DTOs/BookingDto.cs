@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public Guest Guest { get; set; }
-        public List<string> Rooms { get; set; }
+        public List<string> RoomNames { get; set; }
         public DateOnly BookedFromDate { get; set; } 
         public DateOnly BookedToDate { get; set; } 
         public int NumberOfAdults { get; set; }
