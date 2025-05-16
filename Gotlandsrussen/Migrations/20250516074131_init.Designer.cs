@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Gotlandsrussen.Migrations
 {
     [DbContext(typeof(HotelDbContext))]
-    [Migration("20250515102914_NewServiceModelAndNewSeed")]
-    partial class NewServiceModelAndNewSeed
+    [Migration("20250516074131_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

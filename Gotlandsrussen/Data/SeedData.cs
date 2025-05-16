@@ -7,6 +7,27 @@ namespace Gotlandsrussen.Data
     {
         public static void Seed(ModelBuilder modelBuilder)
         {
+
+            // Guests
+            modelBuilder.Entity<Guest>().HasData(
+                new Guest { Id = 1, FirstName = "Alice", LastName = "Andersson", Email = "alice@example.com", Phone = "0701234567" },
+                new Guest { Id = 2, FirstName = "Bob", LastName = "Bengtsson", Email = "bob@example.com", Phone = "0702345678" },
+                new Guest { Id = 3, FirstName = "Tom", LastName = "Larsson", Email = "tom@example.com", Phone = "0702345679" },
+                new Guest { Id = 4, FirstName = "Lisa", LastName = "Helgesson", Email = "lisa@example.com", Phone = "0702345680" },
+                new Guest { Id = 5, FirstName = "Kalle", LastName = "Spongtsson", Email = "kalle@example.com", Phone = "0702345681" },
+                new Guest { Id = 6, FirstName = "Emma", LastName = "Nilsson", Email = "emma@example.com", Phone = "0702345682" },
+                new Guest { Id = 7, FirstName = "Oscar", LastName = "Johansson", Email = "oscar@example.com", Phone = "0702345683" },
+                new Guest { Id = 8, FirstName = "Sara", LastName = "Karlsson", Email = "sara@example.com", Phone = "0702345684" },
+                new Guest { Id = 9, FirstName = "Erik", LastName = "Svensson", Email = "erik@example.com", Phone = "0702345685" },
+                new Guest { Id = 10, FirstName = "Maja", LastName = "Gustafsson", Email = "maja@example.com", Phone = "0702345686" },
+                new Guest { Id = 11, FirstName = "Johan", LastName = "Lindberg", Email = "johan@example.com", Phone = "0702345687" },
+                new Guest { Id = 12, FirstName = "Elin", LastName = "Persson", Email = "elin@example.com", Phone = "0702345688" },
+                new Guest { Id = 13, FirstName = "Andreas", LastName = "Eriksson", Email = "andreas@example.com", Phone = "0702345689" },
+                new Guest { Id = 14, FirstName = "Nora", LastName = "Bergström", Email = "nora@example.com", Phone = "0702345690" },
+                new Guest { Id = 15, FirstName = "Viktor", LastName = "Holm", Email = "viktor@example.com", Phone = "0702345691" }
+            );
+
+
             // RoomTypes
             modelBuilder.Entity<RoomType>().HasData(
                 new RoomType { Id = 1, Name = "Single", NumberOfBeds = 1, PricePerNight = 500m },
@@ -43,27 +64,8 @@ namespace Gotlandsrussen.Data
                 new Room { Id = 23, RoomName = "123", RoomTypeId = 4 },
                 new Room { Id = 24, RoomName = "124", RoomTypeId = 4 },
                 new Room { Id = 25, RoomName = "125", RoomTypeId = 5 }
-
             );
 
-            // Guests
-            modelBuilder.Entity<Guest>().HasData(
-                new Guest { Id = 1, FirstName = "Alice", LastName = "Andersson", Email = "alice@example.com", Phone = "0701234567" },
-                new Guest { Id = 2, FirstName = "Bob", LastName = "Bengtsson", Email = "bob@example.com", Phone = "0702345678" },
-                new Guest { Id = 3, FirstName = "Tom", LastName = "Larsson", Email = "tom@example.com", Phone = "0702345679" },
-                new Guest { Id = 4, FirstName = "Lisa", LastName = "Helgesson", Email = "lisa@example.com", Phone = "0702345680" },
-                new Guest { Id = 5, FirstName = "Kalle", LastName = "Spongtsson", Email = "kalle@example.com", Phone = "0702345681" },
-                new Guest { Id = 6, FirstName = "Emma", LastName = "Nilsson", Email = "emma@example.com", Phone = "0702345682" },
-                new Guest { Id = 7, FirstName = "Oscar", LastName = "Johansson", Email = "oscar@example.com", Phone = "0702345683" },
-                new Guest { Id = 8, FirstName = "Sara", LastName = "Karlsson", Email = "sara@example.com", Phone = "0702345684" },
-                new Guest { Id = 9, FirstName = "Erik", LastName = "Svensson", Email = "erik@example.com", Phone = "0702345685" },
-                new Guest { Id = 10, FirstName = "Maja", LastName = "Gustafsson", Email = "maja@example.com", Phone = "0702345686" },
-                new Guest { Id = 11, FirstName = "Johan", LastName = "Lindberg", Email = "johan@example.com", Phone = "0702345687" },
-                new Guest { Id = 12, FirstName = "Elin", LastName = "Persson", Email = "elin@example.com", Phone = "0702345688" },
-                new Guest { Id = 13, FirstName = "Andreas", LastName = "Eriksson", Email = "andreas@example.com", Phone = "0702345689" },
-                new Guest { Id = 14, FirstName = "Nora", LastName = "Bergström", Email = "nora@example.com", Phone = "0702345690" },
-                new Guest { Id = 15, FirstName = "Viktor", LastName = "Holm", Email = "viktor@example.com", Phone = "0702345691" }
-            );
 
             // Bookings
             modelBuilder.Entity<Booking>().HasData(
