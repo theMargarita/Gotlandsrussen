@@ -25,16 +25,17 @@ namespace Gotlandsrussen.Controllers
                 .Include(b => b.BookingRooms)
                 .ThenInclude(br => br.Room)
                 .Include(b => b.Guest)
+                .Where(b => b.BookedFromDate >= DateOnly.FromDateTime(DateTime.Today)
+                    && b.BookingIsCancelled == false)
                 .Select( b => new BookingDto
                 {
                     Id = b.Id,
-                    Guest = b.Guest,
+                    GuestName = b.Guest.LastName + ", " + b.Guest.FirstName,
                     RoomNames = b.BookingRooms.Select(br => br.Room.RoomName).ToList(),
                     BookedFromDate = b.BookedFromDate,
                     BookedToDate = b.BookedToDate,
                     NumberOfAdults = b.NumberOfAdults,
                     NumberOfChildren = b.NumberOfChildren,
-                    BookingIsCancelled = b.BookingIsCancelled
                 }).ToListAsync());
         }
     }
