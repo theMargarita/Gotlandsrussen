@@ -9,6 +9,5 @@
         public DateOnly BookedToDate { get; set; } 
         public int NumberOfAdults { get; set; }
         public int NumberOfChildren { get; set; }
-        public bool BookingIsCancelled { get; set; } = false;
     }
 }
