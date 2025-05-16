@@ -1,5 +1,6 @@
 ﻿using Gotlandsrussen.Data;
 using Gotlandsrussen.Models;
+using Gotlandsrussen.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +19,23 @@ namespace Gotlandsrussen.Controllers
         }
 
         [HttpGet(Name = "GetAllFutureBookings")]
-        public async Task<ActionResult<ICollection<Booking>>> GetAllFutureBookings()
+        public async Task<ActionResult<ICollection<BookingDto>>> GetAllFutureBookings()
         {
             return Ok(await _context.Bookings
                 .Include(b => b.BookingRooms)
                 .ThenInclude(br => br.Room)
-                .Include(b => b.Guest).ToListAsync());
+                .Include(b => b.Guest)
+                .Select( b => new BookingDto
+                {
+                    Id = b.Id,
+                    Guest = b.Guest,
+                    RoomNames = b.BookingRooms.Select(br => br.Room.RoomName).ToList(),
+                    BookedFromDate = b.BookedFromDate,
+                    BookedToDate = b.BookedToDate,
+                    NumberOfAdults = b.NumberOfAdults,
+                    NumberOfChildren = b.NumberOfChildren,
+                    BookingIsCancelled = b.BookingIsCancelled
+                }).ToListAsync());
         }
     }
 }
