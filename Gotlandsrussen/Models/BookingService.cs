@@ -1,12 +1,12 @@
 ﻿namespace Gotlandsrussen.Models
 {
-    public class BreakfastOption
+    public class BookingService
     {
         public int Id { get; set; }
         public int BookingId { get; set; }
-        public bool IsIncluded { get; set; } = false;
-
-        // Navigation
         public Booking Booking { get; set; }
+        public int ServiceId { get; set; }
+        public Service Service { get; set; }
+        public int Quantity { get; set; }
     }
 }
