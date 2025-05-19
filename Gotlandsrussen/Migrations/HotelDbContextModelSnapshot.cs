@@ -39,6 +39,9 @@ namespace Gotlandsrussen.Migrations
                     b.Property<bool>("BookingIsCancelled")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("Breakfast")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("GuestId")
                         .HasColumnType("integer");
 
@@ -61,6 +64,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 6, 10),
                             BookedToDate = new DateOnly(2025, 6, 11),
                             BookingIsCancelled = false,
+                            Breakfast = false,
                             GuestId = 1,
                             NumberOfAdults = 1,
                             NumberOfChildren = 0
@@ -71,6 +75,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 6, 10),
                             BookedToDate = new DateOnly(2025, 6, 15),
                             BookingIsCancelled = false,
+                            Breakfast = true,
                             GuestId = 2,
                             NumberOfAdults = 1,
                             NumberOfChildren = 0
@@ -81,6 +86,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 6, 11),
                             BookedToDate = new DateOnly(2025, 6, 13),
                             BookingIsCancelled = false,
+                            Breakfast = false,
                             GuestId = 3,
                             NumberOfAdults = 1,
                             NumberOfChildren = 0
@@ -91,6 +97,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 6, 12),
                             BookedToDate = new DateOnly(2025, 6, 13),
                             BookingIsCancelled = false,
+                            Breakfast = true,
                             GuestId = 4,
                             NumberOfAdults = 2,
                             NumberOfChildren = 0
@@ -101,6 +108,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 6, 15),
                             BookedToDate = new DateOnly(2025, 6, 17),
                             BookingIsCancelled = false,
+                            Breakfast = false,
                             GuestId = 5,
                             NumberOfAdults = 2,
                             NumberOfChildren = 0
@@ -111,6 +119,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 6, 15),
                             BookedToDate = new DateOnly(2025, 6, 16),
                             BookingIsCancelled = false,
+                            Breakfast = true,
                             GuestId = 6,
                             NumberOfAdults = 2,
                             NumberOfChildren = 0
@@ -121,6 +130,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 6, 16),
                             BookedToDate = new DateOnly(2025, 6, 18),
                             BookingIsCancelled = false,
+                            Breakfast = true,
                             GuestId = 7,
                             NumberOfAdults = 2,
                             NumberOfChildren = 0
@@ -131,6 +141,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 7, 1),
                             BookedToDate = new DateOnly(2025, 7, 2),
                             BookingIsCancelled = false,
+                            Breakfast = true,
                             GuestId = 8,
                             NumberOfAdults = 2,
                             NumberOfChildren = 2
@@ -141,6 +152,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 7, 1),
                             BookedToDate = new DateOnly(2025, 7, 3),
                             BookingIsCancelled = false,
+                            Breakfast = false,
                             GuestId = 9,
                             NumberOfAdults = 2,
                             NumberOfChildren = 1
@@ -151,6 +163,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 7, 1),
                             BookedToDate = new DateOnly(2025, 7, 5),
                             BookingIsCancelled = false,
+                            Breakfast = false,
                             GuestId = 10,
                             NumberOfAdults = 2,
                             NumberOfChildren = 2
@@ -161,6 +174,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 7, 5),
                             BookedToDate = new DateOnly(2025, 7, 8),
                             BookingIsCancelled = false,
+                            Breakfast = true,
                             GuestId = 11,
                             NumberOfAdults = 2,
                             NumberOfChildren = 2
@@ -171,6 +185,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 7, 10),
                             BookedToDate = new DateOnly(2025, 7, 15),
                             BookingIsCancelled = false,
+                            Breakfast = true,
                             GuestId = 12,
                             NumberOfAdults = 2,
                             NumberOfChildren = 1
@@ -181,6 +196,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 7, 17),
                             BookedToDate = new DateOnly(2025, 7, 19),
                             BookingIsCancelled = false,
+                            Breakfast = true,
                             GuestId = 13,
                             NumberOfAdults = 2,
                             NumberOfChildren = 2
@@ -191,6 +207,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 7, 25),
                             BookedToDate = new DateOnly(2025, 7, 26),
                             BookingIsCancelled = false,
+                            Breakfast = false,
                             GuestId = 14,
                             NumberOfAdults = 2,
                             NumberOfChildren = 3
@@ -201,6 +218,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 8, 2),
                             BookedToDate = new DateOnly(2025, 8, 3),
                             BookingIsCancelled = false,
+                            Breakfast = false,
                             GuestId = 15,
                             NumberOfAdults = 2,
                             NumberOfChildren = 4
@@ -211,6 +229,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 8, 3),
                             BookedToDate = new DateOnly(2025, 8, 5),
                             BookingIsCancelled = false,
+                            Breakfast = false,
                             GuestId = 1,
                             NumberOfAdults = 2,
                             NumberOfChildren = 4
@@ -221,6 +240,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 8, 5),
                             BookedToDate = new DateOnly(2025, 8, 7),
                             BookingIsCancelled = false,
+                            Breakfast = false,
                             GuestId = 2,
                             NumberOfAdults = 4,
                             NumberOfChildren = 0
@@ -231,6 +251,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 8, 10),
                             BookedToDate = new DateOnly(2025, 8, 13),
                             BookingIsCancelled = false,
+                            Breakfast = false,
                             GuestId = 3,
                             NumberOfAdults = 3,
                             NumberOfChildren = 3
@@ -241,6 +262,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 8, 12),
                             BookedToDate = new DateOnly(2025, 8, 13),
                             BookingIsCancelled = false,
+                            Breakfast = false,
                             GuestId = 4,
                             NumberOfAdults = 4,
                             NumberOfChildren = 8
@@ -251,6 +273,7 @@ namespace Gotlandsrussen.Migrations
                             BookedFromDate = new DateOnly(2025, 8, 15),
                             BookedToDate = new DateOnly(2025, 8, 20),
                             BookingIsCancelled = false,
+                            Breakfast = true,
                             GuestId = 5,
                             NumberOfAdults = 2,
                             NumberOfChildren = 5
@@ -399,139 +422,6 @@ namespace Gotlandsrussen.Migrations
                             Id = 20,
                             BookingId = 20,
                             RoomId = 25
-                        });
-                });
-
-            modelBuilder.Entity("Gotlandsrussen.Models.BookingService", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BookingId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookingId");
-
-                    b.HasIndex("ServiceId");
-
-                    b.ToTable("BookingServices");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BookingId = 1,
-                            Quantity = 1,
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BookingId = 4,
-                            Quantity = 2,
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            BookingId = 7,
-                            Quantity = 2,
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            BookingId = 10,
-                            Quantity = 2,
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 5,
-                            BookingId = 10,
-                            Quantity = 2,
-                            ServiceId = 2
-                        },
-                        new
-                        {
-                            Id = 6,
-                            BookingId = 12,
-                            Quantity = 2,
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 7,
-                            BookingId = 12,
-                            Quantity = 1,
-                            ServiceId = 2
-                        },
-                        new
-                        {
-                            Id = 8,
-                            BookingId = 15,
-                            Quantity = 2,
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 9,
-                            BookingId = 15,
-                            Quantity = 4,
-                            ServiceId = 2
-                        },
-                        new
-                        {
-                            Id = 10,
-                            BookingId = 16,
-                            Quantity = 2,
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 11,
-                            BookingId = 16,
-                            Quantity = 4,
-                            ServiceId = 2
-                        },
-                        new
-                        {
-                            Id = 12,
-                            BookingId = 2,
-                            Quantity = 1,
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 13,
-                            BookingId = 3,
-                            Quantity = 1,
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 14,
-                            BookingId = 20,
-                            Quantity = 2,
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 15,
-                            BookingId = 20,
-                            Quantity = 5,
-                            ServiceId = 2
                         });
                 });
 
@@ -921,40 +811,6 @@ namespace Gotlandsrussen.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Gotlandsrussen.Models.Service", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Services");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "AdultBreakfast",
-                            Price = 100m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "ChildBreakfast",
-                            Price = 50m
-                        });
-                });
-
             modelBuilder.Entity("Gotlandsrussen.Models.Booking", b =>
                 {
                     b.HasOne("Gotlandsrussen.Models.Guest", "Guest")
@@ -985,25 +841,6 @@ namespace Gotlandsrussen.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("Gotlandsrussen.Models.BookingService", b =>
-                {
-                    b.HasOne("Gotlandsrussen.Models.Booking", "Booking")
-                        .WithMany("BookingServices")
-                        .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Gotlandsrussen.Models.Service", "Service")
-                        .WithMany("BookingServices")
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Booking");
-
-                    b.Navigation("Service");
-                });
-
             modelBuilder.Entity("Gotlandsrussen.Models.Room", b =>
                 {
                     b.HasOne("Gotlandsrussen.Models.RoomType", "RoomType")
@@ -1018,8 +855,6 @@ namespace Gotlandsrussen.Migrations
             modelBuilder.Entity("Gotlandsrussen.Models.Booking", b =>
                 {
                     b.Navigation("BookingRooms");
-
-                    b.Navigation("BookingServices");
                 });
 
             modelBuilder.Entity("Gotlandsrussen.Models.Guest", b =>
@@ -1035,11 +870,6 @@ namespace Gotlandsrussen.Migrations
             modelBuilder.Entity("Gotlandsrussen.Models.RoomType", b =>
                 {
                     b.Navigation("Rooms");
-                });
-
-            modelBuilder.Entity("Gotlandsrussen.Models.Service", b =>
-                {
-                    b.Navigation("BookingServices");
                 });
 #pragma warning restore 612, 618
         }

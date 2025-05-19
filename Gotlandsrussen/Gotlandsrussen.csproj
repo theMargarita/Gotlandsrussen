@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <Folder Include="Models\DTOs\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
 
