@@ -46,20 +46,6 @@ namespace Gotlandsrussen.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Services",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Price = table.Column<decimal>(type: "numeric", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Services", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Bookings",
                 columns: table => new
                 {
@@ -70,7 +56,8 @@ namespace Gotlandsrussen.Migrations
                     BookedToDate = table.Column<DateOnly>(type: "date", nullable: false),
                     NumberOfAdults = table.Column<int>(type: "integer", nullable: false),
                     NumberOfChildren = table.Column<int>(type: "integer", nullable: false),
-                    BookingIsCancelled = table.Column<bool>(type: "boolean", nullable: false)
+                    BookingIsCancelled = table.Column<bool>(type: "boolean", nullable: false),
+                    Breakfast = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,33 +86,6 @@ namespace Gotlandsrussen.Migrations
                         name: "FK_Rooms_RoomTypes_RoomTypeId",
                         column: x => x.RoomTypeId,
                         principalTable: "RoomTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BookingServices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BookingId = table.Column<int>(type: "integer", nullable: false),
-                    ServiceId = table.Column<int>(type: "integer", nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BookingServices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BookingServices_Bookings_BookingId",
-                        column: x => x.BookingId,
-                        principalTable: "Bookings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BookingServices_Services_ServiceId",
-                        column: x => x.ServiceId,
-                        principalTable: "Services",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -191,39 +151,30 @@ namespace Gotlandsrussen.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Services",
-                columns: new[] { "Id", "Name", "Price" },
-                values: new object[,]
-                {
-                    { 1, "AdultBreakfast", 100m },
-                    { 2, "ChildBreakfast", 50m }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Bookings",
-                columns: new[] { "Id", "BookedFromDate", "BookedToDate", "BookingIsCancelled", "GuestId", "NumberOfAdults", "NumberOfChildren" },
+                columns: new[] { "Id", "BookedFromDate", "BookedToDate", "BookingIsCancelled", "Breakfast", "GuestId", "NumberOfAdults", "NumberOfChildren" },
                 values: new object[,]
                 {
-                    { 1, new DateOnly(2025, 6, 10), new DateOnly(2025, 6, 11), false, 1, 1, 0 },
-                    { 2, new DateOnly(2025, 6, 10), new DateOnly(2025, 6, 15), false, 2, 1, 0 },
-                    { 3, new DateOnly(2025, 6, 11), new DateOnly(2025, 6, 13), false, 3, 1, 0 },
-                    { 4, new DateOnly(2025, 6, 12), new DateOnly(2025, 6, 13), false, 4, 2, 0 },
-                    { 5, new DateOnly(2025, 6, 15), new DateOnly(2025, 6, 17), false, 5, 2, 0 },
-                    { 6, new DateOnly(2025, 6, 15), new DateOnly(2025, 6, 16), false, 6, 2, 0 },
-                    { 7, new DateOnly(2025, 6, 16), new DateOnly(2025, 6, 18), false, 7, 2, 0 },
-                    { 8, new DateOnly(2025, 7, 1), new DateOnly(2025, 7, 2), false, 8, 2, 2 },
-                    { 9, new DateOnly(2025, 7, 1), new DateOnly(2025, 7, 3), false, 9, 2, 1 },
-                    { 10, new DateOnly(2025, 7, 1), new DateOnly(2025, 7, 5), false, 10, 2, 2 },
-                    { 11, new DateOnly(2025, 7, 5), new DateOnly(2025, 7, 8), false, 11, 2, 2 },
-                    { 12, new DateOnly(2025, 7, 10), new DateOnly(2025, 7, 15), false, 12, 2, 1 },
-                    { 13, new DateOnly(2025, 7, 17), new DateOnly(2025, 7, 19), false, 13, 2, 2 },
-                    { 14, new DateOnly(2025, 7, 25), new DateOnly(2025, 7, 26), false, 14, 2, 3 },
-                    { 15, new DateOnly(2025, 8, 2), new DateOnly(2025, 8, 3), false, 15, 2, 4 },
-                    { 16, new DateOnly(2025, 8, 3), new DateOnly(2025, 8, 5), false, 1, 2, 4 },
-                    { 17, new DateOnly(2025, 8, 5), new DateOnly(2025, 8, 7), false, 2, 4, 0 },
-                    { 18, new DateOnly(2025, 8, 10), new DateOnly(2025, 8, 13), false, 3, 3, 3 },
-                    { 19, new DateOnly(2025, 8, 12), new DateOnly(2025, 8, 13), false, 4, 4, 8 },
-                    { 20, new DateOnly(2025, 8, 15), new DateOnly(2025, 8, 20), false, 5, 2, 5 }
+                    { 1, new DateOnly(2025, 6, 10), new DateOnly(2025, 6, 11), false, false, 1, 1, 0 },
+                    { 2, new DateOnly(2025, 6, 10), new DateOnly(2025, 6, 15), false, true, 2, 1, 0 },
+                    { 3, new DateOnly(2025, 6, 11), new DateOnly(2025, 6, 13), false, false, 3, 1, 0 },
+                    { 4, new DateOnly(2025, 6, 12), new DateOnly(2025, 6, 13), false, true, 4, 2, 0 },
+                    { 5, new DateOnly(2025, 6, 15), new DateOnly(2025, 6, 17), false, false, 5, 2, 0 },
+                    { 6, new DateOnly(2025, 6, 15), new DateOnly(2025, 6, 16), false, true, 6, 2, 0 },
+                    { 7, new DateOnly(2025, 6, 16), new DateOnly(2025, 6, 18), false, true, 7, 2, 0 },
+                    { 8, new DateOnly(2025, 7, 1), new DateOnly(2025, 7, 2), false, true, 8, 2, 2 },
+                    { 9, new DateOnly(2025, 7, 1), new DateOnly(2025, 7, 3), false, false, 9, 2, 1 },
+                    { 10, new DateOnly(2025, 7, 1), new DateOnly(2025, 7, 5), false, false, 10, 2, 2 },
+                    { 11, new DateOnly(2025, 7, 5), new DateOnly(2025, 7, 8), false, true, 11, 2, 2 },
+                    { 12, new DateOnly(2025, 7, 10), new DateOnly(2025, 7, 15), false, true, 12, 2, 1 },
+                    { 13, new DateOnly(2025, 7, 17), new DateOnly(2025, 7, 19), false, true, 13, 2, 2 },
+                    { 14, new DateOnly(2025, 7, 25), new DateOnly(2025, 7, 26), false, false, 14, 2, 3 },
+                    { 15, new DateOnly(2025, 8, 2), new DateOnly(2025, 8, 3), false, false, 15, 2, 4 },
+                    { 16, new DateOnly(2025, 8, 3), new DateOnly(2025, 8, 5), false, false, 1, 2, 4 },
+                    { 17, new DateOnly(2025, 8, 5), new DateOnly(2025, 8, 7), false, false, 2, 4, 0 },
+                    { 18, new DateOnly(2025, 8, 10), new DateOnly(2025, 8, 13), false, false, 3, 3, 3 },
+                    { 19, new DateOnly(2025, 8, 12), new DateOnly(2025, 8, 13), false, false, 4, 4, 8 },
+                    { 20, new DateOnly(2025, 8, 15), new DateOnly(2025, 8, 20), false, true, 5, 2, 5 }
                 });
 
             migrationBuilder.InsertData(
@@ -285,28 +236,6 @@ namespace Gotlandsrussen.Migrations
                     { 20, 20, 25 }
                 });
 
-            migrationBuilder.InsertData(
-                table: "BookingServices",
-                columns: new[] { "Id", "BookingId", "Quantity", "ServiceId" },
-                values: new object[,]
-                {
-                    { 1, 1, 1, 1 },
-                    { 2, 4, 2, 1 },
-                    { 3, 7, 2, 1 },
-                    { 4, 10, 2, 1 },
-                    { 5, 10, 2, 2 },
-                    { 6, 12, 2, 1 },
-                    { 7, 12, 1, 2 },
-                    { 8, 15, 2, 1 },
-                    { 9, 15, 4, 2 },
-                    { 10, 16, 2, 1 },
-                    { 11, 16, 4, 2 },
-                    { 12, 2, 1, 1 },
-                    { 13, 3, 1, 1 },
-                    { 14, 20, 2, 1 },
-                    { 15, 20, 5, 2 }
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_BookingRooms_BookingId",
                 table: "BookingRooms",
@@ -323,16 +252,6 @@ namespace Gotlandsrussen.Migrations
                 column: "GuestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookingServices_BookingId",
-                table: "BookingServices",
-                column: "BookingId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookingServices_ServiceId",
-                table: "BookingServices",
-                column: "ServiceId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Rooms_RoomTypeId",
                 table: "Rooms",
                 column: "RoomTypeId");
@@ -345,22 +264,16 @@ namespace Gotlandsrussen.Migrations
                 name: "BookingRooms");
 
             migrationBuilder.DropTable(
-                name: "BookingServices");
+                name: "Bookings");
 
             migrationBuilder.DropTable(
                 name: "Rooms");
 
             migrationBuilder.DropTable(
-                name: "Bookings");
-
-            migrationBuilder.DropTable(
-                name: "Services");
+                name: "Guests");
 
             migrationBuilder.DropTable(
                 name: "RoomTypes");
-
-            migrationBuilder.DropTable(
-                name: "Guests");
         }
     }
 }
