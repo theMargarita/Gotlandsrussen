@@ -15,8 +15,8 @@ namespace Gotlandsrussen.Controllers
             _bookingRepository = bookingRepository;
         }
 
-        [HttpGet("GetBookings")]
-        public async Task<ActionResult<ICollection<BookingDto>>> GetBookings()
+        [HttpGet("GetAllFutureBookings")]
+        public async Task<ActionResult<ICollection<BookingDto>>> GetAllFutureBookings()
         {
             return Ok(await _bookingRepository.GetAllFutureBookings());
         }
