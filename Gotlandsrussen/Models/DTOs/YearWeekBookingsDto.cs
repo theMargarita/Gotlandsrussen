@@ -12,7 +12,7 @@ namespace Gotlandsrussen.Models.DTOs
 
 
     // OBS - denna ska ligga någon annanstans. Skapa mapp. Var?
-    public static class DateOnlyExtensions
+    public static class HelpMethods
     {
         public static (int Year, int Week) GetIsoYearAndWeek(this DateOnly date)
         {
