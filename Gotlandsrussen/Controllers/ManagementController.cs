@@ -33,15 +33,16 @@ namespace Gotlandsrussen.Controllers
             }
 
 
-            //fix this for today (2025-05-21)
-            //var dateNow = DateOnly.FromDateTime(DateTime.Now.AddYears(5));
             var dateNow = DateOnly.FromDateTime(DateTime.Now);
 
-            if(fromDate != dateNow || toDate == dateNow)
+            if(fromDate != dateNow)
             {
                 return BadRequest(new { errorMessgae = "Cannot get past date" });
             }
-
+            if(toDate == dateNow)
+            {
+                return BadRequest(new { errorMessage = "Cannot book for the same day" });
+            }
 
             //avaible room counted with the amout of guests
             var availableRooms = await _context.Rooms.Where(r => r.RoomType.NumberOfBeds >= totalGuests).GroupBy(r => r.RoomType).Select(g => g.Key).ToListAsync();
