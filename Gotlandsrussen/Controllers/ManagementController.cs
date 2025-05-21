@@ -1,9 +1,6 @@
-﻿using Gotlandsrussen.Data;
-using Gotlandsrussen.Models.DTOs;
+﻿using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Gotlandsrussen.Controllers
 {
@@ -18,7 +15,7 @@ namespace Gotlandsrussen.Controllers
             _bookingRepository = bookingRepository;
         }
 
-        [HttpGet(Name = "GetBookings")]
+        [HttpGet("GetBookings")]
         public async Task<ActionResult<ICollection<BookingDto>>> GetBookings()
         {
             return Ok(await _bookingRepository.GetAllFutureBookings());
