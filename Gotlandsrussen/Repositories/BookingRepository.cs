@@ -45,9 +45,13 @@ namespace Gotlandsrussen.Repositories
             return booking;
         }
 
-        public Task<ICollection<BookingDto>> GetBookingsGroupedByWeek()
+        public async Task<ICollection<BookingDto>> GetBookingsGroupedByWeek()
         {
-            throw new NotImplementedException();
+            var bookings = await GetAllFutureBookings();
+
+            return await bookings.
+            
+
         }
     }
 }
