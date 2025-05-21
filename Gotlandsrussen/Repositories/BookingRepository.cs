@@ -44,5 +44,10 @@ namespace Gotlandsrussen.Repositories
 
             return booking;
         }
+
+        public Task<ICollection<Booking>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
