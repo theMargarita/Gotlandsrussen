@@ -1,8 +1,7 @@
-﻿using Gotlandsrussen.Models.DTOs;
-using Gotlandsrussen.Repositories;
-using Gotlandsrussen.Data;
+﻿using Gotlandsrussen.Data;
 using Gotlandsrussen.Models;
-using Microsoft.AspNetCore.Http;
+using Gotlandsrussen.Models.DTOs;
+using Gotlandsrussen.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +30,7 @@ namespace Gotlandsrussen.Controllers
             _context = context;
         }
 
+
         //som receptionist vill jag kunna söka lediga rum baserat på datum och antal gäster
         [HttpGet("{fromDate}/{toDate}/{adults}/{children}", Name = "GetAvailableRoomByDateAndGuests")]
         public async Task<ActionResult<ICollection<BookingRoom>>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
@@ -43,7 +43,7 @@ namespace Gotlandsrussen.Controllers
 
             if (getDate == null)
             {
-                return BadRequest(new { errorMessage = "Date wrongly typed" });
+                return BadRequest(new { errorMessage = "Date incorrectly typed" });
             }
 
 
