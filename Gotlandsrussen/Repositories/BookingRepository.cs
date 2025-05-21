@@ -1,5 +1,7 @@
 ﻿using Gotlandsrussen.Data;
+using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gotlandsrussen.Repositories
@@ -29,6 +31,18 @@ namespace Gotlandsrussen.Repositories
                     NumberOfAdults = b.NumberOfAdults,
                     NumberOfChildren = b.NumberOfChildren,
                 }).ToListAsync();
+        }
+
+        public async Task<ActionResult<Booking>> AddBreakfast(int bookingId)
+        {
+            var booking = await _context.Bookings.FindAsync(bookingId);
+
+            // add breakfast to booking.
+            booking.Breakfast = true;
+
+            await _context.SaveChangesAsync();
+
+            return booking;
         }
     }
 }
