@@ -63,5 +63,10 @@ namespace Gotlandsrussen.Repositories
 
             return grouped;
         }
+
+        public Task<ICollection<YearMonthBookingsDto>> GetBookingsGroupedByMonth()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
