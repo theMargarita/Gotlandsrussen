@@ -1,4 +1,5 @@
 ﻿using Gotlandsrussen.Data;
+using Gotlandsrussen.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,32 +9,22 @@ namespace Gotlandsrussen.Controllers
     [ApiController]
     public class GuestController : ControllerBase
     {
-        private readonly HotelDbContext _context;
-        public GuestController(HotelDbContext context)
+        private readonly IBookingRepository _bookingRepository;
+
+        public GuestController(IBookingRepository bookingRepository)
         {
-            _context = context;
+            _bookingRepository = bookingRepository;
         }
 
-        [HttpPost("AddBreakfast")]
-        public async Task<IActionResult> AddBreakfast(int bookingId)
+        [HttpPut("AddBreakfast")]
+        public async Task<ActionResult>AddBreakfast(int bookingId)
         {
-            var booking = await _context.Bookings.FindAsync(bookingId);
-
-            if (booking == null || bookingId <= 0)
+            if (bookingId == null || bookingId <= 0)
             {
                 return NotFound("Booking not found");
             }
-            if (bookingId <= 0)
-            {
-                return BadRequest("Invalid bookingId");
-            }
 
-            // add breakfast to booking.
-            booking.Breakfast = true;
-            
-            _context.Bookings.Update(booking);
-
-            return Ok("Breakfast was added!");
+            return Ok(await _bookingRepository.AddBreakfast(bookingId));
         }
     }
 }
