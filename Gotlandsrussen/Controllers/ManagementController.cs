@@ -1,41 +1,27 @@
 ﻿using Gotlandsrussen.Data;
 using Gotlandsrussen.Models.DTOs;
+using Gotlandsrussen.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gotlandsrussen.Controllers
 {
-    [Route("api/[controller]/GetAllFutureBookings")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ManagementController : ControllerBase
     {
-        private readonly HotelDbContext _context;
+        private readonly IBookingRepository _bookingRepository;
 
-        public ManagementController(HotelDbContext context)
+        public ManagementController(IBookingRepository bookingRepository)
         {
-            _context = context;
+            _bookingRepository = bookingRepository;
         }
 
-        [HttpGet(Name = "GetAllFutureBookings")]
-        public async Task<ActionResult<ICollection<BookingDto>>> GetAllFutureBookings()
+        [HttpGet(Name = "GetBookings")]
+        public async Task<ActionResult<ICollection<BookingDto>>> GetBookings()
         {
-            return Ok(await _context.Bookings
-                //.Include(b => b.BookingRooms)
-                //.ThenInclude(br => br.Room)
-                //.Include(b => b.Guest)
-                .Where(b => b.BookedFromDate >= DateOnly.FromDateTime(DateTime.Today)
-                    && b.BookingIsCancelled == false)
-                .Select(b => new BookingDto
-                {
-                    Id = b.Id,
-                    GuestName = b.Guest.LastName + ", " + b.Guest.FirstName,
-                    RoomNames = b.BookingRooms.Select(br => br.Room.RoomName).ToList(),
-                    BookedFromDate = b.BookedFromDate,
-                    BookedToDate = b.BookedToDate,
-                    NumberOfAdults = b.NumberOfAdults,
-                    NumberOfChildren = b.NumberOfChildren,
-                }).ToListAsync());
+            return Ok(await _bookingRepository.GetAllFutureBookings());
         }
     }
 }
