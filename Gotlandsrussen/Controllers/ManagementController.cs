@@ -18,13 +18,13 @@ namespace Gotlandsrussen.Controllers
         }
 
         //som receptionist vill jag kunna söka lediga rum baserat på datum och antal gäster
-        [HttpGet("{startDate}/{endDate}/{adults}/{children}", Name = "GetAvailableRoomByDateAndGuests")]
-        public async Task<ActionResult<ICollection<BookingRoom>>> GetAvailableRoomByDateAndGuests(DateOnly startDate, DateOnly endDate, int adults, int children)
+        [HttpGet("{fromDate}/{toDate}/{adults}/{children}", Name = "GetAvailableRoomByDateAndGuests")]
+        public async Task<ActionResult<ICollection<BookingRoom>>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
             int totalGuests = adults + children;
 
             //get date for the toom type
-            var getDate = await _context.Bookings.Where(b => b.BookedFromDate == startDate && b.BookedToDate == endDate).SelectMany(b => b.BookingRooms.Select(br => br.Room.RoomType.Name))
+            var getDate = await _context.Bookings.Where(b => b.BookedFromDate == fromDate && b.BookedToDate == toDate).SelectMany(b => b.BookingRooms.Select(br => br.Room.RoomType.Name))
                 .ToListAsync();
 
             if (getDate == null)
@@ -34,9 +34,10 @@ namespace Gotlandsrussen.Controllers
 
 
             //fix this for today (2025-05-21)
-            var dateNow = DateOnly.FromDateTime(DateTime.Now.AddYears(5));
+            //var dateNow = DateOnly.FromDateTime(DateTime.Now.AddYears(5));
+            var dateNow = DateOnly.FromDateTime(DateTime.Now);
 
-            if(startDate != dateNow && endDate != dateNow)
+            if(fromDate != dateNow || toDate == dateNow)
             {
                 return BadRequest(new { errorMessgae = "Cannot get past date" });
             }
