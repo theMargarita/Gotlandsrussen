@@ -20,5 +20,11 @@ namespace Gotlandsrussen.Controllers
         {
             return Ok(await _bookingRepository.GetAllFutureBookings());
         }
+
+        [HttpGet("GetBookingsGroupedByWeek")]
+        public async Task<ActionResult<ICollection<BookingDto>>> GetBookingsGroupedByWeek()
+        {
+            return Ok(await _bookingRepository.GetBookingsGroupedByWeek());
+        }
     }
 }
