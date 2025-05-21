@@ -1,5 +1,6 @@
 
 using Gotlandsrussen.Data;
+using Gotlandsrussen.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gotlandsrussen
@@ -16,6 +17,7 @@ namespace Gotlandsrussen
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 
             builder.Services.AddDbContext<HotelDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
