@@ -8,5 +8,7 @@ namespace Gotlandsrussen.Repositories
     {
         public Task<ICollection<BookingDto>> GetAllFutureBookings();
         public Task<ActionResult<Booking>> AddBreakfast(int bookingId);
+        public Task<ICollection<YearWeekBookingsDto>> GetBookingsGroupedByWeek();
+        public Task<ICollection<YearMonthBookingsDto>> GetBookingsGroupedByMonth();
     }
 }
