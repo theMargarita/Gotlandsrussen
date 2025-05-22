@@ -1,6 +1,8 @@
 ﻿using Gotlandsrussen.Data;
+using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gotlandsrussen.Controllers
@@ -17,14 +19,16 @@ namespace Gotlandsrussen.Controllers
         }
 
         [HttpPut("AddBreakfast")]
-        public async Task<ActionResult>AddBreakfast(int bookingId)
+        public async Task<ActionResult>AddBreakfast([FromQuery] AddBreakfastRequestDto request)
         {
-            if (bookingId == null || bookingId <= 0)
+            if (request.BookingId == null || request.BookingId <= 0)
             {
-                return NotFound("Booking not found");
+                return NotFound("BookingId was not found");
             }
 
-            return Ok(await _bookingRepository.AddBreakfast(bookingId));
+            var result = await _bookingRepository.AddBreakfast(request);
+
+            return Ok(result.Value);
         }
     }
 }
