@@ -1,6 +1,7 @@
 ﻿using Gotlandsrussen.Data;
 using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
+using Gotlandsrussen.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,6 +44,44 @@ namespace Gotlandsrussen.Repositories
             await _context.SaveChangesAsync();
 
             return booking;
+        }
+
+        public async Task<ICollection<YearWeekBookingsDto>> GetBookingsGroupedByWeek()
+        {
+            var bookings = await GetAllFutureBookings();
+
+            var grouped = bookings
+                .GroupBy(b => b.BookedFromDate.GetIsoYearAndWeek())
+                .Select(g => new YearWeekBookingsDto
+                {
+                    Year = g.Key.Year,
+                    Week = g.Key.Week,
+                    Bookings = g.ToList()
+                })
+                .OrderBy(g => g.Year)
+                .ThenBy(g => g.Week)
+                .ToList();
+
+            return grouped;
+        }
+
+        public async Task<ICollection<YearMonthBookingsDto>> GetBookingsGroupedByMonth()
+        {
+            var bookings = await GetAllFutureBookings();
+
+            var grouped = bookings
+                .GroupBy(b => new { b.BookedFromDate.Year, b.BookedFromDate.Month })
+                .Select(g => new YearMonthBookingsDto
+                {
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    Bookings = g.ToList()
+                })
+                .OrderBy(g => g.Year)
+                .ThenBy(g => g.Month)
+                .ToList();
+
+            return grouped;
         }
 
         public Task<ICollection<Booking>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
