@@ -34,16 +34,31 @@ namespace Gotlandsrussen.Repositories
                 }).ToListAsync();
         }
 
-        public async Task<ActionResult<Booking>> AddBreakfast(int bookingId)
+        public async Task<ActionResult<AddBreakfastResponseDto>> AddBreakfast(AddBreakfastRequestDto request)
         {
-            var booking = await _context.Bookings.FindAsync(bookingId);
+            var booking = await _context.Bookings.FindAsync(request.BookingId);
 
-            // add breakfast to booking.
+            if (booking == null)
+            {
+                return new AddBreakfastResponseDto
+                {
+                    BookingId = request.BookingId,
+                    Breakfast = false,
+                    Message = "Booking was not found"
+                };
+            }
+
             booking.Breakfast = true;
-
             await _context.SaveChangesAsync();
 
-            return booking;
+            var response = new AddBreakfastResponseDto
+            {
+                BookingId = booking.Id,
+                Breakfast = booking.Breakfast,
+                Message = "Breakfast has been added successfully"
+            };
+
+            return response;
         }
 
         public async Task<ICollection<YearWeekBookingsDto>> GetBookingsGroupedByWeek()
