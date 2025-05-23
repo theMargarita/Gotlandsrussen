@@ -108,11 +108,5 @@ namespace Gotlandsrussen.Repositories
                 .Include(b => b.Guest)
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
-       
-
-        public Task<TotalPriceDto> GetTotalPrice(int BookingId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
