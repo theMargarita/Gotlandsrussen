@@ -1,4 +1,5 @@
-﻿using Gotlandsrussen.Models.DTOs;
+﻿using Gotlandsrussen.Models;
+using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,6 +32,19 @@ namespace Gotlandsrussen.Controllers
         public async Task<ActionResult<ICollection<BookingDto>>> GetBookingsGroupedByMonth()
         {
             return Ok(await _bookingRepository.GetBookingsGroupedByMonth());
+        }
+
+        [HttpGet("GetBookingById/{id}")]
+        public async Task<ActionResult<Booking>> GetBookingById(int id)
+        {
+            var booking = await _bookingRepository.GetById(id);
+
+            if (booking == null)
+            {
+                return NotFound(new { errorMessage = "Booking not found" });
+            }
+
+            return Ok(booking);
         }
     }
 }
