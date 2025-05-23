@@ -1,6 +1,7 @@
 ﻿using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
+using Gotlandsrussen.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gotlandsrussen.Controllers
@@ -25,13 +26,41 @@ namespace Gotlandsrussen.Controllers
         [HttpGet("GetBookingsGroupedByWeek")]
         public async Task<ActionResult<ICollection<BookingDto>>> GetBookingsGroupedByWeek()
         {
-            return Ok(await _bookingRepository.GetBookingsGroupedByWeek());
+            var bookings = await _bookingRepository.GetAllFutureBookings();
+
+            var grouped = bookings
+                .GroupBy(b => b.BookedFromDate.GetIsoYearAndWeek())
+                .Select(g => new YearWeekBookingsDto
+                {
+                    Year = g.Key.Year,
+                    Week = g.Key.Week,
+                    Bookings = g.ToList()
+                })
+                .OrderBy(g => g.Year)
+                .ThenBy(g => g.Week)
+                .ToList();
+
+            return Ok(grouped);
         }
 
         [HttpGet("GetBookingsGroupedByMonth")]
         public async Task<ActionResult<ICollection<BookingDto>>> GetBookingsGroupedByMonth()
         {
-            return Ok(await _bookingRepository.GetBookingsGroupedByMonth());
+            var bookings = await _bookingRepository.GetAllFutureBookings();
+
+            var grouped = bookings
+                .GroupBy(b => new { b.BookedFromDate.Year, b.BookedFromDate.Month })
+                .Select(g => new YearMonthBookingsDto
+                {
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    Bookings = g.ToList()
+                })
+                .OrderBy(g => g.Year)
+                .ThenBy(g => g.Month)
+                .ToList();
+
+            return Ok(grouped);
         }
 
         [HttpGet("GetBookingById/{id}")]

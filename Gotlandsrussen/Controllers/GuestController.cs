@@ -20,16 +20,38 @@ namespace Gotlandsrussen.Controllers
         }
 
         [HttpPut("AddBreakfast")]
-        public async Task<ActionResult>AddBreakfast([FromQuery] AddBreakfastRequestDto request)
+        public async Task<ActionResult<AddBreakfastDto>>AddBreakfast([FromQuery] AddBreakfastRequestDto request)
         {
+            var booking = await _bookingRepository.GetById(request.BookingId);
+
             if (request.BookingId == null || request.BookingId <= 0)
             {
                 return NotFound("BookingId was not found");
             }
 
-            var result = await _bookingRepository.AddBreakfast(request);
+            // check if breakfast is booked already.
+            if (booking.Breakfast == true)
+            {
+                return BadRequest("Breakfast is already added to the booking.");
+            }
 
-            return Ok(result.Value);
+            // check if breakfast is null
+            if (request.Breakfast == null)
+            {
+                return BadRequest("Breakfast is null.");
+            }
+
+            var addBreakfast = new AddBreakfastDto
+            {
+                BookingId = request.BookingId,
+                Breakfast = request.Breakfast = true,
+                Message = "Breakfast has been added to the booking."
+            };
+
+            // save changes to the database
+            booking.Breakfast = addBreakfast.Breakfast;
+
+            return Ok(addBreakfast);
         }
 
         //Denna metod hamnar både i guestcontroller och managementcontroller eftersom den behöver kallas på i båda.
@@ -48,4 +70,6 @@ namespace Gotlandsrussen.Controllers
         }
 
     }
+
+
 }
