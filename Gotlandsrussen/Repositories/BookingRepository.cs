@@ -61,25 +61,6 @@ namespace Gotlandsrussen.Repositories
             return response;
         }
 
-        public async Task<ICollection<YearWeekBookingsDto>> GetBookingsGroupedByWeek()
-        {
-            var bookings = await GetAllFutureBookings();
-
-            var grouped = bookings
-                .GroupBy(b => b.BookedFromDate.GetIsoYearAndWeek())
-                .Select(g => new YearWeekBookingsDto
-                {
-                    Year = g.Key.Year,
-                    Week = g.Key.Week,
-                    Bookings = g.ToList()
-                })
-                .OrderBy(g => g.Year)
-                .ThenBy(g => g.Week)
-                .ToList();
-
-            return grouped;
-        }
-
         public async Task<ICollection<YearMonthBookingsDto>> GetBookingsGroupedByMonth()
         {
             var bookings = await GetAllFutureBookings();
