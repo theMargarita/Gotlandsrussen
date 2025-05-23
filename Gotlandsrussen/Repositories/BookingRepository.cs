@@ -98,5 +98,11 @@ namespace Gotlandsrussen.Repositories
 
             return grouped;
         }
+
+        public async Task<Booking?> GetById(int id)
+        {
+            return await _context.Bookings.FindAsync(id);
+        }
+       
     }
 }

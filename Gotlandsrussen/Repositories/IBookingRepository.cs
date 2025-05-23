@@ -10,5 +10,6 @@ namespace Gotlandsrussen.Repositories
         public Task<ActionResult<AddBreakfastResponseDto>> AddBreakfast(AddBreakfastRequestDto request);
         public Task<ICollection<YearWeekBookingsDto>> GetBookingsGroupedByWeek();
         public Task<ICollection<YearMonthBookingsDto>> GetBookingsGroupedByMonth();
+        public Task<Booking> GetById(int id);
     }
 }

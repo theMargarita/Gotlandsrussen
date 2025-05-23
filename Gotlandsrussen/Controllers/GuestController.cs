@@ -1,4 +1,5 @@
 ﻿using Gotlandsrussen.Data;
+using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
 using Microsoft.AspNetCore.Http;
@@ -30,5 +31,21 @@ namespace Gotlandsrussen.Controllers
 
             return Ok(result.Value);
         }
+
+        //Denna metod hamnar både i guestcontroller och managementcontroller eftersom den behöver kallas på i båda.
+        //Detta pga hur vi har delat upp våra controllers. Inte så snyggt. Fråga Petter.
+        [HttpGet("GetBookingById/{id}")]
+        public async Task<ActionResult<Booking>> GetBookingById(int id)
+        {
+            var booking = await _bookingRepository.GetById(id);
+
+            if (booking == null)
+            {
+                return NotFound(new { errorMessage = "Booking not found" });
+            }
+
+            return Ok(booking);
+        }
+
     }
 }
