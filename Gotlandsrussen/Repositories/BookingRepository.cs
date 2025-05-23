@@ -98,5 +98,10 @@ namespace Gotlandsrussen.Repositories
 
             return grouped;
         }
+
+        public Task<TotalPriceDto> GetTotalPrice(int BookingId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
