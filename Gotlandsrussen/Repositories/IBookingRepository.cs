@@ -7,7 +7,7 @@ namespace Gotlandsrussen.Repositories
     public interface IBookingRepository
     {
         public Task<ICollection<BookingDto>> GetAllFutureBookings();
-        public Task<ActionResult<AddBreakfastResponseDto>> AddBreakfast(AddBreakfastRequestDto request);
+       
         public Task<Booking> GetById(int id);
     }
 }

@@ -16,7 +16,6 @@ namespace Gotlandsrussen.Repositories
             _context = context;
         }
 
-
         public async Task<ICollection<BookingDto>> GetAllFutureBookings()
         {
             return await _context.Bookings
@@ -33,34 +32,6 @@ namespace Gotlandsrussen.Repositories
                     NumberOfChildren = b.NumberOfChildren,
                 }).ToListAsync();
         }
-
-        public async Task<ActionResult<AddBreakfastResponseDto>> AddBreakfast(AddBreakfastRequestDto request)
-        {
-            var booking = await _context.Bookings.FindAsync(request.BookingId);
-
-            if (booking == null)
-            {
-                return new AddBreakfastResponseDto
-                {
-                    BookingId = request.BookingId,
-                    Breakfast = false,
-                    Message = "Booking was not found"
-                };
-            }
-
-            booking.Breakfast = true;
-            await _context.SaveChangesAsync();
-
-            var response = new AddBreakfastResponseDto
-            {
-                BookingId = booking.Id,
-                Breakfast = booking.Breakfast,
-                Message = "Breakfast has been added successfully"
-            };
-
-            return response;
-        }
-
         public async Task<Booking?> GetById(int id)
         {
             return await _context.Bookings.FindAsync(id);
