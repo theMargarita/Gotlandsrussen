@@ -101,7 +101,12 @@ namespace Gotlandsrussen.Repositories
 
         public async Task<Booking?> GetById(int id)
         {
-            return await _context.Bookings.FindAsync(id);
+            return await _context.Bookings
+                .Include(b => b.BookingRooms)
+                .ThenInclude(br => br.Room)
+                .ThenInclude(r => r.RoomType)
+                .Include(b => b.Guest)
+                .FirstOrDefaultAsync(b => b.Id == id);
         }
        
 
