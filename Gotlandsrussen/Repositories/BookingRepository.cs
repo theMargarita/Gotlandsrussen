@@ -16,7 +16,6 @@ namespace Gotlandsrussen.Repositories
             _context = context;
         }
 
-
         public async Task<ICollection<BookingDto>> GetAllFutureBookings()
         {
             return await _context.Bookings
@@ -33,7 +32,6 @@ namespace Gotlandsrussen.Repositories
                     NumberOfChildren = b.NumberOfChildren,
                 }).ToListAsync();
         }
-
         public async Task<Booking?> GetById(int id)
         {
             return await _context.Bookings.FindAsync(id);
