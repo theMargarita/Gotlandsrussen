@@ -61,25 +61,6 @@ namespace Gotlandsrussen.Repositories
             return response;
         }
 
-        public async Task<ICollection<YearMonthBookingsDto>> GetBookingsGroupedByMonth()
-        {
-            var bookings = await GetAllFutureBookings();
-
-            var grouped = bookings
-                .GroupBy(b => new { b.BookedFromDate.Year, b.BookedFromDate.Month })
-                .Select(g => new YearMonthBookingsDto
-                {
-                    Year = g.Key.Year,
-                    Month = g.Key.Month,
-                    Bookings = g.ToList()
-                })
-                .OrderBy(g => g.Year)
-                .ThenBy(g => g.Month)
-                .ToList();
-
-            return grouped;
-        }
-
         public async Task<Booking?> GetById(int id)
         {
             return await _context.Bookings.FindAsync(id);

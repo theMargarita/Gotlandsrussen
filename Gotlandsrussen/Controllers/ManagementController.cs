@@ -46,7 +46,21 @@ namespace Gotlandsrussen.Controllers
         [HttpGet("GetBookingsGroupedByMonth")]
         public async Task<ActionResult<ICollection<BookingDto>>> GetBookingsGroupedByMonth()
         {
-            return Ok(await _bookingRepository.GetBookingsGroupedByMonth());
+            var bookings = await _bookingRepository.GetAllFutureBookings();
+
+            var grouped = bookings
+                .GroupBy(b => new { b.BookedFromDate.Year, b.BookedFromDate.Month })
+                .Select(g => new YearMonthBookingsDto
+                {
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    Bookings = g.ToList()
+                })
+                .OrderBy(g => g.Year)
+                .ThenBy(g => g.Month)
+                .ToList();
+
+            return Ok(grouped);
         }
 
         [HttpGet("GetBookingById/{id}")]
