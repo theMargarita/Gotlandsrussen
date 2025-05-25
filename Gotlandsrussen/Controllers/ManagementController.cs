@@ -35,23 +35,27 @@ namespace Gotlandsrussen.Controllers
         {
             return Ok(await _bookingRepository.GetBookingsGroupedByMonth());
         }
-        private readonly HotelDbContext _context;
+        //private readonly HotelDbContext _context;
 
-        public ManagementController(HotelDbContext context)
-        {
-            _context = context;
-        }
+        //public ManagementController(HotelDbContext context)
+        //{
+        //    _context = context;
+        //}
 
 
         //som receptionist vill jag kunna söka lediga rum baserat på datum och antal gäster
         [HttpGet("{fromDate}/{toDate}/{adults}/{children}", Name = "GetAvailableRoomByDateAndGuests")]
-        public async Task<ActionResult<ICollection<BookingRoom>>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
+        public async Task<ActionResult<ICollection<RoomDTO>>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
-            int totalGuests = adults + children;
+            //int totalGuests = adults + children;
 
             //get date for the toom type
-            var getDate = await _context.Bookings.Where(b => b.BookedFromDate == fromDate && b.BookedToDate == toDate).SelectMany(b => b.BookingRooms.Select(br => br.Room.RoomType.Name))
-                .ToListAsync();
+            //var getDate = await _context.Bookings.Where(b => b.BookedFromDate == fromDate && b.BookedToDate == toDate).SelectMany(b => b.BookingRooms.Select(br => br.Room.RoomType.Name))
+            //    .ToListAsync();
+
+            //var getAvailableDate = await _context.Rooms.FirstOrDefaultAsync(r => r.RoomType == )
+
+            var getDate = _bookingRepository.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children);
 
             if (getDate == null)
             {
@@ -71,15 +75,15 @@ namespace Gotlandsrussen.Controllers
             }
 
             //avaible room counted with the amout of guests
-            var availableRooms = await _context.Rooms.Where(r => r.RoomType.NumberOfBeds >= totalGuests).GroupBy(r => r.RoomType).Select(g => g.Key).ToListAsync();
+            //var availableRooms = await _bookingRepository.GetAvailableRoomByDateAndGuests().Rooms.Where(r => r.RoomType.NumberOfBeds >= totalGuests).GroupBy(r => r.RoomType).Select(g => g.Key).ToListAsync();
 
-            if (availableRooms == null)
-            {
-                return BadRequest(new { errorMessage = "Invalid or typo" });
-            }
+            //if (availableRooms == null)
+            //{
+            //    return BadRequest(new { errorMessage = "Invalid or typo" });
+            //}
 
 
-            return Ok(availableRooms);
+            return Ok(getDate);
         }
     }
 }
