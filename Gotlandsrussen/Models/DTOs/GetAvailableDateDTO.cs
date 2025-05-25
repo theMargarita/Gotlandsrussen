@@ -1,4 +1,6 @@
-﻿namespace Gotlandsrussen.Models.DTOs
+﻿using System.Text.Json.Serialization;
+
+namespace Gotlandsrussen.Models.DTOs
 {
     public class GetAvailableDateDTO
     {
@@ -10,6 +12,7 @@
         //public List<string> RoomNames { get; set; }
         //public List<int> NumberOfBed { get; set; }
 
+        [JsonIgnore]
         public ICollection<RoomDTO> Rooms { get; set; }
 
     }
