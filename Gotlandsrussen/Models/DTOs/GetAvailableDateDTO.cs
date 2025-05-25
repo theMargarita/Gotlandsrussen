@@ -9,8 +9,5 @@ namespace Gotlandsrussen.Models.DTOs
         public int NumberOfAdults { get; set; }
         public int NumberOfChildren { get; set; }
 
-        [JsonIgnore]
-        public ICollection<RoomDTO> Rooms { get; set; }
-
     }
 }
