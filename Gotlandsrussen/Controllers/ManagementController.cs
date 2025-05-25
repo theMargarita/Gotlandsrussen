@@ -131,7 +131,7 @@ namespace Gotlandsrussen.Controllers
             {
                 return BadRequest(new { errorMessgae = "Cannot get past date" });
             }
-            if(fromDate >= toDate)
+            if(fromDate > toDate)
             {
                 return BadRequest(new { errorMessage = "Cannot book date before start date" });
             }
