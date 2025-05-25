@@ -1,6 +1,9 @@
 ﻿using Gotlandsrussen.Data;
+using Gotlandsrussen.Models;
+using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gotlandsrussen.Controllers
@@ -17,14 +20,56 @@ namespace Gotlandsrussen.Controllers
         }
 
         [HttpPut("AddBreakfast")]
-        public async Task<ActionResult>AddBreakfast(int bookingId)
+        public async Task<ActionResult<AddBreakfastDto>>AddBreakfast([FromQuery] AddBreakfastRequestDto request)
         {
-            if (bookingId == null || bookingId <= 0)
+            var booking = await _bookingRepository.GetById(request.BookingId);
+
+            if (request.BookingId == null || request.BookingId <= 0)
             {
-                return NotFound("Booking not found");
+                return NotFound("BookingId was not found");
             }
 
-            return Ok(await _bookingRepository.AddBreakfast(bookingId));
+            // check if breakfast is booked already.
+            if (booking.Breakfast == true)
+            {
+                return BadRequest("Breakfast is already added to the booking.");
+            }
+
+            // check if breakfast is null
+            if (request.Breakfast == null)
+            {
+                return BadRequest("Breakfast is null.");
+            }
+
+            var addBreakfast = new AddBreakfastDto
+            {
+                BookingId = request.BookingId,
+                Breakfast = request.Breakfast = true,
+                Message = "Breakfast has been added to the booking."
+            };
+
+            // save changes to the database
+            booking.Breakfast = addBreakfast.Breakfast;
+
+            return Ok(addBreakfast);
         }
+
+        //Denna metod hamnar både i guestcontroller och managementcontroller eftersom den behöver kallas på i båda.
+        //Detta pga hur vi har delat upp våra controllers. Inte så snyggt. Fråga Petter.
+        [HttpGet("GetBookingById/{id}")]
+        public async Task<ActionResult<Booking>> GetBookingById(int id)
+        {
+            var booking = await _bookingRepository.GetById(id);
+
+            if (booking == null)
+            {
+                return NotFound(new { errorMessage = "Booking not found" });
+            }
+
+            return Ok(booking);
+        }
+
     }
+
+
 }

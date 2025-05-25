@@ -16,7 +16,6 @@ namespace Gotlandsrussen.Repositories
             _context = context;
         }
 
-
         public async Task<ICollection<BookingDto>> GetAllFutureBookings()
         {
             return await _context.Bookings
@@ -34,54 +33,15 @@ namespace Gotlandsrussen.Repositories
                 }).ToListAsync();
         }
 
-        public async Task<ActionResult<Booking>> AddBreakfast(int bookingId)
+        //Utan includes så blir relationshämtningarna null... Varför?
+        public async Task<Booking?> GetById(int id)
         {
-            var booking = await _context.Bookings.FindAsync(bookingId);
-
-            // add breakfast to booking.
-            booking.Breakfast = true;
-
-            await _context.SaveChangesAsync();
-
-            return booking;
-        }
-
-        public async Task<ICollection<YearWeekBookingsDto>> GetBookingsGroupedByWeek()
-        {
-            var bookings = await GetAllFutureBookings();
-
-            var grouped = bookings
-                .GroupBy(b => b.BookedFromDate.GetIsoYearAndWeek())
-                .Select(g => new YearWeekBookingsDto
-                {
-                    Year = g.Key.Year,
-                    Week = g.Key.Week,
-                    Bookings = g.ToList()
-                })
-                .OrderBy(g => g.Year)
-                .ThenBy(g => g.Week)
-                .ToList();
-
-            return grouped;
-        }
-
-        public async Task<ICollection<YearMonthBookingsDto>> GetBookingsGroupedByMonth()
-        {
-            var bookings = await GetAllFutureBookings();
-
-            var grouped = bookings
-                .GroupBy(b => new { b.BookedFromDate.Year, b.BookedFromDate.Month })
-                .Select(g => new YearMonthBookingsDto
-                {
-                    Year = g.Key.Year,
-                    Month = g.Key.Month,
-                    Bookings = g.ToList()
-                })
-                .OrderBy(g => g.Year)
-                .ThenBy(g => g.Month)
-                .ToList();
-
-            return grouped;
+            return await _context.Bookings
+                .Include(b => b.BookingRooms)
+                .ThenInclude(br => br.Room)
+                .ThenInclude(r => r.RoomType)
+                .Include(b => b.Guest)
+                .FirstOrDefaultAsync(b => b.Id == id);
         }
 
 

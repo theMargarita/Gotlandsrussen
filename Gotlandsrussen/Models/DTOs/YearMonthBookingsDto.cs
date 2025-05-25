@@ -4,6 +4,6 @@
     {
         public int Year { get; set; }
         public int Month { get; set; }
-        public List<BookingDto>? Bookings { get; set; }
+        public List<BookingDto> Bookings { get; set; } = new();
     }
 }
