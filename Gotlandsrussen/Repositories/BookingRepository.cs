@@ -84,9 +84,42 @@ namespace Gotlandsrussen.Repositories
             return grouped;
         }
 
-        public Task<ICollection<Booking>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
+
+        public async Task<ICollection<RoomDTO>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
-            throw new NotImplementedException();
+            //return await _context.Bookings
+            //    .Where(b => !(b.BookedFromDate == fromDate || b.BookedToDate == toDate))
+            //    .Select(b => new GetAvailableDateDTO
+            //    {
+            //        BookedFromDate = b.BookedFromDate,
+            //        BookedToDate = b.BookedToDate,
+            //        NumberOfAdults = b.NumberOfAdults,
+            //        NumberOfChildren = b.NumberOfChildren,
+            //        Rooms = b.BookingRooms
+            //            .Where(r => r.Room.RoomType.NumberOfBeds >= (adults + children)).Select(br =>
+            //            new RoomDTO
+            //            {
+            //                Name = br.Room.RoomType.Name,
+            //                NumberOfBeds = br.Room.RoomType.NumberOfBeds
+            //            }).ToList()
+            //    }).ToListAsync();
+
+
+            var availableRooms = await _context.Rooms
+            .Where(room => room.RoomType.NumberOfBeds >= (adults + children))
+            .Where(room => !_context.BookingRooms
+                .Any(br => br.RoomId == room.Id &&
+                   br.Booking.BookedFromDate <= toDate &&
+                   br.Booking.BookedToDate >= fromDate))
+            .Select(room => new RoomDTO
+            {
+                Name = room.RoomType.Name,
+                NumberOfBeds = room.RoomType.NumberOfBeds
+            })
+            .ToListAsync();
+
+            return availableRooms;
         }
+
     }
 }
