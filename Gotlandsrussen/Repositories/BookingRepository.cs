@@ -47,24 +47,6 @@ namespace Gotlandsrussen.Repositories
 
         public async Task<ICollection<RoomDTO>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
-            //return await _context.Bookings
-            //    .Where(b => !(b.BookedFromDate == fromDate || b.BookedToDate == toDate))
-            //    .Select(b => new GetAvailableDateDTO
-            //    {
-            //        BookedFromDate = b.BookedFromDate,
-            //        BookedToDate = b.BookedToDate,
-            //        NumberOfAdults = b.NumberOfAdults,
-            //        NumberOfChildren = b.NumberOfChildren,
-            //        Rooms = b.BookingRooms
-            //            .Where(r => r.Room.RoomType.NumberOfBeds >= (adults + children)).Select(br =>
-            //            new RoomDTO
-            //            {
-            //                Name = br.Room.RoomType.Name,
-            //                NumberOfBeds = br.Room.RoomType.NumberOfBeds
-            //            }).ToList()
-            //    }).ToListAsync();
-
-
             var availableRooms = await _context.Rooms
             .Where(r => r.RoomType.NumberOfBeds >= (adults + children))
             .Where(r => !_context.BookingRooms
