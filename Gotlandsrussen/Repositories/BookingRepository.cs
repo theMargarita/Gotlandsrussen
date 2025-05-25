@@ -1,7 +1,6 @@
 ﻿using Gotlandsrussen.Data;
 using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
-using Gotlandsrussen.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -74,5 +73,19 @@ namespace Gotlandsrussen.Repositories
             return availableRooms;
         }
 
+        public Task<ActionResult<Booking>> AddBreakfast(int bookingId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ICollection<YearWeekBookingsDto>> GetBookingsGroupedByWeek()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ICollection<YearMonthBookingsDto>> GetBookingsGroupedByMonth()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
