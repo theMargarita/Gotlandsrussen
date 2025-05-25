@@ -125,21 +125,20 @@ namespace Gotlandsrussen.Controllers
                 return BadRequest(new { errorMessage = "Date incorrectly typed" });
             }
 
-            var dateNow = DateOnly.FromDateTime(DateTime.Now);
+            var today = DateOnly.FromDateTime(DateTime.Now);
 
-            if(fromDate != dateNow)
+            if (fromDate < today)
             {
                 return BadRequest(new { errorMessgae = "Cannot get past date" });
             }
-            if(toDate == dateNow)
+            if(fromDate >= toDate)
+            {
+                return BadRequest(new { errorMessage = "Cannot book date before start date" });
+            }
+            if (toDate == today)
             {
                 return BadRequest(new { errorMessage = "Cannot book for the same day" });
             }
-
-            if (getDate == null)
-            {
-                return BadRequest(new { errorMessage = "Invalid or typo" });
-            } 
 
             return Ok(getDate);
         }
