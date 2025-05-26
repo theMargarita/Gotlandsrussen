@@ -7,10 +7,9 @@ namespace Gotlandsrussen.Repositories
     public interface IBookingRepository
     {
         public Task<ICollection<BookingDto>> GetAllFutureBookings();
-       
+
         public Task<Booking> GetById(int id);
 
         public Task<ICollection<RoomDto>> GetAvailableRoomsAsync(DateOnly startDate, DateOnly endDate);
-
     }
 }

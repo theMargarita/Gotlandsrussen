@@ -3,6 +3,7 @@ using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
 using Gotlandsrussen.Utilities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gotlandsrussen.Controllers
 {
@@ -11,10 +12,13 @@ namespace Gotlandsrussen.Controllers
     public class ManagementController : ControllerBase
     {
         private readonly IBookingRepository _bookingRepository;
+        private readonly IRoomRepository _roomRepository;
 
-        public ManagementController(IBookingRepository bookingRepository)
+        public ManagementController(IBookingRepository bookingRepository, IRoomRepository roomRepository)
         {
             _bookingRepository = bookingRepository;
+            _roomRepository = roomRepository;
+
         }
 
         [HttpGet("GetAllFutureBookings")]
@@ -108,6 +112,36 @@ namespace Gotlandsrussen.Controllers
             };
 
             return Ok(summary);
+        }
+
+
+        //som receptionist vill jag kunna söka lediga rum baserat på datum och antal gäster
+        [HttpGet("{fromDate}/{toDate}/{adults}/{children}", Name = "GetAvailableRoomByDateAndGuests")]
+        public async Task<ActionResult<ICollection<RoomDto>>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
+        {
+            var getDate = await _roomRepository.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children);
+
+            if (getDate == null)
+            {
+                return BadRequest(new { errorMessage = "Date incorrectly typed" });
+            }
+
+            var today = DateOnly.FromDateTime(DateTime.Now);
+
+            if (fromDate < today)
+            {
+                return BadRequest(new { errorMessgae = "Cannot get past date" });
+            }
+            if(fromDate > toDate)
+            {
+                return BadRequest(new { errorMessage = "Cannot book date before start date" });
+            }
+            if (toDate == today)
+            {
+                return BadRequest(new { errorMessage = "Cannot book for the same day" });
+            }
+
+            return Ok(getDate);
         }
     }
 }
