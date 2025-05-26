@@ -43,6 +43,36 @@ namespace Gotlandsrussen.Repositories
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
 
+        public async Task<ICollection<RoomDto>> GetAvailableRoomsAsync(DateOnly startDate, DateOnly endDate)
+        {
+            var bookedRoomIds = await _context.BookingRooms
+                .Include(br => br.Booking)
+                .Where(br =>
+                    !br.Booking.BookingIsCancelled &&
+                    (startDate < br.Booking.BookedToDate &&
+                     endDate > br.Booking.BookedFromDate))
+                .Select(br => br.RoomId)
+                .Distinct()
+                .ToListAsync();
+
+            var availableRooms = await _context.Rooms
+                .Include(r => r.RoomType)
+                .Where(r => !bookedRoomIds.Contains(r.Id))
+                .Select(r => new RoomDto
+                {
+                    Id = r.Id,
+                    RoomName = r.RoomName,
+                    RoomTypeName = r.RoomType.Name,
+                    NumberOfBeds = r.RoomType.NumberOfBeds,
+                    PricePerNight = r.RoomType.PricePerNight
+                })
+                .ToListAsync();
+
+            return availableRooms;
+        }
+
+
+
 
 
         public Task<ActionResult<Booking>> AddBreakfast(int bookingId)
