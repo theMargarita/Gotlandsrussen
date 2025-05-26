@@ -56,14 +56,14 @@ namespace Gotlandsrussen.Repositories
             {
                 Name = r.RoomType.Name,
                 NumberOfBeds = r.RoomType.NumberOfBeds,
-                GetAvailableDate = r.BookingRooms
-                .Select(br => new GetAvailableDateDTO
-                {
-                    BookedFromDate = fromDate,
-                    BookedToDate = toDate,
-                    NumberOfAdults = adults, 
-                    NumberOfChildren = children
-                }).ToList()
+                //GetAvailableDate = r.BookingRooms
+                //.Select(br => new GetAvailableDateDTO
+                //{
+                //    BookedFromDate = fromDate,
+                //    BookedToDate = toDate,
+                //    NumberOfAdults = adults, 
+                //    NumberOfChildren = children
+                //}).ToList()
             })
             .ToListAsync();
 

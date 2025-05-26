@@ -4,8 +4,11 @@ namespace Gotlandsrussen.Models.DTOs
 {
     public class RoomDTO
     {
+        public string RoomName { get; set; }
         public string Name { get; set; }
         public int NumberOfBeds { get; set; }
+
+
         [JsonIgnore]
         public List<GetAvailableDateDTO> GetAvailableDate { get;set;}
 
