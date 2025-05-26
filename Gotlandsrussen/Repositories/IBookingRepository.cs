@@ -12,6 +12,5 @@ namespace Gotlandsrussen.Repositories
         public Task<ActionResult<Booking>> AddBreakfast(int bookingId);
         public Task<ICollection<YearWeekBookingsDto>> GetBookingsGroupedByWeek();
         public Task<ICollection<YearMonthBookingsDto>> GetBookingsGroupedByMonth();
-        public Task<ICollection<RoomDTO>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children);
     }
 }
