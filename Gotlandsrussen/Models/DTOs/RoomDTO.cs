@@ -9,8 +9,8 @@ namespace Gotlandsrussen.Models.DTOs
         public int NumberOfBeds { get; set; }
 
 
-        [JsonIgnore]
-        public List<GetAvailableDateDTO> GetAvailableDate { get;set;}
+        //[JsonIgnore]
+        //public List<GetAvailableDateDTO> GetAvailableDate { get;set;}
 
     }
 }
