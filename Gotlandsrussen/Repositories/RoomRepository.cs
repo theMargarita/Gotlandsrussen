@@ -1,11 +1,17 @@
-﻿using Gotlandsrussen.Models.DTOs;
+﻿using Gotlandsrussen.Data;
+using Gotlandsrussen.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gotlandsrussen.Repositories
 {
     public class RoomRepository : IRoomRepository
     {
+        private readonly HotelDbContext _context;
 
+        public RoomRepository(HotelDbContext context)
+        {
+            _context = context;
+        }
         public async Task<ICollection<RoomDTO>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
             var availableRooms = await _context.Rooms
