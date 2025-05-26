@@ -36,7 +36,7 @@ namespace Gotlandsrussen.Controllers
             }
 
             // check if breakfast is null
-            if (request.Breakfast == null)
+            if (booking.Breakfast == null)
             {
                 return BadRequest("Breakfast is null.");
             }
@@ -44,7 +44,7 @@ namespace Gotlandsrussen.Controllers
             var addBreakfast = new AddBreakfastDto
             {
                 BookingId = request.BookingId,
-                Breakfast = request.Breakfast = true,
+                Breakfast = true,
                 Message = "Breakfast has been added to the booking."
             };
 
