@@ -54,6 +54,7 @@ namespace Gotlandsrussen.Repositories
                    br.Booking.BookedToDate >= fromDate))
             .Select(r => new RoomDTO
             {
+                RoomName = r.RoomName,
                 Name = r.RoomType.Name,
                 NumberOfBeds = r.RoomType.NumberOfBeds,
                 //GetAvailableDate = r.BookingRooms
