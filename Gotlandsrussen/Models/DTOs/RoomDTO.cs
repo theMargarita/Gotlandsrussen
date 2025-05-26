@@ -1,16 +1,13 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Gotlandsrussen.Models.DTOs
+﻿namespace Gotlandsrussen.Models.DTOs
 {
-    public class RoomDTO
+    public class RoomDto
     {
+        public int Id { get; set; }
         public string RoomName { get; set; }
-        public string Name { get; set; }
+        public string RoomTypeName { get; set; }
         public int NumberOfBeds { get; set; }
+        public decimal PricePerNight { get; set; }
 
-
-        //[JsonIgnore]
-        //public List<GetAvailableDateDTO> GetAvailableDate { get;set;}
-
+        
     }
 }
