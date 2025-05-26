@@ -32,9 +32,16 @@ namespace Gotlandsrussen.Repositories
                     NumberOfChildren = b.NumberOfChildren,
                 }).ToListAsync();
         }
+
+        //Utan includes så blir relationshämtningarna null... Varför?
         public async Task<Booking?> GetById(int id)
         {
-            return await _context.Bookings.FindAsync(id);
+            return await _context.Bookings
+                .Include(b => b.BookingRooms)
+                .ThenInclude(br => br.Room)
+                .ThenInclude(r => r.RoomType)
+                .Include(b => b.Guest)
+                .FirstOrDefaultAsync(b => b.Id == id);
         }
 
         public async Task<ICollection<RoomDto>> GetAvailableRoomsAsync(DateOnly startDate, DateOnly endDate)
