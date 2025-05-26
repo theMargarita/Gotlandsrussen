@@ -1,6 +1,4 @@
 ﻿using Gotlandsrussen.Models;
-using Gotlandsrussen.Data;
-using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
 using Gotlandsrussen.Utilities;
@@ -14,10 +12,17 @@ namespace Gotlandsrussen.Controllers
     public class ManagementController : ControllerBase
     {
         private readonly IBookingRepository _bookingRepository;
+        private readonly IRoomRepository _roomRepository;
+
 
         public ManagementController(IBookingRepository bookingRepository)
         {
             _bookingRepository = bookingRepository;
+        }
+
+        public ManagementController(IRoomRepository roomRepository)
+        {
+            _roomRepository = roomRepository;
         }
 
         [HttpGet("GetAllFutureBookings")]
@@ -118,7 +123,7 @@ namespace Gotlandsrussen.Controllers
         [HttpGet("{fromDate}/{toDate}/{adults}/{children}", Name = "GetAvailableRoomByDateAndGuests")]
         public async Task<ActionResult<ICollection<RoomDTO>>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
-            var getDate = await _bookingRepository.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children);
+            var getDate = await _roomRepository.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children);
 
             if (getDate == null)
             {
