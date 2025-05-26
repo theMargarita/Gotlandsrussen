@@ -117,7 +117,7 @@ namespace Gotlandsrussen.Controllers
 
         //som receptionist vill jag kunna söka lediga rum baserat på datum och antal gäster
         [HttpGet("{fromDate}/{toDate}/{adults}/{children}", Name = "GetAvailableRoomByDateAndGuests")]
-        public async Task<ActionResult<ICollection<RoomDTO>>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
+        public async Task<ActionResult<ICollection<RoomDto>>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
             var getDate = await _roomRepository.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children);
 
