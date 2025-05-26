@@ -69,6 +69,16 @@ namespace Gotlandsrussen.Controllers
             return Ok(booking);
         }
 
+        [HttpGet("available-rooms")]
+        public async Task<IActionResult> GetAvailableRooms([FromQuery] DateOnly startDate, [FromQuery] DateOnly endDate)
+        {
+            if (startDate >= endDate)
+                return BadRequest("Startdatum måste vara före slutdatum.");
+
+            var rooms = await _bookingRepository.GetAvailableRoomsAsync(startDate, endDate);
+            return Ok(rooms);
+        }
+
     }
 
 
