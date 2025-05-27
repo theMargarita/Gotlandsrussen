@@ -50,7 +50,7 @@ namespace Gotlandsrussen.Controllers
 
             // save changes to the database
             booking.Breakfast = addBreakfast.Breakfast;
-            //await _bookingRepository.Update(booking);
+            await _bookingRepository.Update(booking);
 
             return Ok(addBreakfast);
         }
