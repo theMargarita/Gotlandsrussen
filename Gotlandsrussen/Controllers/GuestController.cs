@@ -89,11 +89,22 @@ namespace Gotlandsrussen.Controllers
         public async Task<IActionResult> CancelBooking(int bookingId)
         {
             var bookingToCancel = await _bookingRepository.GetById(bookingId);
-            
+
             if (bookingToCancel == null)
             {
                 return NotFound(new { errorMessage = "Booking not found" });
             }
+            
+            if (bookingToCancel.BookingIsCancelled == true)
+            {
+                return BadRequest(new { errorMessage = "Booking is already cancelled" });
+            }
+
+            bookingToCancel.BookingIsCancelled = true;
+            await _bookingRepository.Update(bookingToCancel);
+            return Ok("Booking is cancelled");
+        }
+
         [HttpGet("GetAllGuests")]
         public async Task<ICollection<Guest>> GetAllGuests()
         {
@@ -109,10 +120,7 @@ namespace Gotlandsrussen.Controllers
                 return BadRequest("No data have been added.");
             }
 
-            if (bookingToCancel.BookingIsCancelled == true)
-            {
-                return BadRequest(new { errorMessage = "Booking is already cancelled" });
-            }
+            
             var guest = new Guest
             {
                 FirstName = request.FirstName,
@@ -126,13 +134,5 @@ namespace Gotlandsrussen.Controllers
         }
         
 
-    }
-
-
-
-            bookingToCancel.BookingIsCancelled = true;
-            await _bookingRepository.Update(bookingToCancel);
-            return Ok("Booking is cancelled");
-        }
     }
 }
