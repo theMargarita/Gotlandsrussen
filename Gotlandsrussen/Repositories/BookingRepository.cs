@@ -70,5 +70,11 @@ namespace Gotlandsrussen.Repositories
 
             return availableRooms;
         }
+
+        public async Task Update(Booking booking)
+        {
+            _context.Bookings.Update(booking);
+            await _context.SaveChangesAsync();
+        }
     }
 }
