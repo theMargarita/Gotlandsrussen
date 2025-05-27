@@ -76,5 +76,21 @@ namespace Gotlandsrussen.Repositories
             _context.Bookings.Update(booking);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<ICollection<BookingDto>> GetBookingHistory()
+        {
+            return await _context.Bookings
+                .Where(b => b.BookedFromDate <= DateOnly.FromDateTime(DateTime.Today))
+                .Select(b => new BookingDto
+                {
+                    Id = b.Id,
+                    GuestName = b.Guest.LastName + ", " + b.Guest.FirstName,
+                    RoomNames = b.BookingRooms.Select(br => br.Room.RoomName).ToList(),
+                    BookedFromDate = b.BookedFromDate,
+                    BookedToDate = b.BookedToDate,
+                    NumberOfAdults = b.NumberOfAdults,
+                    NumberOfChildren = b.NumberOfChildren,
+                }).ToListAsync();
+        }
     }
 }
