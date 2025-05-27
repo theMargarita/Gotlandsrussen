@@ -2,6 +2,7 @@
 using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
 using Gotlandsrussen.Utilities;
+using HotelGotlandsrussen.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -149,5 +150,20 @@ namespace Gotlandsrussen.Controllers
         {
             return Ok(await _bookingRepository.GetBookingHistory());
         }
+
+
+        [HttpPut("UpdateBooking")]
+        public async Task<IActionResult> UpdateBooking([FromBody] UpdateBookingDto updatedBooking)
+        {
+            var result = await _bookingRepository.UpdateBookingAsync(updatedBooking);
+
+            if (result == null)
+            {
+                return NotFound(new { errorMessage = "Booking not found" });
+            }
+
+            return Ok(result);
+        }
+
     }
 }
