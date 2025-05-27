@@ -11,5 +11,7 @@ namespace Gotlandsrussen.Repositories
         public Task<Booking> GetById(int id);
 
         public Task<ICollection<RoomDto>> GetAvailableRoomsAsync(DateOnly startDate, DateOnly endDate);
+
+        public Task Update(Booking booking);
     }
 }

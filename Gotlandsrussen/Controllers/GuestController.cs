@@ -52,6 +52,7 @@ namespace Gotlandsrussen.Controllers
 
             // save changes to the database
             booking.Breakfast = addBreakfast.Breakfast;
+            await _bookingRepository.Update(booking);
 
             return Ok(addBreakfast);
         }
@@ -74,6 +75,9 @@ namespace Gotlandsrussen.Controllers
         [HttpGet("available-rooms")]
         public async Task<IActionResult> GetAvailableRooms([FromQuery] DateOnly startDate, [FromQuery] DateOnly endDate)
         {
+            if (startDate < DateOnly.FromDateTime(DateTime.Today))
+                return BadRequest("Startdatum har redan passerat.");
+
             if (startDate >= endDate)
                 return BadRequest("Startdatum måste vara före slutdatum.");
 
@@ -81,6 +85,15 @@ namespace Gotlandsrussen.Controllers
             return Ok(rooms);
         }
 
+        [HttpPut("CancelBooking")]
+        public async Task<IActionResult> CancelBooking(int bookingId)
+        {
+            var bookingToCancel = await _bookingRepository.GetById(bookingId);
+            
+            if (bookingToCancel == null)
+            {
+                return NotFound(new { errorMessage = "Booking not found" });
+            }
         [HttpGet("GetAllGuests")]
         public async Task<ICollection<Guest>> GetAllGuests()
         {
@@ -96,6 +109,10 @@ namespace Gotlandsrussen.Controllers
                 return BadRequest("No data have been added.");
             }
 
+            if (bookingToCancel.BookingIsCancelled == true)
+            {
+                return BadRequest(new { errorMessage = "Booking is already cancelled" });
+            }
             var guest = new Guest
             {
                 FirstName = request.FirstName,
@@ -113,4 +130,9 @@ namespace Gotlandsrussen.Controllers
 
 
 
+            bookingToCancel.BookingIsCancelled = true;
+            await _bookingRepository.Update(bookingToCancel);
+            return Ok("Booking is cancelled");
+        }
+    }
 }
