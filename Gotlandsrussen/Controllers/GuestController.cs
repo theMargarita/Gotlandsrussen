@@ -13,10 +13,12 @@ namespace Gotlandsrussen.Controllers
     public class GuestController : ControllerBase
     {
         private readonly IBookingRepository _bookingRepository;
+        private readonly IGuestRepository _guestRepository;
 
-        public GuestController(IBookingRepository bookingRepository)
+        public GuestController(IBookingRepository bookingRepository, IGuestRepository guestRepository)
         {
             _bookingRepository = bookingRepository;
+            _guestRepository = guestRepository;
         }
 
         [HttpPut("AddBreakfast")]
@@ -87,12 +89,12 @@ namespace Gotlandsrussen.Controllers
         public async Task<IActionResult> CancelBooking(int bookingId)
         {
             var bookingToCancel = await _bookingRepository.GetById(bookingId);
-            
+
             if (bookingToCancel == null)
             {
                 return NotFound(new { errorMessage = "Booking not found" });
             }
-
+            
             if (bookingToCancel.BookingIsCancelled == true)
             {
                 return BadRequest(new { errorMessage = "Booking is already cancelled" });
@@ -102,5 +104,35 @@ namespace Gotlandsrussen.Controllers
             await _bookingRepository.Update(bookingToCancel);
             return Ok("Booking is cancelled");
         }
+
+        [HttpGet("GetAllGuests")]
+        public async Task<ICollection<Guest>> GetAllGuests()
+        {
+            var getAllGest = await _guestRepository.GetAllGuests();
+            return getAllGest.ToList();
+        }
+
+        [HttpPost("CreateGuest")]
+        public async Task<ActionResult<CreateGuestRequestDto>> CreateGuest([FromQuery] CreateGuestRequestDto request)
+        {
+            if (request == null)
+            {
+                return BadRequest("No data have been added.");
+            }
+
+            
+            var guest = new Guest
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Email = request.Email,
+                Phone = request.Phone
+            };
+
+            await _guestRepository.AddGuest(guest);
+            return CreatedAtAction(nameof(GetAllGuests), new { id = guest.Id }, guest);
+        }
+        
+
     }
 }
