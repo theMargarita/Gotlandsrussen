@@ -50,6 +50,7 @@ namespace Gotlandsrussen.Controllers
 
             // save changes to the database
             booking.Breakfast = addBreakfast.Breakfast;
+            //await _bookingRepository.Update(booking);
 
             return Ok(addBreakfast);
         }
@@ -79,7 +80,25 @@ namespace Gotlandsrussen.Controllers
             return Ok(rooms);
         }
 
+        [HttpPut("CancelBooking")]
+        public async Task<IActionResult> CancelBooking(int bookingId)
+        {
+            var bookingToCancel = await _bookingRepository.GetById(bookingId);
+            
+            if (bookingToCancel == null)
+            {
+                return NotFound(new { errorMessage = "Booking not found" });
+            }
 
+            if (bookingToCancel.BookingIsCancelled == true)
+            {
+                return BadRequest("Booking is already cancelled");
+            }
+
+            bookingToCancel.BookingIsCancelled = true;
+            await _bookingRepository.Update(bookingToCancel);
+            return Ok("Booking is cancelled");
+        }
 
     }
 
