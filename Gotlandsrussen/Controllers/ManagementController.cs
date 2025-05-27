@@ -143,5 +143,11 @@ namespace Gotlandsrussen.Controllers
 
             return Ok(getDate);
         }
+
+        [HttpGet("GetBookingHistory")]
+        public async Task<ActionResult<ICollection<BookingDto>>> GetBookingHistory()
+        {
+            return Ok(await _bookingRepository.GetBookingHistory());
+        }
     }
 }
