@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35806.99
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gotlandsrussen", "Gotlandsrussen\Gotlandsrussen.csproj", "{B014BD0F-6EDB-42B1-8048-B9FB06462649}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GotlandsrussenAPI", "Gotlandsrussen\GotlandsrussenAPI.csproj", "{B014BD0F-6EDB-42B1-8048-B9FB06462649}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelDbTests", "HotelDbTests\HotelDbTests.csproj", "{16B5F859-E309-4975-A5C4-183604E39A80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelGotlandsrussenTESTS", "HotelDbTests\HotelGotlandsrussenTESTS.csproj", "{16B5F859-E309-4975-A5C4-183604E39A80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelGotlandsrussen", "HotelGotlandsrussen\HotelGotlandsrussen.csproj", "{0EFDFDFB-5215-4452-AA2C-E4C405D07C57}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelGotlandsrussenLIBRARY", "HotelGotlandsrussen\HotelGotlandsrussenLIBRARY.csproj", "{0EFDFDFB-5215-4452-AA2C-E4C405D07C57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

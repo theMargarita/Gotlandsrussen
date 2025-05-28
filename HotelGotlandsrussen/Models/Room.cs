@@ -3,7 +3,7 @@
     public class Room
     {
         public int Id { get; set; }
-        public string RoomName { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
         public int RoomTypeId { get; set; } // Foreign key to RoomType
 

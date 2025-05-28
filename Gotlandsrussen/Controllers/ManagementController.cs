@@ -95,7 +95,7 @@ namespace Gotlandsrussen.Controllers
                 RoomType = br.Room.RoomType.Name,
                 PricePerNight = br.Room.RoomType.PricePerNight
             }).ToList();
-            int numberOfNights = (booking.BookedToDate.ToDateTime(TimeOnly.MinValue) - booking.BookedFromDate.ToDateTime(TimeOnly.MinValue)).Days;
+            int numberOfNights = (booking.ToDate.ToDateTime(TimeOnly.MinValue) - booking.FromDate.ToDateTime(TimeOnly.MinValue)).Days;
             int numberOfGuests = booking.NumberOfAdults + booking.NumberOfChildren;
             int numberOfBreakfasts = numberOfNights * numberOfGuests;
             decimal breakfastPrice = 50m;

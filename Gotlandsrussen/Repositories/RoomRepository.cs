@@ -18,12 +18,12 @@ namespace Gotlandsrussen.Repositories
             .Where(r => r.RoomType.NumberOfBeds >= (adults + children))
             .Where(r => !_context.BookingRooms
                 .Any(br => br.RoomId == r.Id &&
-                   br.Booking.BookedFromDate <= toDate &&
-                   br.Booking.BookedToDate >= fromDate))
+                   br.Booking.FromDate <= toDate &&
+                   br.Booking.ToDate >= fromDate))
             .Select(r => new RoomDto
             {
                 Id = r.Id,
-                RoomName = r.RoomName,
+                RoomName = r.Name,
                 RoomTypeName= r.RoomType.Name,
                 NumberOfBeds = r.RoomType.NumberOfBeds,
                 PricePerNight = r.RoomType.PricePerNight

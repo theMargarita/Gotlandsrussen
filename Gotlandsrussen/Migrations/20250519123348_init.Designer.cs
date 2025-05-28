@@ -33,13 +33,13 @@ namespace Gotlandsrussen.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateOnly>("BookedFromDate")
+                    b.Property<DateOnly>("FromDate")
                         .HasColumnType("date");
 
-                    b.Property<DateOnly>("BookedToDate")
+                    b.Property<DateOnly>("ToDate")
                         .HasColumnType("date");
 
-                    b.Property<bool>("BookingIsCancelled")
+                    b.Property<bool>("IsCancelled")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("Breakfast")
@@ -587,7 +587,7 @@ namespace Gotlandsrussen.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("RoomName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 

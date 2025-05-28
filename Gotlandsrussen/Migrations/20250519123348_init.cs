@@ -152,7 +152,7 @@ namespace Gotlandsrussen.Migrations
 
             migrationBuilder.InsertData(
                 table: "Bookings",
-                columns: new[] { "Id", "BookedFromDate", "BookedToDate", "BookingIsCancelled", "Breakfast", "GuestId", "NumberOfAdults", "NumberOfChildren" },
+                columns: new[] { "Id", "FromDate", "ToDate", "IsCancelled", "Breakfast", "GuestId", "NumberOfAdults", "NumberOfChildren" },
                 values: new object[,]
                 {
                     { 1, new DateOnly(2025, 6, 10), new DateOnly(2025, 6, 11), false, false, 1, 1, 0 },
@@ -179,7 +179,7 @@ namespace Gotlandsrussen.Migrations
 
             migrationBuilder.InsertData(
                 table: "Rooms",
-                columns: new[] { "Id", "RoomName", "RoomTypeId" },
+                columns: new[] { "Id", "Name", "RoomTypeId" },
                 values: new object[,]
                 {
                     { 1, "101", 1 },
