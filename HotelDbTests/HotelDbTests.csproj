@@ -23,11 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Gotlandsrussen\Gotlandsrussen.csproj" />
-    <ProjectReference Include="..\HotelGotlandsrussen\HotelGotlandsrussen.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
 
