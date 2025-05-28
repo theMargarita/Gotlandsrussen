@@ -1,6 +1,7 @@
 ﻿using Gotlandsrussen.Data;
 using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
+using HotelGotlandsrussen.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -92,5 +93,21 @@ namespace Gotlandsrussen.Repositories
                     NumberOfChildren = b.NumberOfChildren,
                 }).ToListAsync();
         }
+
+        public async Task<Booking?> UpdateBookingAsync(UpdateBookingDto updatedBooking)
+        {
+            var booking = await _context.Bookings.FindAsync(updatedBooking.Id);
+            if (booking == null) return null;
+
+            booking.BookedFromDate = updatedBooking.BookedFromDate;
+            booking.BookedToDate = updatedBooking.BookedToDate;
+            booking.NumberOfAdults = updatedBooking.NumberOfAdults;
+            booking.NumberOfChildren = updatedBooking.NumberOfChildren;
+            booking.Breakfast = updatedBooking.Breakfast;
+
+            await _context.SaveChangesAsync();
+            return booking;
+        }
+
     }
 }

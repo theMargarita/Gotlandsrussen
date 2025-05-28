@@ -1,5 +1,6 @@
 ﻿using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
+using HotelGotlandsrussen.Models.DTOs;
 
 namespace Gotlandsrussen.Repositories
 {
@@ -13,5 +14,8 @@ namespace Gotlandsrussen.Repositories
         public Task<ICollection<RoomDto>> GetAvailableRoomsAsync(DateOnly startDate, DateOnly endDate);
 
         public Task Update(Booking booking);
+
+        public Task<Booking?> UpdateBookingAsync(UpdateBookingDto updatedBooking);
+
     }
 }
