@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gotlandsrussen\Gotlandsrussen.csproj" />
+    <ProjectReference Include="..\HotelGotlandsrussen\HotelGotlandsrussen.csproj" />
   </ItemGroup>
 
   <ItemGroup>
