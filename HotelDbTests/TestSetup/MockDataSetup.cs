@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Gotlandsrussen.Models;
+using Gotlandsrussen.Repositories;
 using Moq;
 using Moq.Protected;
 
@@ -11,6 +12,17 @@ namespace HotelGotlandsrussenTESTS.TestSetup
 {
     public class MockDataSetup //test with moq
     {
+        private readonly IBookingRepository _bookingRepository;
+        private readonly IGuestRepository _guestRepository;
+        private readonly IRoomRepository _roomRepository;
+
+        public MockDataSetup(IBookingRepository bookingRepository, IGuestRepository guestRepository, IRoomRepository roomRepository)
+        {
+            _bookingRepository = bookingRepository;
+            _guestRepository = guestRepository;
+            _roomRepository = roomRepository;
+        }
+
         public static List<Guest> GetGuests()
         {
             return new List<Guest>
