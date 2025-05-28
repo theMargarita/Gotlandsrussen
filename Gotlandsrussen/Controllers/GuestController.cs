@@ -95,12 +95,12 @@ namespace Gotlandsrussen.Controllers
                 return NotFound(new { errorMessage = "Booking not found" });
             }
             
-            if (bookingToCancel.BookingIsCancelled == true)
+            if (bookingToCancel.IsCancelled == true)
             {
                 return BadRequest(new { errorMessage = "Booking is already cancelled" });
             }
 
-            bookingToCancel.BookingIsCancelled = true;
+            bookingToCancel.IsCancelled = true;
             await _bookingRepository.Update(bookingToCancel);
             return Ok("Booking is cancelled");
         }

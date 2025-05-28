@@ -19,15 +19,15 @@ namespace Gotlandsrussen.Repositories
         public async Task<ICollection<BookingDto>> GetAllFutureBookings()
         {
             return await _context.Bookings
-                .Where(b => b.BookedFromDate >= DateOnly.FromDateTime(DateTime.Today)
-                    && b.BookingIsCancelled == false)
+                .Where(b => b.FromDate >= DateOnly.FromDateTime(DateTime.Today)
+                    && b.IsCancelled == false)
                 .Select(b => new BookingDto
                 {
                     Id = b.Id,
                     GuestName = b.Guest.LastName + ", " + b.Guest.FirstName,
-                    RoomNames = b.BookingRooms.Select(br => br.Room.RoomName).ToList(),
-                    BookedFromDate = b.BookedFromDate,
-                    BookedToDate = b.BookedToDate,
+                    RoomNames = b.BookingRooms.Select(br => br.Room.Name).ToList(),
+                    BookedFromDate = b.FromDate,
+                    BookedToDate = b.ToDate,
                     NumberOfAdults = b.NumberOfAdults,
                     NumberOfChildren = b.NumberOfChildren,
                 }).ToListAsync();
@@ -49,9 +49,9 @@ namespace Gotlandsrussen.Repositories
             var bookedRoomIds = await _context.BookingRooms
                 .Include(br => br.Booking)
                 .Where(br =>
-                    !br.Booking.BookingIsCancelled &&
-                    (startDate < br.Booking.BookedToDate &&
-                     endDate > br.Booking.BookedFromDate))
+                    !br.Booking.IsCancelled &&
+                    (startDate < br.Booking.ToDate &&
+                     endDate > br.Booking.FromDate))
                 .Select(br => br.RoomId)
                 .Distinct()
                 .ToListAsync();
@@ -62,7 +62,7 @@ namespace Gotlandsrussen.Repositories
                 .Select(r => new RoomDto
                 {
                     Id = r.Id,
-                    RoomName = r.RoomName,
+                    RoomName = r.Name,
                     RoomTypeName = r.RoomType.Name,
                     NumberOfBeds = r.RoomType.NumberOfBeds,
                     PricePerNight = r.RoomType.PricePerNight
@@ -81,14 +81,14 @@ namespace Gotlandsrussen.Repositories
         public async Task<ICollection<BookingDto>> GetBookingHistory()
         {
             return await _context.Bookings
-                .Where(b => b.BookedFromDate <= DateOnly.FromDateTime(DateTime.Today))
+                .Where(b => b.FromDate <= DateOnly.FromDateTime(DateTime.Today))
                 .Select(b => new BookingDto
                 {
                     Id = b.Id,
                     GuestName = b.Guest.LastName + ", " + b.Guest.FirstName,
-                    RoomNames = b.BookingRooms.Select(br => br.Room.RoomName).ToList(),
-                    BookedFromDate = b.BookedFromDate,
-                    BookedToDate = b.BookedToDate,
+                    RoomNames = b.BookingRooms.Select(br => br.Room.Name).ToList(),
+                    BookedFromDate = b.FromDate,
+                    BookedToDate = b.ToDate,
                     NumberOfAdults = b.NumberOfAdults,
                     NumberOfChildren = b.NumberOfChildren,
                 }).ToListAsync();
@@ -99,8 +99,8 @@ namespace Gotlandsrussen.Repositories
             var booking = await _context.Bookings.FindAsync(updatedBooking.Id);
             if (booking == null) return null;
 
-            booking.BookedFromDate = updatedBooking.BookedFromDate;
-            booking.BookedToDate = updatedBooking.BookedToDate;
+            booking.FromDate = updatedBooking.BookedFromDate;
+            booking.ToDate = updatedBooking.BookedToDate;
             booking.NumberOfAdults = updatedBooking.NumberOfAdults;
             booking.NumberOfChildren = updatedBooking.NumberOfChildren;
             booking.Breakfast = updatedBooking.Breakfast;
