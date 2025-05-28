@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Gotlandsrussen.Migrations
+namespace GotlandsrussenAPI.Migrations
 {
     /// <inheritdoc />
     public partial class init : Migration
@@ -52,11 +52,11 @@ namespace Gotlandsrussen.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     GuestId = table.Column<int>(type: "integer", nullable: false),
-                    BookedFromDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    BookedToDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    FromDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    ToDate = table.Column<DateOnly>(type: "date", nullable: false),
                     NumberOfAdults = table.Column<int>(type: "integer", nullable: false),
                     NumberOfChildren = table.Column<int>(type: "integer", nullable: false),
-                    BookingIsCancelled = table.Column<bool>(type: "boolean", nullable: false),
+                    IsCancelled = table.Column<bool>(type: "boolean", nullable: false),
                     Breakfast = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -76,7 +76,7 @@ namespace Gotlandsrussen.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RoomName = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     RoomTypeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -152,29 +152,29 @@ namespace Gotlandsrussen.Migrations
 
             migrationBuilder.InsertData(
                 table: "Bookings",
-                columns: new[] { "Id", "FromDate", "ToDate", "IsCancelled", "Breakfast", "GuestId", "NumberOfAdults", "NumberOfChildren" },
+                columns: new[] { "Id", "Breakfast", "FromDate", "GuestId", "IsCancelled", "NumberOfAdults", "NumberOfChildren", "ToDate" },
                 values: new object[,]
                 {
-                    { 1, new DateOnly(2025, 6, 10), new DateOnly(2025, 6, 11), false, false, 1, 1, 0 },
-                    { 2, new DateOnly(2025, 6, 10), new DateOnly(2025, 6, 15), false, true, 2, 1, 0 },
-                    { 3, new DateOnly(2025, 6, 11), new DateOnly(2025, 6, 13), false, false, 3, 1, 0 },
-                    { 4, new DateOnly(2025, 6, 12), new DateOnly(2025, 6, 13), false, true, 4, 2, 0 },
-                    { 5, new DateOnly(2025, 6, 15), new DateOnly(2025, 6, 17), false, false, 5, 2, 0 },
-                    { 6, new DateOnly(2025, 6, 15), new DateOnly(2025, 6, 16), false, true, 6, 2, 0 },
-                    { 7, new DateOnly(2025, 6, 16), new DateOnly(2025, 6, 18), false, true, 7, 2, 0 },
-                    { 8, new DateOnly(2025, 7, 1), new DateOnly(2025, 7, 2), false, true, 8, 2, 2 },
-                    { 9, new DateOnly(2025, 7, 1), new DateOnly(2025, 7, 3), false, false, 9, 2, 1 },
-                    { 10, new DateOnly(2025, 7, 1), new DateOnly(2025, 7, 5), false, false, 10, 2, 2 },
-                    { 11, new DateOnly(2025, 7, 5), new DateOnly(2025, 7, 8), false, true, 11, 2, 2 },
-                    { 12, new DateOnly(2025, 7, 10), new DateOnly(2025, 7, 15), false, true, 12, 2, 1 },
-                    { 13, new DateOnly(2025, 7, 17), new DateOnly(2025, 7, 19), false, true, 13, 2, 2 },
-                    { 14, new DateOnly(2025, 7, 25), new DateOnly(2025, 7, 26), false, false, 14, 2, 3 },
-                    { 15, new DateOnly(2025, 8, 2), new DateOnly(2025, 8, 3), false, false, 15, 2, 4 },
-                    { 16, new DateOnly(2025, 8, 3), new DateOnly(2025, 8, 5), false, false, 1, 2, 4 },
-                    { 17, new DateOnly(2025, 8, 5), new DateOnly(2025, 8, 7), false, false, 2, 4, 0 },
-                    { 18, new DateOnly(2025, 8, 10), new DateOnly(2025, 8, 13), false, false, 3, 3, 3 },
-                    { 19, new DateOnly(2025, 8, 12), new DateOnly(2025, 8, 13), false, false, 4, 4, 8 },
-                    { 20, new DateOnly(2025, 8, 15), new DateOnly(2025, 8, 20), false, true, 5, 2, 5 }
+                    { 1, false, new DateOnly(2025, 6, 10), 1, false, 1, 0, new DateOnly(2025, 6, 11) },
+                    { 2, true, new DateOnly(2025, 6, 10), 2, false, 1, 0, new DateOnly(2025, 6, 15) },
+                    { 3, false, new DateOnly(2025, 6, 11), 3, false, 1, 0, new DateOnly(2025, 6, 13) },
+                    { 4, true, new DateOnly(2025, 6, 12), 4, false, 2, 0, new DateOnly(2025, 6, 13) },
+                    { 5, false, new DateOnly(2025, 6, 15), 5, false, 2, 0, new DateOnly(2025, 6, 17) },
+                    { 6, true, new DateOnly(2025, 6, 15), 6, false, 2, 0, new DateOnly(2025, 6, 16) },
+                    { 7, true, new DateOnly(2025, 6, 16), 7, false, 2, 0, new DateOnly(2025, 6, 18) },
+                    { 8, true, new DateOnly(2025, 7, 1), 8, false, 2, 2, new DateOnly(2025, 7, 2) },
+                    { 9, false, new DateOnly(2025, 7, 1), 9, false, 2, 1, new DateOnly(2025, 7, 3) },
+                    { 10, false, new DateOnly(2025, 7, 1), 10, false, 2, 2, new DateOnly(2025, 7, 5) },
+                    { 11, true, new DateOnly(2025, 7, 5), 11, false, 2, 2, new DateOnly(2025, 7, 8) },
+                    { 12, true, new DateOnly(2025, 7, 10), 12, false, 2, 1, new DateOnly(2025, 7, 15) },
+                    { 13, true, new DateOnly(2025, 7, 17), 13, false, 2, 2, new DateOnly(2025, 7, 19) },
+                    { 14, false, new DateOnly(2025, 7, 25), 14, false, 2, 3, new DateOnly(2025, 7, 26) },
+                    { 15, false, new DateOnly(2025, 8, 2), 15, false, 2, 4, new DateOnly(2025, 8, 3) },
+                    { 16, false, new DateOnly(2025, 8, 3), 1, false, 2, 4, new DateOnly(2025, 8, 5) },
+                    { 17, false, new DateOnly(2025, 8, 5), 2, false, 4, 0, new DateOnly(2025, 8, 7) },
+                    { 18, false, new DateOnly(2025, 8, 10), 3, false, 3, 3, new DateOnly(2025, 8, 13) },
+                    { 19, false, new DateOnly(2025, 8, 12), 4, false, 4, 8, new DateOnly(2025, 8, 13) },
+                    { 20, true, new DateOnly(2025, 8, 15), 5, false, 2, 5, new DateOnly(2025, 8, 20) }
                 });
 
             migrationBuilder.InsertData(

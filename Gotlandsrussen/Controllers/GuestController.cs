@@ -16,11 +16,13 @@ namespace Gotlandsrussen.Controllers
     {
         private readonly IBookingRepository _bookingRepository;
         private readonly IGuestRepository _guestRepository;
+        private readonly IRoomRepository _roomRepository;
 
-        public GuestController(IBookingRepository bookingRepository, IGuestRepository guestRepository)
+        public GuestController(IBookingRepository bookingRepository, IGuestRepository guestRepository, IRoomRepository roomRepository)
         {
             _bookingRepository = bookingRepository;
             _guestRepository = guestRepository;
+            _roomRepository = roomRepository;
         }
 
         [HttpPut("AddBreakfast")]
@@ -83,7 +85,7 @@ namespace Gotlandsrussen.Controllers
             if (startDate >= endDate)
                 return BadRequest("Startdatum måste vara före slutdatum.");
 
-            var rooms = await _bookingRepository.GetAvailableRoomsAsync(startDate, endDate);
+            var rooms = await _roomRepository.GetAvailableRoomsAsync(startDate, endDate);
             return Ok(rooms);
         }
 
