@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HotelDbTests\HotelGotlandsrussenTESTS.csproj" />
     <ProjectReference Include="..\HotelGotlandsrussen\HotelGotlandsrussenLIBRARY.csproj" />
   </ItemGroup>
 
