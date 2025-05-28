@@ -6,16 +6,14 @@ namespace Gotlandsrussen.Repositories
 {
     public interface IBookingRepository
     {
-        public Task<ICollection<BookingDto>> GetAllFutureBookings();
-        public Task<ICollection<BookingDto>> GetBookingHistory();
+        public Task<ICollection<BookingDto>> GetAllFutureBookings(); //Kim
+        public Task<ICollection<BookingDto>> GetBookingHistory(); //Margo
 
-        public Task<Booking> GetById(int id);
+        public Task<Booking> GetById(int id); //done
 
-        public Task<ICollection<RoomDto>> GetAvailableRoomsAsync(DateOnly startDate, DateOnly endDate);
+        public Task Update(Booking booking); //Lina
 
-        public Task Update(Booking booking);
-
-        public Task<Booking?> UpdateBookingAsync(UpdateBookingDto updatedBooking);
+        public Task<Booking?> UpdateBookingAsync(UpdateBookingDto updatedBooking); // Florent
 
     }
 }
