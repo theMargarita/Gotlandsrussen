@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Gotlandsrussen.Migrations
+namespace GotlandsrussenAPI.Migrations
 {
     [DbContext(typeof(HotelDbContext))]
     partial class HotelDbContextModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace Gotlandsrussen.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.4")
+                .HasAnnotation("ProductVersion", "9.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -30,26 +30,26 @@ namespace Gotlandsrussen.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateOnly>("FromDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateOnly>("ToDate")
-                        .HasColumnType("date");
-
-                    b.Property<bool>("IsCancelled")
-                        .HasColumnType("boolean");
-
                     b.Property<bool>("Breakfast")
                         .HasColumnType("boolean");
 
+                    b.Property<DateOnly>("FromDate")
+                        .HasColumnType("date");
+
                     b.Property<int>("GuestId")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("IsCancelled")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("NumberOfAdults")
                         .HasColumnType("integer");
 
                     b.Property<int>("NumberOfChildren")
                         .HasColumnType("integer");
+
+                    b.Property<DateOnly>("ToDate")
+                        .HasColumnType("date");
 
                     b.HasKey("Id");
 
@@ -61,222 +61,222 @@ namespace Gotlandsrussen.Migrations
                         new
                         {
                             Id = 1,
-                            BookedFromDate = new DateOnly(2025, 6, 10),
-                            BookedToDate = new DateOnly(2025, 6, 11),
-                            BookingIsCancelled = false,
                             Breakfast = false,
+                            FromDate = new DateOnly(2025, 6, 10),
                             GuestId = 1,
+                            IsCancelled = false,
                             NumberOfAdults = 1,
-                            NumberOfChildren = 0
+                            NumberOfChildren = 0,
+                            ToDate = new DateOnly(2025, 6, 11)
                         },
                         new
                         {
                             Id = 2,
-                            BookedFromDate = new DateOnly(2025, 6, 10),
-                            BookedToDate = new DateOnly(2025, 6, 15),
-                            BookingIsCancelled = false,
                             Breakfast = true,
+                            FromDate = new DateOnly(2025, 6, 10),
                             GuestId = 2,
+                            IsCancelled = false,
                             NumberOfAdults = 1,
-                            NumberOfChildren = 0
+                            NumberOfChildren = 0,
+                            ToDate = new DateOnly(2025, 6, 15)
                         },
                         new
                         {
                             Id = 3,
-                            BookedFromDate = new DateOnly(2025, 6, 11),
-                            BookedToDate = new DateOnly(2025, 6, 13),
-                            BookingIsCancelled = false,
                             Breakfast = false,
+                            FromDate = new DateOnly(2025, 6, 11),
                             GuestId = 3,
+                            IsCancelled = false,
                             NumberOfAdults = 1,
-                            NumberOfChildren = 0
+                            NumberOfChildren = 0,
+                            ToDate = new DateOnly(2025, 6, 13)
                         },
                         new
                         {
                             Id = 4,
-                            BookedFromDate = new DateOnly(2025, 6, 12),
-                            BookedToDate = new DateOnly(2025, 6, 13),
-                            BookingIsCancelled = false,
                             Breakfast = true,
+                            FromDate = new DateOnly(2025, 6, 12),
                             GuestId = 4,
+                            IsCancelled = false,
                             NumberOfAdults = 2,
-                            NumberOfChildren = 0
+                            NumberOfChildren = 0,
+                            ToDate = new DateOnly(2025, 6, 13)
                         },
                         new
                         {
                             Id = 5,
-                            BookedFromDate = new DateOnly(2025, 6, 15),
-                            BookedToDate = new DateOnly(2025, 6, 17),
-                            BookingIsCancelled = false,
                             Breakfast = false,
+                            FromDate = new DateOnly(2025, 6, 15),
                             GuestId = 5,
+                            IsCancelled = false,
                             NumberOfAdults = 2,
-                            NumberOfChildren = 0
+                            NumberOfChildren = 0,
+                            ToDate = new DateOnly(2025, 6, 17)
                         },
                         new
                         {
                             Id = 6,
-                            BookedFromDate = new DateOnly(2025, 6, 15),
-                            BookedToDate = new DateOnly(2025, 6, 16),
-                            BookingIsCancelled = false,
                             Breakfast = true,
+                            FromDate = new DateOnly(2025, 6, 15),
                             GuestId = 6,
+                            IsCancelled = false,
                             NumberOfAdults = 2,
-                            NumberOfChildren = 0
+                            NumberOfChildren = 0,
+                            ToDate = new DateOnly(2025, 6, 16)
                         },
                         new
                         {
                             Id = 7,
-                            BookedFromDate = new DateOnly(2025, 6, 16),
-                            BookedToDate = new DateOnly(2025, 6, 18),
-                            BookingIsCancelled = false,
                             Breakfast = true,
+                            FromDate = new DateOnly(2025, 6, 16),
                             GuestId = 7,
+                            IsCancelled = false,
                             NumberOfAdults = 2,
-                            NumberOfChildren = 0
+                            NumberOfChildren = 0,
+                            ToDate = new DateOnly(2025, 6, 18)
                         },
                         new
                         {
                             Id = 8,
-                            BookedFromDate = new DateOnly(2025, 7, 1),
-                            BookedToDate = new DateOnly(2025, 7, 2),
-                            BookingIsCancelled = false,
                             Breakfast = true,
+                            FromDate = new DateOnly(2025, 7, 1),
                             GuestId = 8,
+                            IsCancelled = false,
                             NumberOfAdults = 2,
-                            NumberOfChildren = 2
+                            NumberOfChildren = 2,
+                            ToDate = new DateOnly(2025, 7, 2)
                         },
                         new
                         {
                             Id = 9,
-                            BookedFromDate = new DateOnly(2025, 7, 1),
-                            BookedToDate = new DateOnly(2025, 7, 3),
-                            BookingIsCancelled = false,
                             Breakfast = false,
+                            FromDate = new DateOnly(2025, 7, 1),
                             GuestId = 9,
+                            IsCancelled = false,
                             NumberOfAdults = 2,
-                            NumberOfChildren = 1
+                            NumberOfChildren = 1,
+                            ToDate = new DateOnly(2025, 7, 3)
                         },
                         new
                         {
                             Id = 10,
-                            BookedFromDate = new DateOnly(2025, 7, 1),
-                            BookedToDate = new DateOnly(2025, 7, 5),
-                            BookingIsCancelled = false,
                             Breakfast = false,
+                            FromDate = new DateOnly(2025, 7, 1),
                             GuestId = 10,
+                            IsCancelled = false,
                             NumberOfAdults = 2,
-                            NumberOfChildren = 2
+                            NumberOfChildren = 2,
+                            ToDate = new DateOnly(2025, 7, 5)
                         },
                         new
                         {
                             Id = 11,
-                            BookedFromDate = new DateOnly(2025, 7, 5),
-                            BookedToDate = new DateOnly(2025, 7, 8),
-                            BookingIsCancelled = false,
                             Breakfast = true,
+                            FromDate = new DateOnly(2025, 7, 5),
                             GuestId = 11,
+                            IsCancelled = false,
                             NumberOfAdults = 2,
-                            NumberOfChildren = 2
+                            NumberOfChildren = 2,
+                            ToDate = new DateOnly(2025, 7, 8)
                         },
                         new
                         {
                             Id = 12,
-                            BookedFromDate = new DateOnly(2025, 7, 10),
-                            BookedToDate = new DateOnly(2025, 7, 15),
-                            BookingIsCancelled = false,
                             Breakfast = true,
+                            FromDate = new DateOnly(2025, 7, 10),
                             GuestId = 12,
+                            IsCancelled = false,
                             NumberOfAdults = 2,
-                            NumberOfChildren = 1
+                            NumberOfChildren = 1,
+                            ToDate = new DateOnly(2025, 7, 15)
                         },
                         new
                         {
                             Id = 13,
-                            BookedFromDate = new DateOnly(2025, 7, 17),
-                            BookedToDate = new DateOnly(2025, 7, 19),
-                            BookingIsCancelled = false,
                             Breakfast = true,
+                            FromDate = new DateOnly(2025, 7, 17),
                             GuestId = 13,
+                            IsCancelled = false,
                             NumberOfAdults = 2,
-                            NumberOfChildren = 2
+                            NumberOfChildren = 2,
+                            ToDate = new DateOnly(2025, 7, 19)
                         },
                         new
                         {
                             Id = 14,
-                            BookedFromDate = new DateOnly(2025, 7, 25),
-                            BookedToDate = new DateOnly(2025, 7, 26),
-                            BookingIsCancelled = false,
                             Breakfast = false,
+                            FromDate = new DateOnly(2025, 7, 25),
                             GuestId = 14,
+                            IsCancelled = false,
                             NumberOfAdults = 2,
-                            NumberOfChildren = 3
+                            NumberOfChildren = 3,
+                            ToDate = new DateOnly(2025, 7, 26)
                         },
                         new
                         {
                             Id = 15,
-                            BookedFromDate = new DateOnly(2025, 8, 2),
-                            BookedToDate = new DateOnly(2025, 8, 3),
-                            BookingIsCancelled = false,
                             Breakfast = false,
+                            FromDate = new DateOnly(2025, 8, 2),
                             GuestId = 15,
+                            IsCancelled = false,
                             NumberOfAdults = 2,
-                            NumberOfChildren = 4
+                            NumberOfChildren = 4,
+                            ToDate = new DateOnly(2025, 8, 3)
                         },
                         new
                         {
                             Id = 16,
-                            BookedFromDate = new DateOnly(2025, 8, 3),
-                            BookedToDate = new DateOnly(2025, 8, 5),
-                            BookingIsCancelled = false,
                             Breakfast = false,
+                            FromDate = new DateOnly(2025, 8, 3),
                             GuestId = 1,
+                            IsCancelled = false,
                             NumberOfAdults = 2,
-                            NumberOfChildren = 4
+                            NumberOfChildren = 4,
+                            ToDate = new DateOnly(2025, 8, 5)
                         },
                         new
                         {
                             Id = 17,
-                            BookedFromDate = new DateOnly(2025, 8, 5),
-                            BookedToDate = new DateOnly(2025, 8, 7),
-                            BookingIsCancelled = false,
                             Breakfast = false,
+                            FromDate = new DateOnly(2025, 8, 5),
                             GuestId = 2,
+                            IsCancelled = false,
                             NumberOfAdults = 4,
-                            NumberOfChildren = 0
+                            NumberOfChildren = 0,
+                            ToDate = new DateOnly(2025, 8, 7)
                         },
                         new
                         {
                             Id = 18,
-                            BookedFromDate = new DateOnly(2025, 8, 10),
-                            BookedToDate = new DateOnly(2025, 8, 13),
-                            BookingIsCancelled = false,
                             Breakfast = false,
+                            FromDate = new DateOnly(2025, 8, 10),
                             GuestId = 3,
+                            IsCancelled = false,
                             NumberOfAdults = 3,
-                            NumberOfChildren = 3
+                            NumberOfChildren = 3,
+                            ToDate = new DateOnly(2025, 8, 13)
                         },
                         new
                         {
                             Id = 19,
-                            BookedFromDate = new DateOnly(2025, 8, 12),
-                            BookedToDate = new DateOnly(2025, 8, 13),
-                            BookingIsCancelled = false,
                             Breakfast = false,
+                            FromDate = new DateOnly(2025, 8, 12),
                             GuestId = 4,
+                            IsCancelled = false,
                             NumberOfAdults = 4,
-                            NumberOfChildren = 8
+                            NumberOfChildren = 8,
+                            ToDate = new DateOnly(2025, 8, 13)
                         },
                         new
                         {
                             Id = 20,
-                            BookedFromDate = new DateOnly(2025, 8, 15),
-                            BookedToDate = new DateOnly(2025, 8, 20),
-                            BookingIsCancelled = false,
                             Breakfast = true,
+                            FromDate = new DateOnly(2025, 8, 15),
                             GuestId = 5,
+                            IsCancelled = false,
                             NumberOfAdults = 2,
-                            NumberOfChildren = 5
+                            NumberOfChildren = 5,
+                            ToDate = new DateOnly(2025, 8, 20)
                         });
                 });
 
@@ -601,151 +601,151 @@ namespace Gotlandsrussen.Migrations
                         new
                         {
                             Id = 1,
-                            RoomName = "101",
+                            Name = "101",
                             RoomTypeId = 1
                         },
                         new
                         {
                             Id = 2,
-                            RoomName = "102",
+                            Name = "102",
                             RoomTypeId = 1
                         },
                         new
                         {
                             Id = 3,
-                            RoomName = "103",
+                            Name = "103",
                             RoomTypeId = 1
                         },
                         new
                         {
                             Id = 4,
-                            RoomName = "104",
+                            Name = "104",
                             RoomTypeId = 1
                         },
                         new
                         {
                             Id = 5,
-                            RoomName = "105",
+                            Name = "105",
                             RoomTypeId = 1
                         },
                         new
                         {
                             Id = 6,
-                            RoomName = "106",
+                            Name = "106",
                             RoomTypeId = 2
                         },
                         new
                         {
                             Id = 7,
-                            RoomName = "107",
+                            Name = "107",
                             RoomTypeId = 2
                         },
                         new
                         {
                             Id = 8,
-                            RoomName = "108",
+                            Name = "108",
                             RoomTypeId = 2
                         },
                         new
                         {
                             Id = 9,
-                            RoomName = "109",
+                            Name = "109",
                             RoomTypeId = 2
                         },
                         new
                         {
                             Id = 10,
-                            RoomName = "110",
+                            Name = "110",
                             RoomTypeId = 2
                         },
                         new
                         {
                             Id = 11,
-                            RoomName = "111",
+                            Name = "111",
                             RoomTypeId = 3
                         },
                         new
                         {
                             Id = 12,
-                            RoomName = "112",
+                            Name = "112",
                             RoomTypeId = 3
                         },
                         new
                         {
                             Id = 13,
-                            RoomName = "113",
+                            Name = "113",
                             RoomTypeId = 3
                         },
                         new
                         {
                             Id = 14,
-                            RoomName = "114",
+                            Name = "114",
                             RoomTypeId = 3
                         },
                         new
                         {
                             Id = 15,
-                            RoomName = "115",
+                            Name = "115",
                             RoomTypeId = 3
                         },
                         new
                         {
                             Id = 16,
-                            RoomName = "116",
+                            Name = "116",
                             RoomTypeId = 3
                         },
                         new
                         {
                             Id = 17,
-                            RoomName = "117",
+                            Name = "117",
                             RoomTypeId = 3
                         },
                         new
                         {
                             Id = 18,
-                            RoomName = "118",
+                            Name = "118",
                             RoomTypeId = 3
                         },
                         new
                         {
                             Id = 19,
-                            RoomName = "119",
+                            Name = "119",
                             RoomTypeId = 3
                         },
                         new
                         {
                             Id = 20,
-                            RoomName = "120",
+                            Name = "120",
                             RoomTypeId = 3
                         },
                         new
                         {
                             Id = 21,
-                            RoomName = "121",
+                            Name = "121",
                             RoomTypeId = 4
                         },
                         new
                         {
                             Id = 22,
-                            RoomName = "122",
+                            Name = "122",
                             RoomTypeId = 4
                         },
                         new
                         {
                             Id = 23,
-                            RoomName = "123",
+                            Name = "123",
                             RoomTypeId = 4
                         },
                         new
                         {
                             Id = 24,
-                            RoomName = "124",
+                            Name = "124",
                             RoomTypeId = 4
                         },
                         new
                         {
                             Id = 25,
-                            RoomName = "125",
+                            Name = "125",
                             RoomTypeId = 5
                         });
                 });

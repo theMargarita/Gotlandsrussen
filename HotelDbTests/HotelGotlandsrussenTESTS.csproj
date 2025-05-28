@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gotlandsrussen\GotlandsrussenAPI.csproj" />
-    <ProjectReference Include="..\HotelGotlandsrussen\HotelGotlandsrussenLIBRARY.csproj" />
   </ItemGroup>
 
   <ItemGroup>
