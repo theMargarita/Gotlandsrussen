@@ -31,4 +31,8 @@
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Tests\" />
+  </ItemGroup>
+
 </Project>
