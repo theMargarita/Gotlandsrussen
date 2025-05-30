@@ -22,6 +22,17 @@ namespace HotelGotlandsrussenTESTS.Tests
 
 
         }
+        
+        private Mock<IBookingRepository>? _mockBookingRepository;
+        private Mock<IRoomRepository>? _mockRoomRepository;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _mockBookingRepository = new Mock<IBookingRepository>();
+            _mockRoomRepository = new Mock<IRoomRepository>();
+            ManagementController _controller = new ManagementController(_mockBookingRepository.Object, _mockRoomRepository.Object);
+        }
 
         [HttpGet("GetAllFutureBookings")] // lina
         public async Task<ActionResult<ICollection<BookingDto>>> GetAllFutureBookings()
@@ -29,4 +40,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             return Ok(await _bookingRepository.GetAllFutureBookings());
         }
     }
+        // Börja test här
+    } 
 }
