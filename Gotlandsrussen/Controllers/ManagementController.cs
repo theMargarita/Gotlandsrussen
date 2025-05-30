@@ -19,7 +19,6 @@ namespace Gotlandsrussen.Controllers
         {
             _bookingRepository = bookingRepository;
             _roomRepository = roomRepository;
-
         }
 
         [HttpGet("GetAllFutureBookings")] // lina
