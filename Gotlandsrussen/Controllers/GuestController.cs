@@ -25,7 +25,7 @@ namespace Gotlandsrussen.Controllers
             _roomRepository = roomRepository;
         }
 
-        [HttpPut("AddBreakfast")]
+        [HttpPut("AddBreakfast")] // Florent
         public async Task<ActionResult<AddBreakfastDto>>AddBreakfast([FromQuery] AddBreakfastRequestDto request)
         {
             var booking = await _bookingRepository.GetById(request.BookingId);
@@ -61,9 +61,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(addBreakfast);
         }
 
-        //Denna metod hamnar både i guestcontroller och managementcontroller eftersom den behöver kallas på i båda.
-        //Detta pga hur vi har delat upp våra controllers. Inte så snyggt. Fråga Petter.
-        [HttpGet("GetBookingById/{id}")]
+        [HttpGet("GetBookingById/{id}")] // kim
         public async Task<ActionResult<Booking>> GetBookingById(int id)
         {
             var booking = await _bookingRepository.GetById(id);
@@ -76,7 +74,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(booking);
         }
 
-        [HttpGet("available-rooms")]
+        [HttpGet("available-rooms")] // lina
         public async Task<IActionResult> GetAvailableRooms([FromQuery] DateOnly startDate, [FromQuery] DateOnly endDate)
         {
             if (startDate < DateOnly.FromDateTime(DateTime.Today))
@@ -89,7 +87,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(rooms);
         }
 
-        [HttpPut("CancelBooking")]
+        [HttpPut("CancelBooking")] // Margarita
         public async Task<IActionResult> CancelBooking(int bookingId)
         {
             var bookingToCancel = await _bookingRepository.GetById(bookingId);
@@ -109,14 +107,14 @@ namespace Gotlandsrussen.Controllers
             return Ok("Booking is cancelled");
         }
 
-        [HttpGet("GetAllGuests")]
+        [HttpGet("GetAllGuests")] // Florent
         public async Task<ICollection<Guest>> GetAllGuests()
         {
             var getAllGest = await _guestRepository.GetAllGuests();
             return getAllGest.ToList();
         }
 
-        [HttpPost("CreateGuest")]
+        [HttpPost("CreateGuest")] // kim
         public async Task<ActionResult<CreateGuestRequestDto>> CreateGuest([FromQuery] CreateGuestRequestDto request)
         {
             if (request == null)
