@@ -62,5 +62,19 @@ namespace HotelGotlandsrussenTESTS.Tests
         }
 
         
+
+
+
+        //public async Task<IActionResult> GetAvailableRooms([FromQuery] DateOnly startDate, [FromQuery] DateOnly endDate)
+        //{
+        //    if (startDate < DateOnly.FromDateTime(DateTime.Today))
+        //        return BadRequest("Startdatum har redan passerat.");
+
+        //    if (startDate >= endDate)
+        //        return BadRequest("Startdatum måste vara före slutdatum.");
+
+        //    var rooms = await _roomRepository.GetAvailableRoomsAsync(startDate, endDate);
+        //    return Ok(rooms);
+        //}
     }
 }
