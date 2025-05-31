@@ -65,5 +65,53 @@ namespace HotelGotlandsrussenTESTS.TestSetup
                 new BookingDto { Id = 3, GuestName = "Larsson, Tom", BookedFromDate = new DateOnly(2025, 6, 11), BookedToDate = new DateOnly(2025, 6, 13), NumberOfAdults = 1, NumberOfChildren = 0 }
             };
         }
+
+        public static List<TotalPriceDto> GetTotalPriceDtos()
+        {
+            return new List<TotalPriceDto>
+            {
+                new TotalPriceDto
+                {
+                    BookingId = 1,
+                    Rooms = new List<RoomTypeWithPriceDto>
+                    {
+                        new RoomTypeWithPriceDto { RoomType = "Single", PricePerNight = 500m },
+                        new RoomTypeWithPriceDto { RoomType = "Double", PricePerNight = 750m }
+                    },
+                    NumberOfNights = 3,
+                    NumberOfGuests = 2,
+                    NumberOfBreakfasts = 6,   // 3 nätter * 2 gäster
+                    BreakfastPrice = 50m,
+                    TotalPrice = (500m + 750m) * 3 + 6 * 50m // 3750 + 300 = 4050
+                },
+                new TotalPriceDto
+                {
+                    BookingId = 2,
+                    Rooms = new List<RoomTypeWithPriceDto>
+                    {
+                        new RoomTypeWithPriceDto { RoomType = "Suite", PricePerNight = 1200m }
+                    },
+                    NumberOfNights = 5,
+                    NumberOfGuests = 1,
+                    NumberOfBreakfasts = 5,   // 5 nätter * 1 gäst
+                    BreakfastPrice = 50m,
+                    TotalPrice = 1200m * 5 + 5 * 50m // 6000 + 250 = 6250
+                },
+                new TotalPriceDto
+                {
+                    BookingId = 3,
+                    Rooms = new List<RoomTypeWithPriceDto>
+                    {
+                        new RoomTypeWithPriceDto { RoomType = "Double", PricePerNight = 750m },
+                        new RoomTypeWithPriceDto { RoomType = "Single", PricePerNight = 500m }
+                    },
+                    NumberOfNights = 2,
+                    NumberOfGuests = 4,
+                    NumberOfBreakfasts = 8,  // 2 nätter * 4 gäster
+                    BreakfastPrice = 50m,
+                    TotalPrice = (750m + 500m) * 2 + 8 * 50m // 2500 + 400 = 2900
+                }
+            };
+        }
     }
 }
