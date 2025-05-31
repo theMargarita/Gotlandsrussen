@@ -95,6 +95,8 @@ namespace HotelGotlandsrussenTESTS.Tests
             var returnedRooms = okResult.Value as ICollection<RoomDto>;
             Assert.IsNotNull(returnedRooms);
             Assert.AreEqual(2, returnedRooms.Count);
+
+            _mockRoomRepository.Verify(r => r.GetAvailableRoomsAsync(startDate, endDate), Times.Once);
         }
 
         [TestMethod]
