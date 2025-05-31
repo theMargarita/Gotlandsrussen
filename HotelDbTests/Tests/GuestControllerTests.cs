@@ -97,20 +97,25 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual(2, returnedRooms.Count);
         }
 
-        
+        [TestMethod]
+        public async Task GetAvailableRooms_NoRoomsAvailable_ReturnsEmptyListWithOk()
+        {
+            // Arrange
+            var startDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
+            var endDate = DateOnly.FromDateTime(DateTime.Today.AddDays(3));
 
+            _mockRoomRepository.Setup(r => r.GetAvailableRoomsAsync(startDate, endDate))
+                .ReturnsAsync(new List<RoomDto>());
 
+            // Act
+            var result = await _controller.GetAvailableRooms(startDate, endDate);
 
-        //public async Task<IActionResult> GetAvailableRooms([FromQuery] DateOnly startDate, [FromQuery] DateOnly endDate)
-        //{
-        //    if (startDate < DateOnly.FromDateTime(DateTime.Today))
-        //        return BadRequest("Startdatum har redan passerat.");
-
-        //    if (startDate >= endDate)
-        //        return BadRequest("Startdatum måste vara före slutdatum.");
-
-        //    var rooms = await _roomRepository.GetAvailableRoomsAsync(startDate, endDate);
-        //    return Ok(rooms);
-        //}
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            var returnedRooms = okResult.Value as ICollection<RoomDto>;
+            Assert.IsNotNull(returnedRooms);
+            Assert.AreEqual(0, returnedRooms.Count);
+        }
     }
 }
