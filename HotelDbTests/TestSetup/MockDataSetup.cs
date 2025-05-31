@@ -66,8 +66,16 @@ namespace HotelGotlandsrussenTESTS.TestSetup
             };
         }
 
-        
-        public static Booking? GetBookingsWithRelations(int id)
+        public static List<RoomDto> GetRoomDtos()
+        {
+            return new List<RoomDto>
+            {
+                new RoomDto { Id = 1, RoomName = "Room A", RoomTypeName = "Single", NumberOfBeds = 1, PricePerNight = 500m },
+                new RoomDto { Id = 2, RoomName = "Room B", RoomTypeName = "Double", NumberOfBeds = 2, PricePerNight = 750m }
+            };
+        }
+
+public static Booking? GetBookingsWithRelations(int id)
         {
             return id switch
             {
