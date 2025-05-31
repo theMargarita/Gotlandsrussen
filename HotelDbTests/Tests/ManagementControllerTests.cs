@@ -27,7 +27,7 @@ namespace HotelGotlandsrussenTESTS.Tests
         // Börja test här
 
         [TestMethod]
-        public async Task GetAllFutureBookings_ReturnsOkWithBookings()
+        public async Task GetAllFutureBookings_CallingMethod_ReturnsOkWithBookings()
         {
             //Arrange
             var bookings = MockDataSetup.GetBookingDtos();
@@ -56,7 +56,7 @@ namespace HotelGotlandsrussenTESTS.Tests
         }
 
         [TestMethod]
-        public async Task GetAllFutureBookings_ReturnsOkWithEmptyList()
+        public async Task GetAllFutureBookings_MethodReturnsEmptyList_ReturnsOk()
         {
             //Arrange
             var emptyBookingList = new List<BookingDto>();
