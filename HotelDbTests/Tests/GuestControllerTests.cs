@@ -61,20 +61,19 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual(400, badRequest.StatusCode);
         }
 
+        [TestMethod]
+        public async Task GetAvailableRooms_StartDateAfterEndDate_ReturnsBadRequest()
+        {
+            var startDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
+            var endDate = DateOnly.FromDateTime(DateTime.Today.AddDays(2));
+
+            var result = await _controller.GetAvailableRooms(startDate, endDate);
+
+            var badRequest = result as BadRequestObjectResult;
+            Assert.IsNotNull(badRequest);
+            Assert.AreEqual(400, badRequest.StatusCode);
+        }
+
         
-
-
-
-        //public async Task<IActionResult> GetAvailableRooms([FromQuery] DateOnly startDate, [FromQuery] DateOnly endDate)
-        //{
-        //    if (startDate < DateOnly.FromDateTime(DateTime.Today))
-        //        return BadRequest("Startdatum har redan passerat.");
-
-        //    if (startDate >= endDate)
-        //        return BadRequest("Startdatum måste vara före slutdatum.");
-
-        //    var rooms = await _roomRepository.GetAvailableRoomsAsync(startDate, endDate);
-        //    return Ok(rooms);
-        //}
     }
 }
