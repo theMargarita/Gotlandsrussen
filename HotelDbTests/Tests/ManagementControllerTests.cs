@@ -1,4 +1,5 @@
 ﻿using Gotlandsrussen.Controllers;
+using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
 using HotelGotlandsrussenTESTS.TestSetup;
@@ -77,5 +78,84 @@ namespace HotelGotlandsrussenTESTS.Tests
 
             _mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
         }
+
+        [TestMethod]
+        public async Task GetTotalPrice_IfBookingNotExists_ReturnsNotFouund()
+        {
+            //Arrange
+            var bookings = MockDataSetup.GetBookings();
+
+            _mockBookingRepository.Setup(repo => repo.GetById(100))
+                .ReturnsAsync((Booking)null);
+
+            //Act
+            var result = await _controller.GetTotalPrice(100);
+
+            //Assert
+            var notFoundResult = result.Result as NotFoundObjectResult;
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(404, notFoundResult.StatusCode);
+        }
+
+        [TestMethod]
+        [DataRow(1, 4200.0, "Complex booking")]
+        [DataRow(2, 6250.0, "Normal booking")]
+        [DataRow(3, 6000.0, "Normal booking without breakfast")]
+        public async Task GetTotalPrice_DifferentBookingScenarios_ReturnsCorrectTotalPrice
+            (int bookingId, double expectedTotalPrice, string message)
+        {
+            //Arrange
+            var booking = MockDataSetup.GetBookingsWithRelations(bookingId);
+
+            _mockBookingRepository.Setup(repo => repo.GetById(bookingId))
+                .ReturnsAsync(booking);
+
+            //Act
+            var result = await _controller.GetTotalPrice(bookingId);
+
+            //Assert
+            var okResult = result.Result as OkObjectResult;
+            var summary = okResult.Value as TotalPriceDto;
+
+            Assert.IsNotNull(summary, message);
+            Assert.AreEqual((decimal)expectedTotalPrice, summary.TotalPrice, message);
+        }
+
+        
+
+
+        //[HttpGet("GetTotalPrice/{BookingId}")] // lina
+        //public async Task<ActionResult<TotalPriceDto>> GetTotalPrice(int BookingId)
+        //{
+        //    var booking = await _bookingRepository.GetById(BookingId);
+        //    if (booking == null)
+        //    {
+        //        return NotFound(new { errorMessage = "Booking not found" });
+        //    }
+
+        //    var rooms = booking.BookingRooms.Select(br => new RoomTypeWithPriceDto
+        //    {
+        //        RoomType = br.Room.RoomType.Name,
+        //        PricePerNight = br.Room.RoomType.PricePerNight
+        //    }).ToList();
+        //    int numberOfNights = (booking.ToDate.ToDateTime(TimeOnly.MinValue) - booking.FromDate.ToDateTime(TimeOnly.MinValue)).Days;
+        //    int numberOfGuests = booking.NumberOfAdults + booking.NumberOfChildren;
+        //    int numberOfBreakfasts = numberOfNights * numberOfGuests;
+        //    decimal breakfastPrice = 50m;
+        //    decimal totalPrice = rooms.Sum(r => r.PricePerNight * numberOfNights) + (numberOfBreakfasts * breakfastPrice);
+
+        //    var summary = new TotalPriceDto
+        //    {
+        //        BookingId = booking.Id,
+        //        Rooms = rooms,
+        //        NumberOfNights = numberOfNights,
+        //        NumberOfGuests = numberOfGuests,
+        //        NumberOfBreakfasts = numberOfBreakfasts,
+        //        BreakfastPrice = breakfastPrice,
+        //        TotalPrice = totalPrice
+        //    };
+
+        //    return Ok(summary);
+        //}
     }
 }
