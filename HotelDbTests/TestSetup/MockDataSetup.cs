@@ -76,40 +76,27 @@ namespace HotelGotlandsrussenTESTS.TestSetup
                     Rooms = new List<RoomTypeWithPriceDto>
                     {
                         new RoomTypeWithPriceDto { RoomType = "Single", PricePerNight = 500m },
-                        new RoomTypeWithPriceDto { RoomType = "Double", PricePerNight = 750m }
+                        new RoomTypeWithPriceDto { RoomType = "Double", PricePerNight = 900m },
+                        new RoomTypeWithPriceDto { RoomType = "Suite", PricePerNight = 3000m }
                     },
                     NumberOfNights = 3,
-                    NumberOfGuests = 2,
-                    NumberOfBreakfasts = 6,   // 3 nätter * 2 gäster
+                    NumberOfGuests = 7,
+                    NumberOfBreakfasts = 21,   // 3 nätter * 7 gäster
                     BreakfastPrice = 50m,
-                    TotalPrice = (500m + 750m) * 3 + 6 * 50m // 3750 + 300 = 4050
+                    TotalPrice = (500m + 900m) * 3 + 21 * 50m // 4200 + 1050 = 5250
                 },
                 new TotalPriceDto
                 {
                     BookingId = 2,
                     Rooms = new List<RoomTypeWithPriceDto>
                     {
-                        new RoomTypeWithPriceDto { RoomType = "Suite", PricePerNight = 1200m }
+                        new RoomTypeWithPriceDto { RoomType = "Suite", PricePerNight = 3000m }
                     },
-                    NumberOfNights = 5,
+                    NumberOfNights = 1,
                     NumberOfGuests = 1,
-                    NumberOfBreakfasts = 5,   // 5 nätter * 1 gäst
+                    NumberOfBreakfasts = 1,   // 5 nätter * 1 gäst
                     BreakfastPrice = 50m,
-                    TotalPrice = 1200m * 5 + 5 * 50m // 6000 + 250 = 6250
-                },
-                new TotalPriceDto
-                {
-                    BookingId = 3,
-                    Rooms = new List<RoomTypeWithPriceDto>
-                    {
-                        new RoomTypeWithPriceDto { RoomType = "Double", PricePerNight = 750m },
-                        new RoomTypeWithPriceDto { RoomType = "Single", PricePerNight = 500m }
-                    },
-                    NumberOfNights = 2,
-                    NumberOfGuests = 4,
-                    NumberOfBreakfasts = 8,  // 2 nätter * 4 gäster
-                    BreakfastPrice = 50m,
-                    TotalPrice = (750m + 500m) * 2 + 8 * 50m // 2500 + 400 = 2900
+                    TotalPrice = 3000m * 1 + 1 * 50m // 3000 + 50 = 3050
                 }
             };
         }
