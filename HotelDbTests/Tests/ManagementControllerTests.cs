@@ -120,42 +120,5 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.IsNotNull(summary, message);
             Assert.AreEqual((decimal)expectedTotalPrice, summary.TotalPrice, message);
         }
-
-        
-
-
-        //[HttpGet("GetTotalPrice/{BookingId}")] // lina
-        //public async Task<ActionResult<TotalPriceDto>> GetTotalPrice(int BookingId)
-        //{
-        //    var booking = await _bookingRepository.GetById(BookingId);
-        //    if (booking == null)
-        //    {
-        //        return NotFound(new { errorMessage = "Booking not found" });
-        //    }
-
-        //    var rooms = booking.BookingRooms.Select(br => new RoomTypeWithPriceDto
-        //    {
-        //        RoomType = br.Room.RoomType.Name,
-        //        PricePerNight = br.Room.RoomType.PricePerNight
-        //    }).ToList();
-        //    int numberOfNights = (booking.ToDate.ToDateTime(TimeOnly.MinValue) - booking.FromDate.ToDateTime(TimeOnly.MinValue)).Days;
-        //    int numberOfGuests = booking.NumberOfAdults + booking.NumberOfChildren;
-        //    int numberOfBreakfasts = numberOfNights * numberOfGuests;
-        //    decimal breakfastPrice = 50m;
-        //    decimal totalPrice = rooms.Sum(r => r.PricePerNight * numberOfNights) + (numberOfBreakfasts * breakfastPrice);
-
-        //    var summary = new TotalPriceDto
-        //    {
-        //        BookingId = booking.Id,
-        //        Rooms = rooms,
-        //        NumberOfNights = numberOfNights,
-        //        NumberOfGuests = numberOfGuests,
-        //        NumberOfBreakfasts = numberOfBreakfasts,
-        //        BreakfastPrice = breakfastPrice,
-        //        TotalPrice = totalPrice
-        //    };
-
-        //    return Ok(summary);
-        //}
     }
 }
