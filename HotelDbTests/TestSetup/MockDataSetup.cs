@@ -73,8 +73,8 @@ namespace HotelGotlandsrussenTESTS.TestSetup
             return new List<UpdateBookingDto>
             {
                 new UpdateBookingDto { Id = 1, FromDate = new DateOnly(2025, 6, 11), ToDate = new DateOnly(2025, 6, 12), NumberOfAdults = 2, NumberOfChildren = 1, Breakfast = true },
-                new UpdateBookingDto { Id = 2, FromDate = new DateOnly(2025, 6, 12), ToDate = new DateOnly(2025, 6, 16), NumberOfAdults = 1, NumberOfChildren = 0, Breakfast = true },
-                new UpdateBookingDto { Id = 3, FromDate = new DateOnly(2025, 6, 13), ToDate = new DateOnly(2025, 6, 14), NumberOfAdults = 1, NumberOfChildren = 0, Breakfast = false }
+                new UpdateBookingDto { Id = 99, FromDate = new DateOnly(2025, 6, 12), ToDate = new DateOnly(2025, 6, 16), NumberOfAdults = 1, NumberOfChildren = 0, Breakfast = true },
+                new UpdateBookingDto { Id = 999, FromDate = new DateOnly(2025, 6, 13), ToDate = new DateOnly(2025, 6, 14), NumberOfAdults = 1, NumberOfChildren = 0, Breakfast = false }
             };
         }
     }
