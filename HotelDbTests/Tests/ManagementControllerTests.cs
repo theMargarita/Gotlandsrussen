@@ -109,6 +109,16 @@ namespace HotelGotlandsrussenTESTS.Tests
 
             _mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
         }
+
+        [TestMethod]
+        public void GetAvailableRoomByDateAndGuests_ReturnsOkWithResult()
+        {
+            //Arrange
+
+            //Act
+
+            //Assert
+        }
     }
 }
 
