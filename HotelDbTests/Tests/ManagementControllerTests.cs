@@ -1,4 +1,5 @@
 ﻿using Gotlandsrussen.Controllers;
+using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
 using HotelGotlandsrussenTESTS.TestSetup;
@@ -13,7 +14,7 @@ namespace HotelGotlandsrussenTESTS.Tests
     {   
         private Mock<IBookingRepository>? _mockBookingRepository;
         private Mock<IRoomRepository>? _mockRoomRepository;
-        private ManagementController _controller;
+        private ManagementController? _controller;
 
         [TestInitialize]
         public void Setup()
@@ -77,5 +78,36 @@ namespace HotelGotlandsrussenTESTS.Tests
 
             _mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
         }
+
+        [TestMethod]
+        public async Task GetBookingsGroupedByWeek_ReturnsOkWithExpectedBookings()
+        {
+            //Arrange
+            var expectedBookings = MockDataSetup.GetBookingDtos();
+            _mockBookingRepository.Setup(repo => repo.GetAllFutureBookings()).ReturnsAsync(expectedBookings);
+
+            //Act
+            var result = await _controller.GetBookingsGroupedByWeek();
+            var okResult = result.Result as OkObjectResult; //result gets the actionresult - asokobjectresult returns like a Ok(something); return
+
+
+            //Assert
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedBookingDates = okResult.Value as ICollection<BookingDto>; //has the values from the bookingList of expectedBookings & return collection of bookingdto else null 
+            Assert.IsNotNull(returnedBookingDates);
+            Assert.AreEqual(3, returnedBookingDates.Count);
+
+            var expectedFirst = expectedBookings.First();
+            var bookingList = returnedBookingDates.ToList();
+
+            Assert.AreEqual(1, bookingList[0].Id);
+            Assert.AreEqual(expectedFirst.BookedFromDate, bookingList[0].BookedFromDate);
+            Assert.AreEqual(expectedFirst.BookedToDate, bookingList[0].BookedToDate);
+
+            _mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
+        }
     }
 }
+
