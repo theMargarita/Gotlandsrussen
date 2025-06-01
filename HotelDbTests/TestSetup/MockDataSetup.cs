@@ -1,6 +1,7 @@
 ﻿using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
+using HotelGotlandsrussen.Models.DTOs;
 
 namespace HotelGotlandsrussenTESTS.TestSetup
 {
@@ -63,6 +64,17 @@ namespace HotelGotlandsrussenTESTS.TestSetup
                 new BookingDto { Id = 1, GuestName = "Andersson, Alice", BookedFromDate = new DateOnly(2025, 6, 10), BookedToDate = new DateOnly(2025, 6, 11), NumberOfAdults = 1, NumberOfChildren = 0 },
                 new BookingDto { Id = 2, GuestName = "Bengtsson, Bob", BookedFromDate = new DateOnly(2025, 6, 10), BookedToDate = new DateOnly(2025, 6, 15), NumberOfAdults = 1, NumberOfChildren = 0 },
                 new BookingDto { Id = 3, GuestName = "Larsson, Tom", BookedFromDate = new DateOnly(2025, 6, 11), BookedToDate = new DateOnly(2025, 6, 13), NumberOfAdults = 1, NumberOfChildren = 0 }
+            };
+
+        }
+        
+        public static List<UpdateBookingDto> GetUpdateBookingDtos()
+        {
+            return new List<UpdateBookingDto>
+            {
+                new UpdateBookingDto { Id = 1, FromDate = new DateOnly(2025, 6, 11), ToDate = new DateOnly(2025, 6, 12), NumberOfAdults = 2, NumberOfChildren = 1, Breakfast = true },
+                new UpdateBookingDto { Id = 2, FromDate = new DateOnly(2025, 6, 12), ToDate = new DateOnly(2025, 6, 16), NumberOfAdults = 1, NumberOfChildren = 0, Breakfast = true },
+                new UpdateBookingDto { Id = 3, FromDate = new DateOnly(2025, 6, 13), ToDate = new DateOnly(2025, 6, 14), NumberOfAdults = 1, NumberOfChildren = 0, Breakfast = false }
             };
         }
     }
