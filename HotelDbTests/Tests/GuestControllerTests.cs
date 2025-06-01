@@ -3,6 +3,7 @@ using Gotlandsrussen.Repositories;
 using HotelGotlandsrussenTESTS.TestSetup;
 using Moq;
 using Microsoft.AspNetCore.Mvc;
+using Gotlandsrussen.Models;
 
 namespace HotelGotlandsrussenTESTS.Tests
 {
@@ -29,31 +30,46 @@ namespace HotelGotlandsrussenTESTS.Tests
         // Börja test här
 
         [TestMethod]
-        public async Task GetBookingById_ShouldReturnCorrectBooking_ReturnsTrue()
+        public async Task GetBookingById_ExistingId_ReturnsBookingWithCorrectData()
         {
             // Arrange
-            var mockData = MockDataSetup.GetBookings();
-            var mockDataObject = MockDataSetup.GetBookings()[0];
+            var mockBooking = MockDataSetup.GetBookings()[0];
 
-            // Setup the mock repository to return the mock data when GetById is called
-            _mockBookingRepository.Setup(gb => gb.GetById(1))
-                .ReturnsAsync(mockDataObject);
+            _mockBookingRepository
+                .Setup(repo => repo.GetById(mockBooking.Id))
+                .ReturnsAsync(mockBooking);
 
             // Act
-            var result = await _controller.GetBookingById(1);
-            var resultData = result.Value;
+            var result = await _controller.GetBookingById(mockBooking.Id);
 
             // Assert
-            //var okReult = result.Result as OkObjectResult;
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult, "Expected OkObjectResult");
 
-            Assert.IsNotNull(resultData, "Result is not OkObjectResult");
-            Assert.IsNotNull(result, "result är null");
-            Assert.IsNotNull(result.Value, "result.Value är null");
-            Assert.AreEqual(mockData[0].Id, resultData.Id);
-            //Assert.AreEqual(mockData[0].Id, result.Value.Id);
+            var returnedBooking = okResult.Value as Booking;
+            Assert.IsNotNull(returnedBooking, "Expected Booking object as Value");
 
+            Assert.AreEqual(mockBooking.Id, returnedBooking.Id);
         }
 
+        [TestMethod]
+        public async Task GetBookingById_ShouldReturnNotFound_WhenBookingDoesNotExist()
+        {
+            // Arrange
+            _mockBookingRepository
+                .Setup(repo => repo.GetById(It.IsAny<int>()))
+                .ReturnsAsync((Booking?)null);
+
+            // Act
+            var result = await _controller.GetBookingById(99);
+
+            // Assert
+            var notFoundResult = result.Result as NotFoundObjectResult;
+            Assert.IsNotNull(notFoundResult);
+
+            string resultString = notFoundResult.Value?.ToString();
+            Assert.IsTrue(resultString!.Contains("Booking not found"));
+        }
 
     }
 }
