@@ -99,6 +99,7 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.IsNotNull(returnedBookingDates);
             Assert.AreEqual(3, returnedBookingDates.Count);
 
+
             var expectedFirst = expectedBookings.First();
             var bookingList = returnedBookingDates.ToList();
 
