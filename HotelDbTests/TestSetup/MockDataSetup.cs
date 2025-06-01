@@ -1,4 +1,5 @@
 ﻿using Gotlandsrussen.Models;
+using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
 
 namespace HotelGotlandsrussenTESTS.TestSetup
@@ -55,5 +56,14 @@ namespace HotelGotlandsrussenTESTS.TestSetup
             };
         }
 
+        public static List<BookingDto> GetBookingDtos()
+        {
+            return new List<BookingDto>
+            {
+                new BookingDto { Id = 1, GuestName = "Andersson, Alice", BookedFromDate = new DateOnly(2025, 6, 10), BookedToDate = new DateOnly(2025, 6, 11), NumberOfAdults = 1, NumberOfChildren = 0 },
+                new BookingDto { Id = 2, GuestName = "Bengtsson, Bob", BookedFromDate = new DateOnly(2025, 6, 10), BookedToDate = new DateOnly(2025, 6, 15), NumberOfAdults = 1, NumberOfChildren = 0 },
+                new BookingDto { Id = 3, GuestName = "Larsson, Tom", BookedFromDate = new DateOnly(2025, 6, 11), BookedToDate = new DateOnly(2025, 6, 13), NumberOfAdults = 1, NumberOfChildren = 0 }
+            };
+        }
     }
 }
