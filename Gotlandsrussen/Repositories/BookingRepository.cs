@@ -16,7 +16,7 @@ namespace Gotlandsrussen.Repositories
             _context = context;
         }
 
-        public async Task<ICollection<BookingDto>> GetAllFutureBookings()
+        public async Task<ICollection<BookingDto>> GetAllFutureBookings()  //Florent
         {
             return await _context.Bookings
                 .Where(b => b.FromDate >= DateOnly.FromDateTime(DateTime.Today)
@@ -34,7 +34,7 @@ namespace Gotlandsrussen.Repositories
         }
 
         //Utan includes så blir relationshämtningarna null... Varför?
-        public async Task<Booking?> GetById(int id)
+        public async Task<Booking?> GetById(int id)   //Kim
         {
             return await _context.Bookings
                 .Include(b => b.BookingRooms)
@@ -45,13 +45,13 @@ namespace Gotlandsrussen.Repositories
         }
 
 
-        public async Task Update(Booking booking)
+        public async Task Update(Booking booking)    //Lina
         {
             _context.Bookings.Update(booking);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ICollection<BookingDto>> GetBookingHistory()
+        public async Task<ICollection<BookingDto>> GetBookingHistory()   //Margarita
         {
             return await _context.Bookings
                 .Where(b => b.FromDate <= DateOnly.FromDateTime(DateTime.Today))
@@ -67,7 +67,7 @@ namespace Gotlandsrussen.Repositories
                 }).ToListAsync();
         }
 
-        public async Task<Booking?> UpdateBookingAsync(UpdateBookingDto updatedBooking)
+        public async Task<Booking?> UpdateBookingAsync(UpdateBookingDto updatedBooking)  //Florent
         {
             var booking = await _context.Bookings.FindAsync(updatedBooking.Id);
             if (booking == null) return null;
