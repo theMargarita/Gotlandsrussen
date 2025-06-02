@@ -120,7 +120,7 @@ namespace Gotlandsrussen.Repositories
             //check if guest exists
             var existingGuest = await _context.Bookings.AnyAsync(b => b.GuestId == guestId);
 
-            //
+            //gets rooms id if there is any else empty list
             var requstRoomId = booking.Rooms?.Select(r => r.Id).ToList() ?? new List<int>();
 
             //check if room is available on the chosen dates
@@ -156,7 +156,7 @@ namespace Gotlandsrussen.Repositories
                 BookingRooms = bookingRooms
             };
 
-                _context.Bookings.Add(newBooking);
+             _context.Bookings.Add(newBooking);
             await _context.SaveChangesAsync();
 
             return newBooking;
