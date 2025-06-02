@@ -191,7 +191,6 @@ namespace HotelGotlandsrussenTESTS.Tests
 
 
         [TestMethod]
-        //some errors - will fix after second testmethod
         public async Task GetBookingsGroupedByWeek_ReturnsOkWithExpectedBookings()
         {
             //Arrange
