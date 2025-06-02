@@ -61,6 +61,26 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual(3, result.Count);
         }
 
+        [TestMethod]
+        public async Task AddGuest_AddingANewGuest_ReturnsANewGuest()
+        {
+            // Arrange
+            var existingGuests = _context.Guests.ToList();
+            _context.Guests.RemoveRange(existingGuests);
+            await _context.SaveChangesAsync();
 
+            var newGuest = MockDataSetup.GetGuests()[0];
+
+            // Act
+            var result = await _repository.AddGuest(newGuest);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Id);
+            Assert.AreEqual("Alice", result.FirstName);
+            Assert.AreEqual("Andersson", result.LastName);
+            Assert.AreEqual("alice@example.com", result.Email);
+            Assert.AreEqual("0701234567", result.Phone);
+        }
     }
 }
