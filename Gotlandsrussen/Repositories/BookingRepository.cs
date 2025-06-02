@@ -33,7 +33,6 @@ namespace Gotlandsrussen.Repositories
                 }).ToListAsync();
         }
 
-        //Utan includes så blir relationshämtningarna null... Varför?
         public async Task<Booking?> GetById(int id)   //Kim
         {
             return await _context.Bookings
@@ -43,7 +42,6 @@ namespace Gotlandsrussen.Repositories
                 .Include(b => b.Guest)
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
-
 
         public async Task Update(Booking booking)    //Lina
         {
