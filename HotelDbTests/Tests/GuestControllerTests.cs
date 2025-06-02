@@ -26,7 +26,7 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockBookingRepository = new Mock<IBookingRepository>();
             _mockGuestRepository = new Mock<IGuestRepository>();
             _mockRoomRepository = new Mock<IRoomRepository>();
-            _controller = new GuestController(_mockBookingRepository.Object, _mockGuestRepository.Object, _mockRoomRepository.Object);
+            GuestController _controller = new GuestController(_mockBookingRepository.Object, _mockGuestRepository.Object, _mockRoomRepository.Object);
         }
 
         // Börja test här
