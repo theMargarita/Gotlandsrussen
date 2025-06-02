@@ -76,6 +76,20 @@ namespace Gotlandsrussen.Repositories
 
             var roomIds = booking.BookingRooms.Select(br => br.RoomId).ToList();
 
+            bool hasConflict = await _context.BookingRooms
+                 .Include(br => br.Booking)
+                 .AnyAsync(br =>
+                     roomIds.Contains(br.RoomId) &&
+                     br.Booking.Id != booking.Id &&
+                     !br.Booking.IsCancelled &&
+                     updatedBooking.FromDate < br.Booking.ToDate &&
+                     updatedBooking.ToDate > br.Booking.FromDate
+    );
+
+            if (hasConflict)
+                throw new InvalidOperationException("Exception");
+
+
             booking.FromDate = updatedBooking.FromDate;
             booking.ToDate = updatedBooking.ToDate;
             booking.NumberOfAdults = updatedBooking.NumberOfAdults;
