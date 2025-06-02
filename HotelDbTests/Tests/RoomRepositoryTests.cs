@@ -30,7 +30,9 @@ namespace HotelGotlandsrussenTESTS.Tests
         }
 
         //Skriv tester här nedan
-
+        //OBS: Inför varje nytt test skapas en ny databas med samma seed data som vår vanliga databas. Alltså samma HotelDbContext.
+        //Det är en kopia av databasen som endast ligger i minnet.
+        //Varje nytt test ger en ny fräsch DbContext. Det sparas alltså inget mellan testerna.
 
     }
 }
