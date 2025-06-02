@@ -139,8 +139,46 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual(initialCount - 1, afterBookingResult.Count);
         }
 
+        [TestMethod]
+        public async Task GetAvailableRoomsAsync_WhenBookingIsCancelled_RoomIsAvailable()
+        {
+            // Arrange
+            var booking = _context.Bookings.ToList()[0];
+            booking.IsCancelled = false;
+            await _context.SaveChangesAsync();
 
+            var initialResult = await _repository.GetAvailableRoomsAsync(booking.FromDate, booking.ToDate);
+            var initialCount = initialResult.Count();
 
+            booking.IsCancelled = true;
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetAvailableRoomsAsync(booking.FromDate, booking.ToDate);
+
+            // Assert
+            Assert.AreEqual(initialCount + 1, result.Count);
+        }
+
+        [TestMethod]
+        public async Task GetAvailableRoomsAsync_WhenCallingMethod_ReturnsCorrectDto()
+        {
+            var testRoomType = new RoomType { Name = "Testrumstyp", NumberOfBeds = 2, PricePerNight = 900 };
+            var testRoom = new Room { Name = "Testrum", RoomType = testRoomType };
+            _context.RoomTypes.Add(testRoomType);
+            _context.Rooms.Add(testRoom);
+            await _context.SaveChangesAsync();
+
+            var result = await _repository.GetAvailableRoomsAsync(new DateOnly(2025, 7, 1), new DateOnly(2025, 7, 3));
+            var dto = result.FirstOrDefault(r => r.RoomName == "Testrum");
+
+            Assert.IsNotNull(dto);
+            Assert.AreEqual(testRoom.Id, dto.Id);
+            Assert.AreEqual("Testrum", dto.RoomName);
+            Assert.AreEqual("Testrumstyp", dto.RoomTypeName);
+            Assert.AreEqual(2, dto.NumberOfBeds);
+            Assert.AreEqual(900, dto.PricePerNight);
+        }
 
         public async Task<ICollection<RoomDto>> GetAvailableRoomsAsync(DateOnly startDate, DateOnly endDate)   //Lina
         {
