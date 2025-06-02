@@ -77,5 +77,106 @@ namespace HotelGotlandsrussenTESTS.TestSetup
                 new UpdateBookingDto { Id = 999, FromDate = new DateOnly(2025, 6, 13), ToDate = new DateOnly(2025, 6, 14), NumberOfAdults = 1, NumberOfChildren = 0, Breakfast = false }
             };
         }
+
+        public static List<RoomDto> GetRoomDtos()
+        {
+            return new List<RoomDto>
+            {
+                new RoomDto { Id = 1, RoomName = "Room A", RoomTypeName = "Single", NumberOfBeds = 1, PricePerNight = 500m },
+                new RoomDto { Id = 2, RoomName = "Room B", RoomTypeName = "Double", NumberOfBeds = 2, PricePerNight = 750m }
+            };
+        }
+
+public static Booking? GetBookingsWithRelations(int id)
+        {
+            return id switch
+            {
+                1 => new Booking
+                {
+                    Id = 1,
+                    FromDate = new DateOnly(2025, 6, 10),
+                    ToDate = new DateOnly(2025, 6, 13), // 3 nätter
+                    NumberOfAdults = 2,
+                    NumberOfChildren = 1, // 3 gäster
+                    IsCancelled = false,
+                    Breakfast = true,
+                    BookingRooms = new List<BookingRoom>
+                    {
+                        new BookingRoom
+                        {
+                            Room = new Room
+                            {
+                                RoomType = new RoomType
+                                {
+                                    Name = "Single",
+                                    PricePerNight = 500m
+                                }
+                            }
+                        },
+                        new BookingRoom
+                        {
+                            Room = new Room
+                            {
+                                RoomType = new RoomType
+                                {
+                                    Name = "Double",
+                                    PricePerNight = 750m
+                                }
+                            }
+                        }
+                    }
+                },
+
+                2 => new Booking
+                {
+                    Id = 2,
+                    FromDate = new DateOnly(2025, 7, 1),
+                    ToDate = new DateOnly(2025, 7, 6), // 5 nätter
+                    NumberOfAdults = 1,
+                    NumberOfChildren = 0,
+                    IsCancelled = false,
+                    Breakfast = true,
+                    BookingRooms = new List<BookingRoom>
+                    {
+                        new BookingRoom
+                        {
+                            Room = new Room
+                            {
+                                RoomType = new RoomType
+                                {
+                                    Name = "Suite",
+                                    PricePerNight = 1200m
+                                }
+                            }
+                        }
+                    }
+                },
+                3 => new Booking
+                {
+                    Id = 3,
+                    FromDate = new DateOnly(2025, 7, 1),
+                    ToDate = new DateOnly(2025, 7, 6), // 5 nätter
+                    NumberOfAdults = 1,
+                    NumberOfChildren = 0,
+                    IsCancelled = false,
+                    Breakfast = false,
+                    BookingRooms = new List<BookingRoom>
+                    {
+                        new BookingRoom
+                        {
+                            Room = new Room
+                            {
+                                RoomType = new RoomType
+                                {
+                                    Name = "Suite",
+                                    PricePerNight = 1200m
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
     }
 }

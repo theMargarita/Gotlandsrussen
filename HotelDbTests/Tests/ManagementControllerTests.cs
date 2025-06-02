@@ -28,7 +28,7 @@ namespace HotelGotlandsrussenTESTS.Tests
         // Börja test här
 
         [TestMethod]
-        public async Task GetAllFutureBookings_ReturnsOkWithBookings()
+        public async Task GetAllFutureBookings_CallingMethod_ReturnsOkWithBookings()
         {
             //Arrange
             var bookings = MockDataSetup.GetBookingDtos();
@@ -57,7 +57,7 @@ namespace HotelGotlandsrussenTESTS.Tests
         }
 
         [TestMethod]
-        public async Task GetAllFutureBookings_ReturnsOkWithEmptyList()
+        public async Task GetAllFutureBookings_MethodReturnsEmptyList_ReturnsOk()
         {
             //Arrange
             var emptyBookingList = new List<BookingDto>();
@@ -79,6 +79,49 @@ namespace HotelGotlandsrussenTESTS.Tests
 
             _mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
         }
+
+        [TestMethod]
+        public async Task GetTotalPrice_IfBookingNotExists_ReturnsNotFouund()
+        {
+            //Arrange
+            var bookings = MockDataSetup.GetBookings();
+
+            _mockBookingRepository.Setup(repo => repo.GetById(100))
+                .ReturnsAsync((Booking)null);
+
+            //Act
+            var result = await _controller.GetTotalPrice(100);
+
+            //Assert
+            var notFoundResult = result.Result as NotFoundObjectResult;
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(404, notFoundResult.StatusCode);
+        }
+
+        [TestMethod]
+        [DataRow(1, 4200.0, "Complex booking")]
+        [DataRow(2, 6250.0, "Normal booking")]
+        [DataRow(3, 6000.0, "Normal booking without breakfast")]
+        public async Task GetTotalPrice_DifferentBookingScenarios_ReturnsCorrectTotalPrice
+            (int bookingId, double expectedTotalPrice, string message)
+        {
+            //Arrange
+            var booking = MockDataSetup.GetBookingsWithRelations(bookingId);
+
+            _mockBookingRepository.Setup(repo => repo.GetById(bookingId))
+                .ReturnsAsync(booking);
+
+            //Act
+            var result = await _controller.GetTotalPrice(bookingId);
+
+            //Assert
+            var okResult = result.Result as OkObjectResult;
+            var summary = okResult.Value as TotalPriceDto;
+
+            Assert.IsNotNull(summary, message);
+            Assert.AreEqual((decimal)expectedTotalPrice, summary.TotalPrice, message);
+        }
+    }
 
         [TestMethod]
         public async Task UpdateBooking_UpdatesExistingBooking_ReturnsOkWithUpdatedBooking()
