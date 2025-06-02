@@ -73,6 +73,8 @@ namespace Gotlandsrussen.Repositories
                .Include(b => b.BookingRooms)
                .FirstOrDefaultAsync(b => b.Id == updatedBooking.Id);
 
+            if (booking == null)
+                return null;
 
             var roomIds = booking.BookingRooms.Select(br => br.RoomId).ToList();
 
