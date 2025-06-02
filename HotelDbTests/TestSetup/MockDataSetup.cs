@@ -67,7 +67,7 @@ namespace HotelGotlandsrussenTESTS.TestSetup
             };
 
         }
-        
+
         public static List<UpdateBookingDto> GetUpdateBookingDtos()
         {
             return new List<UpdateBookingDto>
@@ -174,6 +174,21 @@ namespace HotelGotlandsrussenTESTS.TestSetup
                             }
                         }
                     }
+                }
+            };
+        }
+
+        public static List<RoomDto> GetExpectedAvailableRoomsDto()
+        {
+            return new List<RoomDto>
+            {
+                new RoomDto
+                {
+                    Id = 2,
+                    RoomName = "102",
+                    RoomTypeName = "Single",
+                    NumberOfBeds = 1,
+                    PricePerNight = 500m
                 }
             };
         }
