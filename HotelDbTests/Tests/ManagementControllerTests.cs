@@ -218,12 +218,23 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual(1, bookingList[0].Id);
             Assert.AreEqual(expectedFirst.BookedFromDate, bookingList[0].BookedFromDate);
             Assert.AreEqual(expectedFirst.BookedToDate, bookingList[0].BookedToDate);
+
+            //_mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
         }
 
         [TestMethod]
         public void GetAvailableRoomByDateAndGuests_ReturnsExpectedAvailableRooms()
         {
             //Arrange
+
+            DateTime fromDate = new DateTime();
+            DateTime toDate = new DateTime();
+            int adults;
+            int children;
+            //int guest = adults + children;
+
+            var bookings = MockDataSetup.GetBookingDtos();
+            _mockBookingRepository.Setup(repo => repo.GetAllFutureBookings()).ReturnsAsync(bookings);
             var expectedRooms = MockDataSetup.GetExpectedAvailableRoomsDto();
 
             var fromDate = new DateOnly(2025, 6, 10);
@@ -235,6 +246,7 @@ namespace HotelGotlandsrussenTESTS.Tests
 
 
             //Act
+            //var result = await _controller.GetAvailableRoomByDateAndGuests();
             var result = _controller.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children).Result;
 
             //Assert
