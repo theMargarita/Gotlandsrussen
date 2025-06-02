@@ -1,5 +1,7 @@
 ﻿using Gotlandsrussen.Data;
+using Gotlandsrussen.Models;
 using Gotlandsrussen.Repositories;
+using HotelGotlandsrussenTESTS.TestSetup;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,6 +32,19 @@ namespace HotelGotlandsrussenTESTS.Tests
 
         //Skriv tester här nedan
 
+        [TestMethod]
+        public async Task GetById_GettingABookingById_ReturnsMatchingBooking()
+        {
+            // Arrange
+            int id = 1;
+
+            // Act
+            var result = await _repository.GetById(id);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(id, result.Id);
+        }
 
     }
 }
