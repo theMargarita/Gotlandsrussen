@@ -25,36 +25,32 @@ namespace HotelGotlandsrussenTESTS.Tests
                 .Options;
 
             _context = new HotelDbContext(options);
+            _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
 
             _repository = new GuestRepository(_context);
         }
 
-        //Skriv tester här nedan
+        //Skriv tester här nedan.
+        //OBS: Inför varje nytt test skapas en ny databas med samma seed data som vår vanliga databas. Alltså samma HotelDbContext.
+        //Det är en kopia av databasen som endast ligger i minnet.
+        //I testet nedan, för GetAllGuests, har vi 15 gäster inlagda i seed datan, vilket jag matar i i min Assert.
+        //Varje nytt test ger en ny fräsch DbContext. Det sparas alltså inget mellan testerna.
 
         [TestMethod]
         public async Task GetAllGuests_WhenCallingMethod_MethodReturnsAllGuests()
         {
             //Arrange
-            var guests = MockDataSetup.GetGuests();
-            _context.AddRange(guests);
-            await _context.SaveChangesAsync();
+            var allGuests = await _context.Guests.ToListAsync();
 
             //Act
             var result = await _repository.GetAllGuests();
 
             //Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(15, result.Count);
         }
 
-
-        //Det är denna metod som ska testas 
-        //public async Task<ICollection<Guest>> GetAllGuests()   //Lina
-        //{
-        //    var getAllGuests = _context.Guests.ToList();
-        //    return getAllGuests;
-        //}
-
+        
     }
 }
