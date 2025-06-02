@@ -2,6 +2,7 @@
 using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
+using HotelGotlandsrussen.Models.DTOs;
 using HotelGotlandsrussenTESTS.TestSetup;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ namespace HotelGotlandsrussenTESTS.Tests
 {
     [TestClass]
     public class ManagementControllerTests
-    {   
+    {
         private Mock<IBookingRepository>? _mockBookingRepository;
         private Mock<IRoomRepository>? _mockRoomRepository;
         private ManagementController _controller;
@@ -120,5 +121,74 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.IsNotNull(summary, message);
             Assert.AreEqual((decimal)expectedTotalPrice, summary.TotalPrice, message);
         }
+
+        [TestMethod]
+        public async Task UpdateBooking_UpdatesExistingBooking_ReturnsOkWithUpdatedBooking()
+        {
+            // Arrange
+            var existingBooking = MockDataSetup.GetBookings()[0];
+
+            var mockBookingDto = MockDataSetup.GetUpdateBookingDtos()[0];
+
+            var updatedBooking = new Booking
+            {
+                Id = existingBooking.Id,
+                GuestId = existingBooking.GuestId,
+                FromDate = mockBookingDto.FromDate,
+                ToDate = mockBookingDto.ToDate,
+                NumberOfAdults = mockBookingDto.NumberOfAdults,
+                NumberOfChildren = mockBookingDto.NumberOfChildren,
+                Breakfast = mockBookingDto.Breakfast
+            };
+
+            _mockBookingRepository
+                .Setup(repo => repo.UpdateBookingAsync(mockBookingDto))
+                .ReturnsAsync(updatedBooking);
+
+            // Act
+            var result = await _controller.UpdateBooking(mockBookingDto);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult, "Expected a OkObjectResult");
+
+            var returned = okResult.Value as Booking;
+            Assert.IsNotNull(returned, "Expected a Booking");
+
+            Assert.AreEqual(mockBookingDto.Id, returned.Id);
+            Assert.AreEqual(mockBookingDto.FromDate, returned.FromDate);
+            Assert.AreEqual(mockBookingDto.ToDate, returned.ToDate);
+            Assert.AreEqual(mockBookingDto.NumberOfAdults, returned.NumberOfAdults);
+            Assert.AreEqual(mockBookingDto.NumberOfChildren, returned.NumberOfChildren);
+            Assert.AreEqual(mockBookingDto.Breakfast, returned.Breakfast);
+
+            _mockBookingRepository.Verify(repo => repo.UpdateBookingAsync(mockBookingDto), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task UpdateBooking_DoesNotUpdateIfBookingDoesNotExist_ReturnsNotFound()
+        {
+            // Arrange
+            var mockBookingDto = MockDataSetup.GetUpdateBookingDtos()[1];
+
+            _mockBookingRepository
+                .Setup(repo => repo.UpdateBookingAsync(It.Is<UpdateBookingDto>(dto =>
+                    dto.Id == mockBookingDto.Id)))
+                .ReturnsAsync((Booking?)null); // Simulerar att bokningen inte finns
+
+            // Act
+            var result = await _controller.UpdateBooking(mockBookingDto);
+
+            // Assert
+            var notFoundResult = result as NotFoundObjectResult;
+            Assert.IsNotNull(notFoundResult, "Expected NotFoundObjectResult");
+
+            string? resultString = notFoundResult.Value?.ToString();
+            Assert.IsTrue(resultString!.Contains("Booking not found")); // Change True => False for debugg
+            
+            _mockBookingRepository.Verify(repo => repo.UpdateBookingAsync(mockBookingDto), Times.Once);
+        }
+
     }
+
 }
