@@ -247,7 +247,13 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual(2, returnedRooms.Count);
 
             var room = returnedRooms.First();
-            Assert.AreEqual(2, )
+            Assert.AreEqual(1, room.Id);
+            Assert.AreEqual("101", room.RoomName);
+            Assert.AreEqual("Single", room.RoomTypeName);
+            Assert.AreEqual(1, room.NumberOfBeds);
+            Assert.AreEqual(500m, room.PricePerNight);
+
+            _mockRoomRepository.Verify(repo => repo.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children), Times.Once);
         }
     }
 
