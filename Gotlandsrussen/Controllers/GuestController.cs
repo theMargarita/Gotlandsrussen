@@ -122,7 +122,6 @@ namespace Gotlandsrussen.Controllers
                 return BadRequest("No data have been added.");
             }
 
-            
             var guest = new Guest
             {
                 FirstName = request.FirstName,
@@ -130,6 +129,18 @@ namespace Gotlandsrussen.Controllers
                 Email = request.Email,
                 Phone = request.Phone
             };
+            
+            var existingGuest = await _guestRepository.GetAllGuests();
+            // Check if the guest already exists
+            if (existingGuest.Any(g => g.Email == guest.Email))
+            {
+                return Conflict("Guest with this email adress already exists.");
+            }
+            else if (existingGuest.Any(g.Phone == guest.Phone))
+            {
+                return Conflict("Guest with this phone number already exists.");
+            }
+
 
             await _guestRepository.AddGuest(guest);
             return CreatedAtAction(nameof(GetAllGuests), new { id = guest.Id }, guest);
