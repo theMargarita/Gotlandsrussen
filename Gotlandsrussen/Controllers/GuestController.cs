@@ -38,13 +38,13 @@ namespace Gotlandsrussen.Controllers
             // check if breakfast is booked already.
             if (booking.Breakfast == true)
             {
-                return BadRequest("Breakfast is already added to the booking.");
+                return Conflict("Breakfast is already added to the booking.");
             }
 
             // check if breakfast is null
             if (booking.Breakfast == null)
             {
-                return BadRequest("Breakfast is null.");
+                return NotFound("Breakfast was empty.");
             }
 
             var addBreakfast = new AddBreakfastDto
