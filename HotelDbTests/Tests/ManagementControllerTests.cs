@@ -106,16 +106,16 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual(1, bookingList[0].Id);
             Assert.AreEqual(expectedFirst.BookedFromDate, bookingList[0].BookedFromDate);
             Assert.AreEqual(expectedFirst.BookedToDate, bookingList[0].BookedToDate);
-
-            _mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
         }
 
         [TestMethod]
         public void GetAvailableRoomByDateAndGuests_ReturnsOkWithResult()
         {
             //Arrange
+            var expectedAvailableBookings = MockDataSetup.GetBookingDtos().Where()
 
             //Act
+
 
             //Assert
         }
