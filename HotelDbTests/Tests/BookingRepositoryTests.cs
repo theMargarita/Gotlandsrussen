@@ -27,5 +27,9 @@ namespace HotelGotlandsrussenTESTS.Tests
 
             _repository = new BookingRepository(_context);
         }
+
+        //Skriv tester här nedan
+
+
     }
 }
