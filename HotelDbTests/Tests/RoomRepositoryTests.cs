@@ -34,5 +34,22 @@ namespace HotelGotlandsrussenTESTS.Tests
         //Det är en kopia av databasen som endast ligger i minnet.
         //Varje nytt test ger en ny fräsch DbContext. Det sparas alltså inget mellan testerna.
 
+        [TestMethod]
+        public async Task GetAvailableRoomByDateAndGuests_GetsTheRightAmmountOfAvailableRooms_ReturnsAvailableRooms()
+        {
+            // Arrange
+            var fromDate = new DateOnly(2025, 6, 10);
+            var toDate = new DateOnly(2025, 6, 15);
+            int adults = 2;
+            int children = 1;
+
+            // Act
+            var result = await _repository.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(15, result.Count); // There is 15 rooms available in the SeedData.
+        }
     }
 }
+

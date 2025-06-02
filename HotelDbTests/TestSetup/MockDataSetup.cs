@@ -5,7 +5,7 @@ using HotelGotlandsrussen.Models.DTOs;
 
 namespace HotelGotlandsrussenTESTS.TestSetup
 {
-    public static class MockDataSetup //test with moq
+    public static class MockDataSetup
     {
         public static List<Guest> GetGuests()
         {
