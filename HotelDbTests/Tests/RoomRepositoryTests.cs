@@ -23,6 +23,7 @@ namespace HotelGotlandsrussenTESTS.Tests
                 .Options;
 
             _context = new HotelDbContext(options);
+            _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
 
             _repository = new RoomRepository(_context);
