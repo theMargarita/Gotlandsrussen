@@ -121,7 +121,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.IsNotNull(summary, message);
             Assert.AreEqual((decimal)expectedTotalPrice, summary.TotalPrice, message);
         }
-    }
 
         [TestMethod]
         public async Task UpdateBooking_UpdatesExistingBooking_ReturnsOkWithUpdatedBooking()

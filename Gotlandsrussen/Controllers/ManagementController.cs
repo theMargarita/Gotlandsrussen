@@ -67,7 +67,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(grouped);
         }
 
-        [HttpGet("GetBookingById/{id}")] // kim
+        [HttpGet("GetBookingById/{id}")] // ?
         public async Task<ActionResult<Booking>> GetBookingById(int id)
         {
             var booking = await _bookingRepository.GetById(id);
@@ -151,7 +151,7 @@ namespace Gotlandsrussen.Controllers
         }
 
 
-        [HttpPut("UpdateBooking")] // kim
+        [HttpPut("UpdateBooking")]
         public async Task<IActionResult> UpdateBooking([FromBody] UpdateBookingDto updatedBooking)
         {
             var result = await _bookingRepository.UpdateBookingAsync(updatedBooking);

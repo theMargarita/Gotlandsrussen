@@ -87,7 +87,7 @@ namespace HotelGotlandsrussenTESTS.TestSetup
             };
         }
 
-public static Booking? GetBookingsWithRelations(int id)
+        public static Booking? GetBookingsWithRelations(int id)
         {
             return id switch
             {
