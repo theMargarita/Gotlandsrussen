@@ -90,6 +90,16 @@ namespace Gotlandsrussen.Repositories
                 throw new InvalidOperationException("Vald tid krockar med en annan bokning.");
 
 
+            int totalBeds = await _context.Rooms
+                .Where(r => roomIds.Contains(r.Id))
+                .SumAsync(r => r.RoomType.NumberOfBeds);
+
+            int totalGuests = updatedBooking.NumberOfAdults + updatedBooking.NumberOfChildren;
+
+            if (totalGuests > totalBeds)
+                throw new InvalidOperationException("Exception");
+
+
             booking.FromDate = updatedBooking.FromDate;
             booking.ToDate = updatedBooking.ToDate;
             booking.NumberOfAdults = updatedBooking.NumberOfAdults;
