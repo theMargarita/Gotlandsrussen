@@ -99,12 +99,12 @@ namespace Gotlandsrussen.Controllers
             
             if (bookingToCancel.IsCancelled == true)
             {
-                return BadRequest(new { errorMessage = "Booking is already cancelled" });
+                return Ok(new { message = "Booking is already cancelled" });
             }
 
             bookingToCancel.IsCancelled = true;
             await _bookingRepository.Update(bookingToCancel);
-            return Ok("Booking is cancelled");
+            return Ok(new { message = "Booking is cancelled" });
         }
 
         [HttpGet("GetAllGuests")] // Florent
