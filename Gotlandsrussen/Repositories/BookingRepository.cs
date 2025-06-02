@@ -71,7 +71,9 @@ namespace Gotlandsrussen.Repositories
         {
             var booking = await _context.Bookings
                .Include(b => b.BookingRooms)
-               .FirstOrDefaultAsync(b => b.Id == updatedBooking.Id);
+                 .ThenInclude(br => br.Room)
+                 .ThenInclude(r => r.RoomType)
+                 .FirstOrDefaultAsync(b => b.Id == updatedBooking.Id);
 
             if (booking == null)
                 return null;
