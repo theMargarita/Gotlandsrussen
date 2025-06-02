@@ -43,7 +43,7 @@ namespace Gotlandsrussen.Repositories
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
 
-        public async Task Update(Booking booking)    //Lina
+        public async Task Update(Booking booking)  
         {
             _context.Bookings.Update(booking);
             await _context.SaveChangesAsync();

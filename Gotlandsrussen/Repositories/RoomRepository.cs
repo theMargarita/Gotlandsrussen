@@ -33,7 +33,7 @@ namespace Gotlandsrussen.Repositories
             return availableRooms;
         }
 
-        public async Task<ICollection<RoomDto>> GetAvailableRoomsAsync(DateOnly startDate, DateOnly endDate)   //Lina
+        public async Task<ICollection<RoomDto>> GetAvailableRoomsAsync(DateOnly startDate, DateOnly endDate) 
         {
             var bookedRoomIds = await _context.BookingRooms
                 .Include(br => br.Booking)

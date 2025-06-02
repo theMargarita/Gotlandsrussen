@@ -19,7 +19,7 @@ namespace Gotlandsrussen.Repositories
             return addedGuest.Entity;
         }
 
-        public async Task<ICollection<Guest>> GetAllGuests()   //Lina
+        public async Task<ICollection<Guest>> GetAllGuests() 
         {
             var getAllGuests = await _context.Guests.ToListAsync();
             return getAllGuests;
