@@ -72,8 +72,8 @@ namespace Gotlandsrussen.Repositories
             var booking = await _context.Bookings.FindAsync(updatedBooking.Id);
             if (booking == null) return null;
 
-            booking.FromDate = updatedBooking.BookedFromDate;
-            booking.ToDate = updatedBooking.BookedToDate;
+            booking.FromDate = updatedBooking.FromDate;
+            booking.ToDate = updatedBooking.ToDate;
             booking.NumberOfAdults = updatedBooking.NumberOfAdults;
             booking.NumberOfChildren = updatedBooking.NumberOfChildren;
             booking.Breakfast = updatedBooking.Breakfast;
