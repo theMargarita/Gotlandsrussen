@@ -182,13 +182,21 @@ namespace HotelGotlandsrussenTESTS.TestSetup
         {
             return new List<RoomDto>
             {
+                 new RoomDto
+                {
+                    Id = 1,
+                    RoomName = "101",
+                    RoomTypeName = "Single",
+                    NumberOfBeds = 1,
+                    PricePerNight = 500m
+                },
                 new RoomDto
                 {
                     Id = 2,
                     RoomName = "102",
-                    RoomTypeName = "Single",
-                    NumberOfBeds = 1,
-                    PricePerNight = 500m
+                    RoomTypeName = "Double",
+                    NumberOfBeds = 2,
+                    PricePerNight = 750m
                 }
             };
         }
