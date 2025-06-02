@@ -50,5 +50,31 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual(id, result.Id);
         }
 
+        [TestMethod]
+        public async Task Update_ChangingNumberOfAdults_UpdatesNumberOfAdultsInBooking()
+        {
+            //Arrange
+            var booking = new Booking { NumberOfAdults = 4 };
+            _context.Bookings.Add(booking);
+            await _context.SaveChangesAsync();
+            
+            var originalNumberOfAdults = booking.NumberOfAdults;
+            var bookingId = booking.Id;
+
+            var bookingToUpdate = await _context.Bookings.FindAsync(bookingId);
+            bookingToUpdate.NumberOfAdults = 2;
+
+            //Act
+            await _repository.Update(bookingToUpdate);
+
+            //Assert
+            var updatedBooking = await _context.Bookings.FindAsync(bookingId);
+
+            Assert.IsNotNull(updatedBooking);
+            Assert.AreNotEqual(originalNumberOfAdults, updatedBooking.NumberOfAdults);
+            Assert.AreEqual(2, updatedBooking.NumberOfAdults);
+        }
+
+       
     }
 }
