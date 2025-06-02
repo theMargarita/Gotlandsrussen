@@ -123,7 +123,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockBookingRepository.Verify(repo => repo.UpdateBookingAsync(mockBookingDto), Times.Once);
         }
 
-
         [TestMethod]
         public async Task UpdateBooking_DoesNotUpdateIfBookingDoesNotExist_ReturnsNotFound()
         {
@@ -147,46 +146,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             
             _mockBookingRepository.Verify(repo => repo.UpdateBookingAsync(mockBookingDto), Times.Once);
         }
-
-
-        //[TestMethod]
-        //public async Task UpdateBooking_DoesNotUpdateIfBookingDoesNotExist_ReturnsNotFound()
-        //{
-        //    // Arrange
-        //    var existingBooking = MockDataSetup.GetBookings()[0];
-
-        //    var mockBookingDto = MockDataSetup.GetUpdateBookingDtos()[0];
-
-        //    _mockBookingRepository
-        //        .Setup(repo => repo.UpdateBookingAsync(It.Is<UpdateBookingDto>(dto =>
-        //            dto.Id == mockBookingDto.Id)))
-        //        .ReturnsAsync((Booking?)null);
-
-        //    var updatedBooking = new Booking
-        //    {
-        //        Id = existingBooking.Id,
-        //        GuestId = existingBooking.GuestId,
-        //        FromDate = mockBookingDto.FromDate,
-        //        ToDate = mockBookingDto.ToDate,
-        //        NumberOfAdults = mockBookingDto.NumberOfAdults,
-        //        NumberOfChildren = mockBookingDto.NumberOfChildren,
-        //        Breakfast = mockBookingDto.Breakfast
-        //    };
-
-        //    // Act
-        //    var result = await _controller.UpdateBooking(mockBookingDto);
-
-        //    // Assert
-        //    var notFoundResult = result as NotFoundObjectResult;
-        //    Assert.IsNotNull(notFoundResult);
-
-        //    string? resultString = notFoundResult.Value?.ToString();
-        //    Assert.IsTrue(resultString!.Contains("Booking not found"));
-
-        //    _mockBookingRepository.Verify(repo => repo.UpdateBookingAsync(mockBookingDto), Times.Once);
-        //}
-
-
 
     }
 
