@@ -178,6 +178,7 @@ namespace Gotlandsrussen.Controllers
         [HttpPost("CreateBooking")]
         public async Task<IActionResult> CreateBooking()
         {
+            //return CreatedAtAction(nameof(GetById), new { id = booking.GuestId }, booking);
 
             return Ok();
         }
