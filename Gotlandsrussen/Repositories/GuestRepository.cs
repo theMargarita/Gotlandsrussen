@@ -1,5 +1,6 @@
 ﻿using Gotlandsrussen.Data;
 using Gotlandsrussen.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gotlandsrussen.Repositories
 {
@@ -14,13 +15,13 @@ namespace Gotlandsrussen.Repositories
         public async Task<Guest> AddGuest(Guest guest)  //Kim
         {
             var addedGuest = _context.Guests.Add(guest);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return addedGuest.Entity;
         }
 
         public async Task<ICollection<Guest>> GetAllGuests()   //Lina
         {
-            var getAllGuests = _context.Guests.ToList();
+            var getAllGuests = await _context.Guests.ToListAsync();
             return getAllGuests;
         }
 
