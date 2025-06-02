@@ -97,7 +97,7 @@ namespace Gotlandsrussen.Repositories
             int totalGuests = updatedBooking.NumberOfAdults + updatedBooking.NumberOfChildren;
 
             if (totalGuests > totalBeds)
-                throw new InvalidOperationException("Exception");
+                throw new InvalidOperationException("För många gäster för det valda rummets kapacitet.");
 
 
             booking.FromDate = updatedBooking.FromDate;
