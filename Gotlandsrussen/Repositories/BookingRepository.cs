@@ -69,8 +69,10 @@ namespace Gotlandsrussen.Repositories
 
         public async Task<Booking?> UpdateBookingAsync(UpdateBookingDto updatedBooking)  //Florent
         {
-            var booking = await _context.Bookings.FindAsync(updatedBooking.Id);
-            if (booking == null) return null;
+            var booking = await _context.Bookings
+               .Include(b => b.BookingRooms)
+               .FirstOrDefaultAsync(b => b.Id == updatedBooking.Id);
+
 
             booking.FromDate = updatedBooking.FromDate;
             booking.ToDate = updatedBooking.ToDate;
