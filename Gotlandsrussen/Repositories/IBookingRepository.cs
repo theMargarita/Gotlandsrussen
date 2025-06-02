@@ -15,5 +15,6 @@ namespace Gotlandsrussen.Repositories
 
         public Task<Booking?> UpdateBookingAsync(UpdateBookingDto updatedBooking);
 
+        public Task<Booking> CreateBooking();
     }
 }

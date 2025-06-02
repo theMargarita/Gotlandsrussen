@@ -114,5 +114,9 @@ namespace Gotlandsrussen.Repositories
             return booking;
         }
 
+        public async Task<Booking> CreateBooking()
+        {
+            
+        }
     }
 }
