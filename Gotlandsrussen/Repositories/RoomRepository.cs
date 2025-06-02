@@ -13,6 +13,7 @@ namespace Gotlandsrussen.Repositories
             _context = context;
         }
         public async Task<ICollection<RoomDto>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
+            //Kim
         {
             var availableRooms = await _context.Rooms
             .Where(r => r.RoomType.NumberOfBeds >= (adults + children))
@@ -34,7 +35,7 @@ namespace Gotlandsrussen.Repositories
         }
 
 
-        public async Task<ICollection<RoomDto>> GetAvailableRoomsAsync(DateOnly startDate, DateOnly endDate)
+        public async Task<ICollection<RoomDto>> GetAvailableRoomsAsync(DateOnly startDate, DateOnly endDate)   //Lina
         {
             var bookedRoomIds = await _context.BookingRooms
                 .Include(br => br.Booking)
