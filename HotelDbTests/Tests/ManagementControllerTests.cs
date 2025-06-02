@@ -15,7 +15,7 @@ namespace HotelGotlandsrussenTESTS.Tests
     {
         private Mock<IBookingRepository>? _mockBookingRepository;
         private Mock<IRoomRepository>? _mockRoomRepository;
-        private ManagementController _controller;
+        private ManagementController? _controller;
 
         [TestInitialize]
         public void Setup()
@@ -185,10 +185,76 @@ namespace HotelGotlandsrussenTESTS.Tests
 
             string? resultString = notFoundResult.Value?.ToString();
             Assert.IsTrue(resultString!.Contains("Booking not found")); // Change True => False for debugg
-            
+
             _mockBookingRepository.Verify(repo => repo.UpdateBookingAsync(mockBookingDto), Times.Once);
         }
 
+
+        [TestMethod]
+        public async Task GetBookingsGroupedByWeek_ReturnsOkWithExpectedBookings()
+        {
+            //Arrange
+            var expectedBookings = MockDataSetup.GetBookingDtos();
+            _mockBookingRepository.Setup(repo => repo.GetAllFutureBookings()).ReturnsAsync(expectedBookings);
+
+            //Act
+            var result = await _controller.GetBookingsGroupedByWeek();
+            var okResult = result.Result as OkObjectResult;
+
+            //Assert
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedBookingDates = okResult.Value as ICollection<YearWeekBookingsDto>;
+            Assert.IsNotNull(returnedBookingDates);
+            Assert.AreEqual(1, returnedBookingDates.Count);
+
+            var expectedFirst = returnedBookingDates.First();
+            Assert.AreEqual(2025, expectedFirst.Year); //chekcs year
+            Assert.IsTrue(expectedFirst.Week > 0); //checks week
+            Assert.IsTrue(expectedFirst.Bookings.Count > 0); //checks if there exists bookings
+            _mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
+        }
+
+        [TestMethod]
+        public void GetAvailableRoomByDateAndGuests_ReturnsExpectedAvailableRooms()
+        {
+            //Arrange
+            var bookings = MockDataSetup.GetBookingDtos();
+            _mockBookingRepository.Setup(repo => repo.GetAllFutureBookings()).ReturnsAsync(bookings);
+            var expectedRooms = MockDataSetup.GetExpectedAvailableRoomsDto();
+
+            var fromDate = new DateOnly(2025, 6, 10);
+            var toDate = new DateOnly(2025, 6, 11);
+            var adults = 2;
+            var children = 0;
+
+            _mockRoomRepository.Setup(repo => repo.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children)).ReturnsAsync(expectedRooms);
+
+
+            //Act
+            //var result = await _controller.GetAvailableRoomByDateAndGuests();
+            var result = _controller.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children).Result;
+
+            //Assert
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedRooms = okResult.Value as ICollection<RoomDto>;
+            Assert.IsNotNull(returnedRooms);
+            Assert.AreEqual(2, returnedRooms.Count);
+
+            var room = returnedRooms.First();
+            Assert.AreEqual(1, room.Id);
+            Assert.AreEqual("101", room.RoomName);
+            Assert.AreEqual("Single", room.RoomTypeName);
+            Assert.AreEqual(1, room.NumberOfBeds);
+            Assert.AreEqual(500m, room.PricePerNight);
+
+            _mockRoomRepository.Verify(repo => repo.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children), Times.Once);
+        }
     }
 
 }
+
