@@ -62,7 +62,7 @@ namespace HotelGotlandsrussenTESTS.Tests
         }
 
         [TestMethod]
-        public async Task AddGuest_AddingANewGuest_ReturnsANewGuest()
+        public async Task AddGuest_ClearGuestsAndAddingANewGuest_ReturnsANewGuest()
         {
             // Arrange
             var existingGuests = _context.Guests.ToList();
