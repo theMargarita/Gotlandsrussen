@@ -33,7 +33,7 @@ namespace Gotlandsrussen.Repositories
                 }).ToListAsync();
         }
 
-        public async Task<Booking?> GetById(int id)   //Kim
+        public async Task<Booking?> GetById(int id)
         {
             return await _context.Bookings
                 .Include(b => b.BookingRooms)
@@ -86,7 +86,7 @@ namespace Gotlandsrussen.Repositories
                      !br.Booking.IsCancelled &&
                      updatedBooking.FromDate < br.Booking.ToDate &&
                      updatedBooking.ToDate > br.Booking.FromDate
-    );
+                 );
 
             if (hasConflict)
                 throw new InvalidOperationException("Vald tid krockar med en annan bokning.");

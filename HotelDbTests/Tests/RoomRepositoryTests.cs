@@ -43,14 +43,12 @@ namespace HotelGotlandsrussenTESTS.Tests
             int adults = 2;
             int children = 1;
 
-
             // Act
             var result = await _repository.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children);
 
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(15, result.Count); // There is 15 rooms available in the SeedData.
-
         }
     }
 }
