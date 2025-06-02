@@ -136,7 +136,7 @@ namespace Gotlandsrussen.Controllers
             {
                 return Conflict("Guest with this email adress already exists.");
             }
-            else if (existingGuest.Any(g.Phone == guest.Phone))
+            else if (existingGuest.Any(g => g.Phone == guest.Phone))
             {
                 return Conflict("Guest with this phone number already exists.");
             }
