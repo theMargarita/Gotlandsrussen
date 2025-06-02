@@ -2,6 +2,7 @@
 using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
 using HotelGotlandsrussen.Models.DTOs;
+using HotelGotlandsrussenLIBRARY.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -114,9 +115,51 @@ namespace Gotlandsrussen.Repositories
             return booking;
         }
 
-        public async Task<Booking> CreateBooking()
+        public async Task<Booking> CreateBooking(CreateBookingDto booking, int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
-            
+            //check if guest exists
+            var existingGuest = await _context.Bookings.AnyAsync(b => b.GuestId == guestId);
+
+            //
+            var requstRoomId = booking.Rooms?.Select(r => r.Id).ToList() ?? new List<int>();
+
+            //check if room is available on the chosen dates
+            var availableRooms = await _context.Rooms
+              .Where(r => r.RoomType.NumberOfBeds >= (adults + children))
+              .Where(r => !_context.BookingRooms
+                  .Any(br => br.RoomId == r.Id &&
+                     br.Booking.FromDate <= toDate &&
+                     br.Booking.ToDate >= fromDate))
+              .Select(r => new RoomDto
+              {
+                  Id = r.Id,
+                  RoomName = r.Name,
+                  RoomTypeName = r.RoomType.Name,
+                  NumberOfBeds = r.RoomType.NumberOfBeds,
+                  PricePerNight = r.RoomType.PricePerNight
+              })
+              .ToListAsync();
+
+            var bookingRooms = availableRooms.Select(room => new BookingRoom
+            {
+                RoomId = room.Id
+            }).ToList();
+
+            var newBooking = new Booking
+            {
+                GuestId = guestId,
+                FromDate = fromDate,
+                ToDate = toDate,
+                NumberOfAdults = adults,
+                NumberOfChildren = children,
+                Breakfast = booking.Breakfast,
+                BookingRooms = bookingRooms
+            };
+
+                _context.Bookings.Add(newBooking);
+            await _context.SaveChangesAsync();
+
+            return newBooking;
         }
     }
 }
