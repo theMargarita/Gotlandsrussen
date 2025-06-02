@@ -36,7 +36,9 @@ namespace HotelGotlandsrussenTESTS.Tests
         //Det är en kopia av databasen som endast ligger i minnet.
         //Varje nytt test ger en ny fräsch DbContext. Det sparas alltså inget mellan testerna.
 
-        //I testet nedan, för GetAllGuests, har vi 15 gäster inlagda i seed datan, vilket jag matar in i min Assert.
+        //I testet nedan, för GetAllGuests, väljer jag att rensa bort alla gäster ur fejkdatabasen, sen lägga till
+        //tre stycken nya från vår MockDataSetup. Detta för att koppla bort beroendet från seed datan. Men jag vet
+        //inte om det går att göra för alla test.
 
         [TestMethod]
         public async Task GetAllGuests_WhenCallingMethod_MethodReturnsAllGuests()
