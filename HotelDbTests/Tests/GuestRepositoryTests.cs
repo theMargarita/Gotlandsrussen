@@ -41,19 +41,26 @@ namespace HotelGotlandsrussenTESTS.Tests
         //inte om det går att göra för alla test.
 
         [TestMethod]
-        public async Task GetAllGuests_WhenCallingMethod_MethodReturnsAllGuests()
+        public async Task GetAllGuests_ClearGuestsAndAddingThreeNewGuests_ReturnsThreeGuests()
         {
-            //Arrange
-            var allGuests = await _context.Guests.ToListAsync();
+            //Arrange - jag tar bort seed datan för att isolera mitt test
+            var existingGuests = _context.Guests.ToList();
+            _context.Guests.RemoveRange(existingGuests);
+            await _context.SaveChangesAsync();
 
-            //Act
+            //Lägger till tre nya gäster från MockDataSetup
+            var newGuests = MockDataSetup.GetGuests();
+            _context.Guests.AddRange(newGuests);
+            await _context.SaveChangesAsync();
+
+            //Act - jag kör metoden som ska testas
             var result = await _repository.GetAllGuests();
 
-            //Assert
+            //Assert - kontrollerar att svaren är som förväntat
             Assert.IsNotNull(result);
-            Assert.AreEqual(15, result.Count);
+            Assert.AreEqual(3, result.Count);
         }
 
-        
+
     }
 }
