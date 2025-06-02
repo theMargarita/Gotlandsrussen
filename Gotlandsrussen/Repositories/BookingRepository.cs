@@ -74,6 +74,8 @@ namespace Gotlandsrussen.Repositories
                .FirstOrDefaultAsync(b => b.Id == updatedBooking.Id);
 
 
+            var roomIds = booking.BookingRooms.Select(br => br.RoomId).ToList();
+
             booking.FromDate = updatedBooking.FromDate;
             booking.ToDate = updatedBooking.ToDate;
             booking.NumberOfAdults = updatedBooking.NumberOfAdults;
