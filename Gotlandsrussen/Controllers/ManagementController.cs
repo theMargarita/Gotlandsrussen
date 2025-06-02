@@ -67,7 +67,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(grouped);
         }
 
-        [HttpGet("GetBookingById/{id}")] // kim
+        [HttpGet("GetBookingById/{id}")] // ?
         public async Task<ActionResult<Booking>> GetBookingById(int id)
         {
             var booking = await _bookingRepository.GetById(id);
@@ -96,7 +96,7 @@ namespace Gotlandsrussen.Controllers
             }).ToList();
             int numberOfNights = (booking.ToDate.ToDateTime(TimeOnly.MinValue) - booking.FromDate.ToDateTime(TimeOnly.MinValue)).Days;
             int numberOfGuests = booking.NumberOfAdults + booking.NumberOfChildren;
-            int numberOfBreakfasts = numberOfNights * numberOfGuests;
+            int numberOfBreakfasts = booking.Breakfast ? numberOfNights * numberOfGuests : 0;
             decimal breakfastPrice = 50m;
             decimal totalPrice = rooms.Sum(r => r.PricePerNight * numberOfNights) + (numberOfBreakfasts * breakfastPrice);
 
@@ -151,7 +151,7 @@ namespace Gotlandsrussen.Controllers
         }
 
 
-        [HttpPut("UpdateBooking")] // kim
+        [HttpPut("UpdateBooking")]
         public async Task<IActionResult> UpdateBooking([FromBody] UpdateBookingDto updatedBooking)
         {
             var result = await _bookingRepository.UpdateBookingAsync(updatedBooking);

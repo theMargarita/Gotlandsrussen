@@ -1,6 +1,7 @@
 ﻿using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
+using HotelGotlandsrussen.Models.DTOs;
 
 namespace HotelGotlandsrussenTESTS.TestSetup
 {
@@ -64,6 +65,118 @@ namespace HotelGotlandsrussenTESTS.TestSetup
                 new BookingDto { Id = 2, GuestName = "Bengtsson, Bob", BookedFromDate = new DateOnly(2025, 6, 10), BookedToDate = new DateOnly(2025, 6, 15), NumberOfAdults = 1, NumberOfChildren = 0 },
                 new BookingDto { Id = 3, GuestName = "Larsson, Tom", BookedFromDate = new DateOnly(2025, 6, 11), BookedToDate = new DateOnly(2025, 6, 13), NumberOfAdults = 1, NumberOfChildren = 0 }
             };
+
         }
+        
+        public static List<UpdateBookingDto> GetUpdateBookingDtos()
+        {
+            return new List<UpdateBookingDto>
+            {
+                new UpdateBookingDto { Id = 1, FromDate = new DateOnly(2025, 6, 11), ToDate = new DateOnly(2025, 6, 12), NumberOfAdults = 2, NumberOfChildren = 1, Breakfast = true },
+                new UpdateBookingDto { Id = 99, FromDate = new DateOnly(2025, 6, 12), ToDate = new DateOnly(2025, 6, 16), NumberOfAdults = 1, NumberOfChildren = 0, Breakfast = true },
+                new UpdateBookingDto { Id = 999, FromDate = new DateOnly(2025, 6, 13), ToDate = new DateOnly(2025, 6, 14), NumberOfAdults = 1, NumberOfChildren = 0, Breakfast = false }
+            };
+        }
+
+        public static List<RoomDto> GetRoomDtos()
+        {
+            return new List<RoomDto>
+            {
+                new RoomDto { Id = 1, RoomName = "Room A", RoomTypeName = "Single", NumberOfBeds = 1, PricePerNight = 500m },
+                new RoomDto { Id = 2, RoomName = "Room B", RoomTypeName = "Double", NumberOfBeds = 2, PricePerNight = 750m }
+            };
+        }
+
+        public static Booking? GetBookingsWithRelations(int id)
+        {
+            return id switch
+            {
+                1 => new Booking
+                {
+                    Id = 1,
+                    FromDate = new DateOnly(2025, 6, 10),
+                    ToDate = new DateOnly(2025, 6, 13), // 3 nätter
+                    NumberOfAdults = 2,
+                    NumberOfChildren = 1, // 3 gäster
+                    IsCancelled = false,
+                    Breakfast = true,
+                    BookingRooms = new List<BookingRoom>
+                    {
+                        new BookingRoom
+                        {
+                            Room = new Room
+                            {
+                                RoomType = new RoomType
+                                {
+                                    Name = "Single",
+                                    PricePerNight = 500m
+                                }
+                            }
+                        },
+                        new BookingRoom
+                        {
+                            Room = new Room
+                            {
+                                RoomType = new RoomType
+                                {
+                                    Name = "Double",
+                                    PricePerNight = 750m
+                                }
+                            }
+                        }
+                    }
+                },
+
+                2 => new Booking
+                {
+                    Id = 2,
+                    FromDate = new DateOnly(2025, 7, 1),
+                    ToDate = new DateOnly(2025, 7, 6), // 5 nätter
+                    NumberOfAdults = 1,
+                    NumberOfChildren = 0,
+                    IsCancelled = false,
+                    Breakfast = true,
+                    BookingRooms = new List<BookingRoom>
+                    {
+                        new BookingRoom
+                        {
+                            Room = new Room
+                            {
+                                RoomType = new RoomType
+                                {
+                                    Name = "Suite",
+                                    PricePerNight = 1200m
+                                }
+                            }
+                        }
+                    }
+                },
+                3 => new Booking
+                {
+                    Id = 3,
+                    FromDate = new DateOnly(2025, 7, 1),
+                    ToDate = new DateOnly(2025, 7, 6), // 5 nätter
+                    NumberOfAdults = 1,
+                    NumberOfChildren = 0,
+                    IsCancelled = false,
+                    Breakfast = false,
+                    BookingRooms = new List<BookingRoom>
+                    {
+                        new BookingRoom
+                        {
+                            Room = new Room
+                            {
+                                RoomType = new RoomType
+                                {
+                                    Name = "Suite",
+                                    PricePerNight = 1200m
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
     }
 }
