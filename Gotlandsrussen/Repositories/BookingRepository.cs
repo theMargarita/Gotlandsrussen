@@ -87,7 +87,7 @@ namespace Gotlandsrussen.Repositories
     );
 
             if (hasConflict)
-                throw new InvalidOperationException("Exception");
+                throw new InvalidOperationException("Vald tid krockar med en annan bokning.");
 
 
             booking.FromDate = updatedBooking.FromDate;
