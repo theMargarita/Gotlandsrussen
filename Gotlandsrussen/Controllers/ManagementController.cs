@@ -154,14 +154,25 @@ namespace Gotlandsrussen.Controllers
         [HttpPut("UpdateBooking")]
         public async Task<IActionResult> UpdateBooking([FromBody] UpdateBookingDto updatedBooking)
         {
-            var result = await _bookingRepository.UpdateBookingAsync(updatedBooking);
-
-            if (result == null)
+            try
             {
-                return NotFound(new { errorMessage = "Booking not found" });
-            }
+                var result = await _bookingRepository.UpdateBookingAsync(updatedBooking);
 
-            return Ok(result);
+                if (result == null)
+                {
+                    return NotFound(new { errorMessage = "Booking not found" });
+                }
+
+                return Ok(result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { errorMessage = ex.Message });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { errorMessage = "Ett oväntat fel uppstod." });
+            }
         }
 
     }
