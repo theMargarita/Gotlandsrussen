@@ -7,7 +7,6 @@ namespace Gotlandsrussen.Data
     {
         public static void Seed(ModelBuilder modelBuilder)
         {
-
             // Guests
             modelBuilder.Entity<Guest>().HasData(
                 new Guest { Id = 1, FirstName = "Alice", LastName = "Andersson", Email = "alice@example.com", Phone = "0701234567" },
@@ -26,7 +25,6 @@ namespace Gotlandsrussen.Data
                 new Guest { Id = 14, FirstName = "Nora", LastName = "Bergström", Email = "nora@example.com", Phone = "0702345690" },
                 new Guest { Id = 15, FirstName = "Viktor", LastName = "Holm", Email = "viktor@example.com", Phone = "0702345691" }
             );
-
 
             // RoomTypes
             modelBuilder.Entity<RoomType>().HasData(
