@@ -1,5 +1,8 @@
 ﻿using Gotlandsrussen.Data;
+using Gotlandsrussen.Models;
+using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
+using HotelGotlandsrussenTESTS.TestSetup;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -49,6 +52,122 @@ namespace HotelGotlandsrussenTESTS.Tests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(15, result.Count); // There is 15 rooms available in the SeedData.
+        }
+
+        [TestMethod]
+        public async Task GetAvailableRoomsAsync_IfNoBookings_ReturnsAllRooms()
+        {
+            //Arrange
+            var existingBookings = _context.Bookings.ToList();
+            _context.Bookings.RemoveRange(existingBookings);
+            await _context.SaveChangesAsync();  
+
+            var existingRooms = _context.Rooms.ToList();
+            _context.Rooms.RemoveRange(existingRooms);
+            await _context.SaveChangesAsync();  
+
+            var rooms = MockDataSetup.GetRooms();
+            _context.Rooms.AddRange(rooms);
+            await _context.SaveChangesAsync();  
+
+            var startDate = new DateOnly(2025, 05, 15);
+            var endDate = new DateOnly(2025, 05, 17);
+
+            //Act
+            var result = await _repository.GetAvailableRoomsAsync(startDate, endDate);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Count);
+        }
+
+        [TestMethod]
+        public async Task GetAvailableRoomsAsync_WhenARoomIsBooked_DoesNotReturnTheBookedRoom()
+        {
+            //Arrange
+            var startDate = new DateOnly(2025, 06, 10);
+            var endDate = new DateOnly(2025, 06, 11);
+
+            //Act
+            var result = await _repository.GetAvailableRoomsAsync(startDate, endDate);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(23, result.Count);
+        }
+
+        [TestMethod]
+        public async Task GetAvailableRoomsAsync_WhenRoomIsBookedAfterCallingMethod_ReturnsOneLessRoom()
+        {
+            // Arrange
+            var startDate = new DateOnly(2025, 02, 10);
+            var endDate = new DateOnly(2025, 02, 15);
+
+            var testRoomType = new RoomType { Name = "Testtyp" };
+            _context.RoomTypes.Add(testRoomType);
+            await _context.SaveChangesAsync();
+
+            var testRoom = new Room { Name = "Testrum", RoomType = testRoomType};
+            _context.Rooms.Add(testRoom);
+            await _context.SaveChangesAsync();
+
+            var initialResult = await _repository.GetAvailableRoomsAsync(startDate, endDate);
+            var initialCount = initialResult.Count;
+
+            var booking = new Booking
+            {
+                FromDate = startDate,
+                ToDate = endDate,
+                IsCancelled = false
+            };
+            _context.Bookings.Add(booking);
+            await _context.SaveChangesAsync();
+
+            var bookingRoom = new BookingRoom
+            {
+                BookingId = booking.Id,
+                RoomId = testRoom.Id
+            };
+            _context.BookingRooms.Add(bookingRoom);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var afterBookingResult = await _repository.GetAvailableRoomsAsync(startDate, endDate);
+
+            // Assert
+            Assert.IsNotNull(afterBookingResult);
+            Assert.AreEqual(initialCount - 1, afterBookingResult.Count);
+        }
+
+
+
+
+        public async Task<ICollection<RoomDto>> GetAvailableRoomsAsync(DateOnly startDate, DateOnly endDate)   //Lina
+        {
+            var bookedRoomIds = await _context.BookingRooms
+                .Include(br => br.Booking)
+                .Where(br =>
+                    !br.Booking.IsCancelled &&
+                    (startDate < br.Booking.ToDate &&
+                     endDate > br.Booking.FromDate))
+                .Select(br => br.RoomId)
+                .Distinct()
+                .ToListAsync();
+
+            var availableRooms = await _context.Rooms
+                .Include(r => r.RoomType)
+                .Where(r => !bookedRoomIds.Contains(r.Id))
+                .Select(r => new RoomDto
+                {
+                    Id = r.Id,
+                    RoomName = r.Name,
+                    RoomTypeName = r.RoomType.Name,
+                    NumberOfBeds = r.RoomType.NumberOfBeds,
+                    PricePerNight = r.RoomType.PricePerNight
+                })
+                .ToListAsync();
+
+            return availableRooms;
         }
     }
 }
