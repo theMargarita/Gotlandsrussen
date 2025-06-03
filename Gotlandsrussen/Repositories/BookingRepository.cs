@@ -165,7 +165,7 @@ namespace Gotlandsrussen.Repositories
             };
            
             _context.Bookings.Add(newBooking);
-            //await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return newBooking;
         }
