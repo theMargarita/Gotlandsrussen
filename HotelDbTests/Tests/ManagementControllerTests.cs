@@ -254,6 +254,24 @@ namespace HotelGotlandsrussenTESTS.Tests
 
             _mockRoomRepository.Verify(repo => repo.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children), Times.Once);
         }
+
+        [TestMethod]
+        public async Task DeleteBooking_DeletesExistingBooking_ReturnsOk()
+        {
+            // Arrange
+            var bookingId = 1;
+            _mockBookingRepository.Setup(repo => repo.DeleteBooking(bookingId))
+                .ReturnsAsync("Booking was deleted");
+
+            // Act
+            var result = await _controller.DeleteBooking(bookingId);
+            
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult, "Expected OkObjectResult");
+            Assert.AreEqual(200, okResult.StatusCode);
+            Assert.AreEqual("Booking deleted successfully", okResult.Value);
+        }
     }
 
 }
