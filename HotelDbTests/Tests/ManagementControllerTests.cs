@@ -15,6 +15,7 @@ namespace HotelGotlandsrussenTESTS.Tests
     {
         private Mock<IBookingRepository>? _mockBookingRepository;
         private Mock<IRoomRepository>? _mockRoomRepository;
+        private Mock<IGuestRepository>? _mockGuestRepository;
         private ManagementController? _controller;
 
         [TestInitialize]
@@ -22,7 +23,8 @@ namespace HotelGotlandsrussenTESTS.Tests
         {
             _mockBookingRepository = new Mock<IBookingRepository>();
             _mockRoomRepository = new Mock<IRoomRepository>();
-            _controller = new ManagementController(_mockBookingRepository.Object, _mockRoomRepository.Object);
+            _mockGuestRepository = new Mock<IGuestRepository>();
+            _controller = new ManagementController(_mockBookingRepository.Object, _mockRoomRepository.Object, _mockGuestRepository.Object);
         }
 
         // Börja test här
@@ -221,7 +223,7 @@ namespace HotelGotlandsrussenTESTS.Tests
         {
             //Arrange
             var bookings = MockDataSetup.GetBookingDtos();
-            _mockBookingRepository.Setup(repo => repo.GetAllFutureBookings()).ReturnsAsync(bookings);
+            _mockBookingRepository?.Setup(repo => repo.GetAllFutureBookings()).ReturnsAsync(bookings);
             var expectedRooms = MockDataSetup.GetExpectedAvailableRoomsDto();
 
             var fromDate = new DateOnly(2025, 6, 10);
@@ -229,15 +231,14 @@ namespace HotelGotlandsrussenTESTS.Tests
             var adults = 2;
             var children = 0;
 
-            _mockRoomRepository.Setup(repo => repo.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children)).ReturnsAsync(expectedRooms);
+            _mockRoomRepository?.Setup(repo => repo.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children)).ReturnsAsync(expectedRooms);
 
 
             //Act
-            //var result = await _controller.GetAvailableRoomByDateAndGuests();
-            var result = _controller.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children).Result;
+            var result = _controller?.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children).Result;
 
             //Assert
-            var okResult = result.Result as OkObjectResult;
+            var okResult = result?.Result as OkObjectResult;
             Assert.IsNotNull(okResult);
             Assert.AreEqual(200, okResult.StatusCode);
 
@@ -252,7 +253,40 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual(1, room.NumberOfBeds);
             Assert.AreEqual(500m, room.PricePerNight);
 
-            _mockRoomRepository.Verify(repo => repo.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children), Times.Once);
+            _mockRoomRepository?.Verify(repo => repo.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children), Times.Once);
+        }
+
+        [TestMethod]
+        public void CreateBooking_ReturnsIn()
+        {
+            //Arrange
+            var getGuests = MockDataSetup.GetGuests()[0].Id;
+            var createBooking = MockDataSetup.GetBookingDtos(); //not sure about this one
+            var expectedRooms = MockDataSetup.GetExpectedAvailableRoomsDto();
+
+
+            var fromDate = new DateOnly(2025, 6, 10);
+            var toDate = new DateOnly(2025, 6, 11);
+            var adults = 2;
+            var children = 0;
+
+            _mockBookingRepository?.Setup(repo => repo.CreateBooking(getGuests, fromDate, toDate, adults, children, true));
+
+            //Act
+            var result = _controller?.CreateBooking(getGuests, fromDate, toDate, adults, children, true).Result;
+
+            //Assert
+            //var okResult = result?.Result as OkObjectResult;
+            //Assert.IsNotNull(okResult);
+            //Assert.AreEqual(200, okResult.StatusCode);
+
+
+        }
+
+        [TestMethod]
+        public void GetBookingHistory_ReturnTrueWhenFindList()
+        {
+
         }
     }
 
