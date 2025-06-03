@@ -215,6 +215,11 @@ namespace Gotlandsrussen.Controllers
         [HttpDelete("DeleteBooking")]
         public async Task<IActionResult> DeleteBooking(int bookingId)
         {
+            if (bookingId <= 0)
+            {
+                return BadRequest("Invalid booking ID");
+            }
+
             try
             {
                 await _bookingRepository.DeleteBooking(bookingId);
@@ -222,7 +227,7 @@ namespace Gotlandsrussen.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return NotFound(new { errorMessage = "Booking not found" });
+                return NotFound("Booking not found");
             }
         }
     }
