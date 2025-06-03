@@ -12,27 +12,17 @@ namespace Gotlandsrussen.Repositories
             _context = context;
         }
 
-        public async Task<Guest> AddGuest(Guest guest)  //Kim
+        public async Task<Guest> AddGuest(Guest guest)
         {
             var addedGuest = _context.Guests.Add(guest);
             await _context.SaveChangesAsync();
             return addedGuest.Entity;
         }
 
-        public async Task<ICollection<Guest>> GetAllGuests()   //Lina
+        public async Task<ICollection<Guest>> GetAllGuests() 
         {
             var getAllGuests = await _context.Guests.ToListAsync();
             return getAllGuests;
-        }
-
-        public async Task<Guest?> GetById(int id)   //Margarita
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Guest> UpdateGuest(Guest guest)    //Florent
-        {
-            throw new NotImplementedException();
         }
     }
 }

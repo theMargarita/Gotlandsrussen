@@ -67,7 +67,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(grouped);
         }
 
-        [HttpGet("GetBookingById/{id}")] // ?
+        [HttpGet("GetBookingById/{id}")]
         public async Task<ActionResult<Booking>> GetBookingById(int id)
         {
             var booking = await _bookingRepository.GetById(id);
@@ -114,9 +114,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(summary);
         }
 
-
-        //som receptionist vill jag kunna söka lediga rum baserat på datum och antal gäster
-        [HttpGet("{fromDate}/{toDate}/{adults}/{children}", Name = "GetAvailableRoomByDateAndGuests")]
+        [HttpGet("{fromDate}/{toDate}/{adults}/{children}", Name = "GetAvailableRoomByDateAndGuests")] // Margarita
         public async Task<ActionResult<ICollection<RoomDto>>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
             var getDate = await _roomRepository.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children);
@@ -149,7 +147,6 @@ namespace Gotlandsrussen.Controllers
         {
             return Ok(await _bookingRepository.GetBookingHistory());
         }
-
 
         [HttpPut("UpdateBooking")]
         public async Task<IActionResult> UpdateBooking([FromBody] UpdateBookingDto updatedBooking)
