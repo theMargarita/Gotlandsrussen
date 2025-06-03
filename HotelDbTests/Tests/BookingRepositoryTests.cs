@@ -97,5 +97,64 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.IsNull(result);
         }
 
+        [TestMethod]
+        public async Task UpdateBookingAsync_ShouldThrow_WhenDateConflictExists()
+        {
+            // Arrange: skapa 2 bokningar i samma rum, olika ID men överlappande datum
+            var roomType = new RoomType { Name = "Standard", NumberOfBeds = 2, PricePerNight = 500 };
+            var room = new Room { Name = "101", RoomType = roomType };
+            _context.RoomTypes.Add(roomType);
+            _context.Rooms.Add(room);
+
+            var existingBooking = new Booking
+            {
+                FromDate = new DateOnly(2025, 6, 10),
+                ToDate = new DateOnly(2025, 6, 15),
+                IsCancelled = false,
+                NumberOfAdults = 1,
+                NumberOfChildren = 0,
+                Breakfast = false,
+                BookingRooms = new List<BookingRoom>
+        {
+            new BookingRoom { Room = room }
+        }
+            };
+
+            _context.Bookings.Add(existingBooking);
+            await _context.SaveChangesAsync();
+
+            var conflictingBooking = new Booking
+            {
+                FromDate = new DateOnly(2025, 6, 5),
+                ToDate = new DateOnly(2025, 6, 8),
+                IsCancelled = false,
+                NumberOfAdults = 1,
+                NumberOfChildren = 0,
+                Breakfast = false,
+                BookingRooms = new List<BookingRoom>
+        {
+            new BookingRoom { Room = room }
+        }
+            };
+
+            _context.Bookings.Add(conflictingBooking);
+            await _context.SaveChangesAsync();
+
+            var dto = new UpdateBookingDto
+            {
+                Id = conflictingBooking.Id,
+                FromDate = new DateOnly(2025, 6, 12), // överlappar med existingBooking
+                ToDate = new DateOnly(2025, 6, 14),
+                NumberOfAdults = 1,
+                NumberOfChildren = 0,
+                Breakfast = true
+            };
+
+            // Act + Assert
+            await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+                _repository.UpdateBookingAsync(dto));
+        }
+
+
     }
 }
