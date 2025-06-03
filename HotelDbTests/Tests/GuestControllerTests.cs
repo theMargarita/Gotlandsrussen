@@ -284,5 +284,27 @@ namespace HotelGotlandsrussenTESTS.Tests
         }
 
 
+        // Return correct list of guests
+        [TestMethod]
+        public async Task GetAllGuests_ShouldReturnListOfGuests_WhenGuestsExist()
+        {
+            // Arrange
+            var mockGuests = MockDataSetup.GetGuests();
+            _mockGuestRepository
+                .Setup(repo => repo.GetAllGuests())
+                .ReturnsAsync(mockGuests);
+
+            // Act
+            var result = await _controller.GetAllGuests();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Count); // Antal från MockDataSetup
+            Assert.AreEqual("Alice", result.First().FirstName);
+
+            _mockGuestRepository.Verify(repo => repo.GetAllGuests(), Times.Once);
+        }
+
+
     }
 }
