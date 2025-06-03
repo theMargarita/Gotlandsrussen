@@ -17,10 +17,11 @@ namespace Gotlandsrussen.Controllers
         private readonly IGuestRepository _guestRepository;
         private readonly IRoomRepository _roomRepository;
 
-        public ManagementController(IBookingRepository bookingRepository, IRoomRepository roomRepository)
+        public ManagementController(IBookingRepository bookingRepository, IRoomRepository roomRepository, IGuestRepository guestRepository)
         {
             _bookingRepository = bookingRepository;
             _roomRepository = roomRepository;
+            _guestRepository = guestRepository;
         }
 
         [HttpGet("GetAllFutureBookings")] // lina
