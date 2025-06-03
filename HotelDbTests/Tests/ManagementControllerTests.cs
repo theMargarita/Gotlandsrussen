@@ -285,6 +285,31 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
         }
 
+        // Return empty list
+        [TestMethod]
+        public async Task GetBookingsGroupedByMonth_ShouldReturnEmptyList_WhenNoBookingsExist()
+        {
+            // Arrange
+            _mockBookingRepository
+                .Setup(repo => repo.GetAllFutureBookings())
+                .ReturnsAsync(new List<BookingDto>());
+
+            // Act
+            var result = await _controller.GetBookingsGroupedByMonth();
+
+            // Assert
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var grouped = okResult.Value as ICollection<YearMonthBookingsDto>;
+            Assert.IsNotNull(grouped);
+            Assert.AreEqual(0, grouped.Count);
+
+            _mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
+        }
+
+
     }
 
 }
