@@ -265,9 +265,9 @@ namespace HotelGotlandsrussenTESTS.Tests
 
             // Act
             var result = await _controller.DeleteBooking(bookingId);
+            var okResult = result as OkObjectResult;
             
             // Assert
-            var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult, "Expected OkObjectResult");
             Assert.AreEqual(200, okResult.StatusCode);
             Assert.AreEqual("Booking deleted successfully", okResult.Value);
