@@ -207,6 +207,26 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockGuestRepository?.Verify(repo => repo.AddGuest(It.IsAny<Guest>()), Times.Once);
         }
 
+        
+
+        [TestMethod]
+        public async Task AddBreakfast_ShouldReturnNotFound_WhenBookingIdIsInvalid()
+        {
+            // Arrange
+            var request = new AddBreakfastRequestDto { BookingId = 0 };
+            _mockBookingRepository
+                .Setup(r => r.GetById(It.IsAny<int>()))
+                .ReturnsAsync((Booking?)null);
+
+            // Act
+            var result = await _controller.AddBreakfast(request);
+
+            // Assert
+            var notFoundResult = result.Result as NotFoundObjectResult;
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(404, notFoundResult.StatusCode);
+            Assert.AreEqual("BookingId was not found", notFoundResult.Value);
+        }
 
 
 
