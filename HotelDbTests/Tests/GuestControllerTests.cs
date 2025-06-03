@@ -273,6 +273,38 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual("Breakfast was empty.", notFound.Value);
         }
 
+        // When breakfast is added correct
+        [TestMethod]
+        public async Task AddBreakfast_ShouldReturnOk_WhenBreakfastIsSuccessfullyAdded()
+        {
+            // Arrange
+            var request = new AddBreakfastRequestDto { BookingId = 3 };
+            var booking = new Booking { Id = 3, Breakfast = false };
+
+            _mockBookingRepository
+                .Setup(r => r.GetById(3))
+                .ReturnsAsync(booking);
+
+            _mockBookingRepository
+                .Setup(r => r.Update(It.IsAny<Booking>()))
+                .Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.AddBreakfast(request);
+
+            // Assert
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var dto = okResult.Value as AddBreakfastDto;
+            Assert.IsNotNull(dto);
+            Assert.AreEqual(3, dto.BookingId);
+            Assert.IsTrue(dto.Breakfast);
+            Assert.AreEqual("Breakfast has been added to the booking.", dto.Message);
+
+            _mockBookingRepository.Verify(r => r.Update(It.Is<Booking>(b => b.Id == 3 && b.Breakfast == true)), Times.Once);
+        }
 
 
     }
