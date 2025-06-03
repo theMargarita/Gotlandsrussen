@@ -113,7 +113,7 @@ namespace Gotlandsrussen.Repositories
             return booking;
         }
 
-        public async Task<Booking> CreateBooking(CreateBookingDto booking, int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children)
+        public async Task<Booking> CreateBooking(CreateBookingDto booking, int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children) //margarita 
         {
             //check if guest exists
             var existingGuest = await _context.Bookings.AnyAsync(b => b.GuestId == guestId);
