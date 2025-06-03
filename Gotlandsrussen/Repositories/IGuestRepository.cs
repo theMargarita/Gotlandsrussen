@@ -6,5 +6,6 @@ namespace Gotlandsrussen.Repositories
     {
         Task<ICollection<Guest>> GetAllGuests();
         Task<Guest> AddGuest(Guest guest);
+        Task DeleteGuest(int guestId);
     }
 }

@@ -2,6 +2,7 @@
 using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
 using HotelGotlandsrussen.Models.DTOs;
+using HotelGotlandsrussenLIBRARY.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,7 +44,7 @@ namespace Gotlandsrussen.Repositories
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
 
-        public async Task Update(Booking booking)  
+        public async Task Update(Booking booking)
         {
             _context.Bookings.Update(booking);
             await _context.SaveChangesAsync();
@@ -112,5 +113,76 @@ namespace Gotlandsrussen.Repositories
             return booking;
         }
 
+        public async Task<Booking> CreateBooking(int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast) //margarita 
+        {
+            //check if guest exists
+            var existingGuest = await _context.Guests.AnyAsync(b => b.Id == guestId);
+
+            //check if room is available on the chosen dates
+            var availableRoom = await _context.Rooms
+              .Where(r => r.RoomType.NumberOfBeds >= (adults + children))
+              .Where(r => !_context.BookingRooms
+                  .Any(br => br.RoomId == r.Id &&
+                     br.Booking.FromDate <= toDate &&
+                     br.Booking.ToDate >= fromDate))
+              .Select(r => new RoomDto
+              {
+                  Id = r.Id,
+                  RoomName = r.Name,
+                  RoomTypeName = r.RoomType.Name,
+                  NumberOfBeds = r.RoomType.NumberOfBeds,
+                  PricePerNight = r.RoomType.PricePerNight
+              })
+              .FirstOrDefaultAsync();
+
+
+            // Find the first available room
+            //var availableRoom = await _context.Rooms
+            //    .Where(r => r.RoomType.NumberOfBeds >= (adults + children))
+            //    .Where(r => !_context.BookingRooms
+            //        .Any(br => br.RoomId == r.Id &&
+            //                   br.Booking.FromDate <= toDate &&
+            //                   br.Booking.ToDate >= fromDate))
+            //    .FirstOrDefaultAsync();
+
+            var bookingRooms = availableRoom.Id;
+
+            var newBooking = new Booking
+            {
+                GuestId = guestId,
+                FromDate = fromDate,
+                ToDate = toDate,
+                NumberOfAdults = adults,
+                NumberOfChildren = children,
+                Breakfast = breakfast,
+                BookingRooms = new List<BookingRoom>
+                {
+                    new BookingRoom
+                    {
+                        RoomId = availableRoom.Id
+                    }
+                }
+            };
+           
+            _context.Bookings.Add(newBooking);
+            //await _context.SaveChangesAsync();
+
+            return newBooking;
+        }
+
+        public async Task DeleteBooking(int id)
+        {
+            var booking = await _context.Bookings
+                .Include(b => b.BookingRooms)
+                .FirstOrDefaultAsync(b => b.Id == id);
+            
+            if (booking == null)
+            {
+                throw new KeyNotFoundException("Booking not found");
+            }
+
+            _context.Bookings.Remove(booking);
+            await _context.SaveChangesAsync();
+        }
     }
 }
