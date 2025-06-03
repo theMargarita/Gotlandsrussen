@@ -215,14 +215,15 @@ namespace Gotlandsrussen.Controllers
         [HttpDelete("DeleteBooking")]
         public async Task<IActionResult> DeleteBooking(int bookingId)
         {
-            var booking = await _bookingRepository.GetById(bookingId);
-            if (booking == null)
+            try
+            {
+                await _bookingRepository.DeleteBooking(bookingId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound(new { errorMessage = "Booking not found" });
             }
-            
-            await _bookingRepository.DeleteBooking(booking.Id);
-            return NoContent();
         }
     }
 }
