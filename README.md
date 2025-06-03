@@ -3,14 +3,26 @@
 ---
 
 ## Översikt
-| Metod | Endpoint                                         | Beskrivning                                      |
-|-------|--------------------------------------------------|--------------------------------------------------|
-| GET   | `/api/person`                                    | Hämtar alla personer                             |
-| GET   | `/api/person/{id}`                               | Hämtar intressen för en person                   |
-| GET   | `/api/person/{personId}/link`                    | Hämtar alla URL:er kopplade till en persons intressen |
-| POST  | `/api/person/{personId}/add-interest`            | Lägg till ett nytt intresse till en person      |
-| POST  | `/api/person/{personId}/interests/{interestId}/add-link` | Lägg till en URL till ett persons intresse |
-
+|      | Endpoint                                          | Parameters                                                        | Description                                        |
+|------|---------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------|
+| GET  | `/api/Guest/GetAllGuests`                         |                                                                   | Gets all guests                                    |
+| GET  | `/api/Guest/GetBookingById`                       | bookingId - TA BORT?                                              | Gets a booking with specific id                    |
+| GET  | `/api/Guest/GetAvailableRooms`                    | startDate, endDate                                                | Gets available rooms for a specific period of days |
+| PUT  | `/api/Guest/AddBreakfast`                         | BookingId                                                         | Adds breakfast to a specific booking               |
+| PUT  | `/api/Guest/CancelBooking`                        | bookingId                                                         | Cancels a specific booking                         |
+| POST | `/api/Guest/CreateGuest`                          | FirstName, LastName, Email, Phone                                 | Creates a new guest                                |
+| DEL  |`/api/Guest/DeleteGuest`                           | guestId                                                           | Deletes a guest by id                              |
+|      |                                                   |                                                                   |                                                    |
+| GET  |`/api/Management/GetAllFutureBookings`             |                                                                   | Gets all future bookings                           |
+| GET  |`/api/Management/GetBookingsGroupedByWeek`         |                                                                   | Gets future bookings grouped by week               |
+| GET  |`/api/Management/GetBookingsGroupedByMonth`        |                                                                   | Gets future bookings grouped by month              |
+| GET  |`/api/Management/GetBookingById`                   | id                                                                | Gets a booking with specific id                    |
+| GET  |`/api/Management/GetTotalPrice`                    | BookingId                                                         | Gets the total sum for a specific booking          |
+| GET  |`/api/Management/GetAvailableRoomsByDateAndGuests` | fromDate, toDate, adults, children                                | Gets available rooms by specific conditions        |
+| GET  |`/api/Management/GetBookingHistory`                |                                                                   | Gets all past bookings                             |
+| PUT  |`/api/Management/UpdateBooking`                    | Id, FromDate, ToDate, NumberOfAdults, NumberOfChildren, Breakfast | Updates a booking                                  |
+| POST |`/api/Management/CreateBooking`                    | xxxxxxxx                                                          | Creates a new booking                              |
+| DEL  |`/api/Management/DeleteBooking`                    | bookingId                                                         | Deletes a booking                                  |
 ---
 <details close>
 <summary>Hämta alla personer</summary>
