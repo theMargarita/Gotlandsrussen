@@ -97,6 +97,7 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.IsNull(result);
         }
 
+
         [TestMethod]
         public async Task UpdateBookingAsync_ShouldThrow_WhenDateConflictExists()
         {
@@ -148,6 +149,47 @@ namespace HotelGotlandsrussenTESTS.Tests
                 NumberOfAdults = 1,
                 NumberOfChildren = 0,
                 Breakfast = true
+            };
+
+            // Act + Assert
+            await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+                _repository.UpdateBookingAsync(dto));
+        }
+
+        [TestMethod]
+        public async Task UpdateBookingAsync_ShouldThrow_WhenGuestCountExceedsCapacity()
+        {
+            // Arrange
+            var roomType = new RoomType { Name = "Tiny", NumberOfBeds = 2 };
+            var room = new Room { Name = "Mini", RoomType = roomType };
+            _context.RoomTypes.Add(roomType);
+            _context.Rooms.Add(room);
+
+            var booking = new Booking
+            {
+                FromDate = new DateOnly(2025, 6, 1),
+                ToDate = new DateOnly(2025, 6, 5),
+                IsCancelled = false,
+                NumberOfAdults = 1,
+                NumberOfChildren = 0,
+                Breakfast = false,
+                BookingRooms = new List<BookingRoom>
+        {
+            new BookingRoom { Room = room }
+        }
+            };
+
+            _context.Bookings.Add(booking);
+            await _context.SaveChangesAsync();
+
+            var dto = new UpdateBookingDto
+            {
+                Id = booking.Id,
+                FromDate = booking.FromDate,
+                ToDate = booking.ToDate,
+                NumberOfAdults = 3, // Totalt 3 gäster, men bara 2 sängar
+                NumberOfChildren = 0,
+                Breakfast = false
             };
 
             // Act + Assert
