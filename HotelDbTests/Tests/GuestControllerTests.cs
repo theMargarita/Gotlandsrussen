@@ -207,7 +207,27 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockGuestRepository?.Verify(repo => repo.AddGuest(It.IsAny<Guest>()), Times.Once);
         }
 
+        [TestMethod]
+        public async Task DeleteGuest_DeletesExcistingGuest_ReturnsNoContent()
+        {
+            // Arrange
+            var mockGuest = MockDataSetup.GetGuests()[0];
 
+            _mockGuestRepository?
+                .Setup(repo => repo.AddGuest(It.IsAny<Guest>()))
+                .ReturnsAsync(mockGuest);
+
+            // Act
+            var result = await _controller.DeleteGuest(mockGuest.Id);
+
+            // Assert
+            var noContentResult = result as NoContentResult;
+
+            Assert.IsNotNull(noContentResult, "Expected NoContentResult");
+            Assert.AreEqual(204, noContentResult.StatusCode);
+
+            _mockGuestRepository?.Verify(repo => repo.AddGuest(It.IsAny<Guest>()), Times.Once);
+        }
 
 
     }
