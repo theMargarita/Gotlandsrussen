@@ -175,13 +175,14 @@ namespace Gotlandsrussen.Repositories
             var booking = await _context.Bookings
                 .Include(b => b.BookingRooms)
                 .FirstOrDefaultAsync(b => b.Id == id);
+            
             if (booking == null)
             {
                 throw new KeyNotFoundException("Booking not found");
             }
+
             _context.Bookings.Remove(booking);
             await _context.SaveChangesAsync();
         }
-
     }
 }
