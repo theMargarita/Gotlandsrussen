@@ -305,6 +305,24 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockGuestRepository.Verify(repo => repo.GetAllGuests(), Times.Once);
         }
 
+        // Return empty list of guests
+        [TestMethod]
+        public async Task GetAllGuests_ShouldReturnEmptyList_WhenNoGuestsExist()
+        {
+            // Arrange
+            _mockGuestRepository
+                .Setup(repo => repo.GetAllGuests())
+                .ReturnsAsync(new List<Guest>());
+
+            // Act
+            var result = await _controller.GetAllGuests();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count);
+
+            _mockGuestRepository.Verify(repo => repo.GetAllGuests(), Times.Once);
+        }
 
     }
 }
