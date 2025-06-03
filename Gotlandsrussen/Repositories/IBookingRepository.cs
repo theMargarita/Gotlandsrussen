@@ -1,6 +1,7 @@
 ﻿using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
 using HotelGotlandsrussen.Models.DTOs;
+using HotelGotlandsrussenLIBRARY.Models.DTOs;
 
 namespace Gotlandsrussen.Repositories
 {
@@ -14,6 +15,8 @@ namespace Gotlandsrussen.Repositories
         public Task Update(Booking booking);
 
         public Task<Booking?> UpdateBookingAsync(UpdateBookingDto updatedBooking);
+
+        public Task<Booking> CreateBooking( int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast);
 
     }
 }
