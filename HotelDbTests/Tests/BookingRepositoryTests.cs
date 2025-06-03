@@ -1,6 +1,7 @@
 ﻿using Gotlandsrussen.Data;
 using Gotlandsrussen.Models;
 using Gotlandsrussen.Repositories;
+using HotelGotlandsrussen.Models.DTOs;
 using HotelGotlandsrussenTESTS.TestSetup;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -75,6 +76,26 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual(2, updatedBooking.NumberOfAdults);
         }
 
-       
+        [TestMethod]
+        public async Task UpdateBookingAsync_ShouldReturnNull_WhenBookingDoesNotExist()
+        {
+            // Arrange
+            var updatedBooking = new UpdateBookingDto
+            {
+                Id = 999, // obefintlig
+                FromDate = new DateOnly(2025, 6, 10),
+                ToDate = new DateOnly(2025, 6, 12),
+                NumberOfAdults = 2,
+                NumberOfChildren = 0,
+                Breakfast = true
+            };
+
+            // Act
+            var result = await _repository.UpdateBookingAsync(updatedBooking);
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
     }
 }
