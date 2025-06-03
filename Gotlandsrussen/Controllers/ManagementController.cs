@@ -187,6 +187,10 @@ namespace Gotlandsrussen.Controllers
         {
             var newBooking = await _bookingRepository.CreateBooking(guestId, fromDate, toDate, adults, children, breakfast);
 
+            if(adults == 0)
+            {
+                return BadRequest(new { errorMessage = "Must add atleast one adult" });
+            }
             if (guestId == null)
             {
                 return BadRequest(new { errorMessage = "Guest not found" });
@@ -195,10 +199,15 @@ namespace Gotlandsrussen.Controllers
             {
                 return BadRequest(new { errorMessage = "Date incorrectly typed" });
             }
+
             var today = DateOnly.FromDateTime(DateTime.Now);
             if (fromDate < today)
             {
                 return BadRequest(new { errorMessgae = "Cannot get past date" });
+            }
+            if (fromDate == toDate)
+            {
+                return BadRequest(new { errorMessgae = "Cannot book for the same day" });
             }
             if (fromDate > toDate)
             {
