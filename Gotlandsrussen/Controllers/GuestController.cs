@@ -26,7 +26,7 @@ namespace Gotlandsrussen.Controllers
         }
 
         [HttpPut("AddBreakfast")] // Florent
-        public async Task<ActionResult<AddBreakfastDto>>AddBreakfast([FromQuery] AddBreakfastRequestDto request)
+        public async Task<ActionResult<AddBreakfastDto>> AddBreakfast([FromQuery] AddBreakfastRequestDto request)
         {
             var booking = await _bookingRepository.GetById(request.BookingId);
 
@@ -96,7 +96,7 @@ namespace Gotlandsrussen.Controllers
             {
                 return NotFound(new { errorMessage = "Booking not found" });
             }
-            
+
             if (bookingToCancel.IsCancelled == true)
             {
                 return Ok(new { message = "Booking is already cancelled" });
@@ -145,6 +145,24 @@ namespace Gotlandsrussen.Controllers
             await _guestRepository.AddGuest(guest);
             return CreatedAtAction(nameof(GetAllGuests), new { id = guest.Id }, guest);
         }
+        
+        [HttpDelete("DeleteGuest")]
+        public async Task<IActionResult> DeleteGuest(int guestId)
+        {
+            if (guestId <= 0)
+            {
+                return BadRequest("Invalid guest ID");
+            }
 
+            try
+            {
+                await _guestRepository.DeleteGuest(guestId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound("Guest not found");
+            }
+        }
     }
 }
