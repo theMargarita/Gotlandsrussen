@@ -229,6 +229,29 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual("BookingId was not found", notFoundResult.Value);
         }
 
+        // Breakfast already added
+        [TestMethod]
+        public async Task AddBreakfast_ShouldReturnConflict_WhenBreakfastAlreadyAdded()
+        {
+            // Arrange
+            var request = new AddBreakfastRequestDto { BookingId = 1 };
+            var booking = new Booking { Id = 1, Breakfast = true };
+
+            _mockBookingRepository
+                .Setup(r => r.GetById(1))
+                .ReturnsAsync(booking);
+
+            // Act
+            var result = await _controller.AddBreakfast(request);
+
+            // Assert
+            var conflict = result.Result as ConflictObjectResult;
+            Assert.IsNotNull(conflict);
+            Assert.AreEqual(409, conflict.StatusCode);
+            Assert.AreEqual("Breakfast is already added to the booking.", conflict.Value);
+        }
+
+
 
     }
 }
