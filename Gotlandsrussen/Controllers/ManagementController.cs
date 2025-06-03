@@ -117,7 +117,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(summary);
         }
 
-        [HttpGet("GetAvailableRoomByDateAndGuests")] // Margarita
+        [HttpGet("GetAvailableRoomByDateAndGuests")] 
         public async Task<ActionResult<ICollection<RoomDto>>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
             var getDate = await _roomRepository.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children);
@@ -182,7 +182,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(guests);
         }
 
-        [HttpPost("CreateBooking")]
+        [HttpPost("CreateBooking")] //margarita 
         public async Task<IActionResult> CreateBooking(int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
         {
             var newBooking = await _bookingRepository.CreateBooking(guestId, fromDate, toDate, adults, children, breakfast);
