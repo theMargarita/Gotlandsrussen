@@ -197,6 +197,54 @@ namespace HotelGotlandsrussenTESTS.Tests
                 _repository.UpdateBookingAsync(dto));
         }
 
+        [TestMethod]
+        public async Task UpdateBookingAsync_ShouldUpdateBooking_WhenAllValid()
+        {
+            // Arrange
+            var roomType = new RoomType { Name = "Deluxe", NumberOfBeds = 4 };
+            var room = new Room { Name = "RoomX", RoomType = roomType };
+            _context.RoomTypes.Add(roomType);
+            _context.Rooms.Add(room);
+
+            var booking = new Booking
+            {
+                FromDate = new DateOnly(2025, 6, 5),
+                ToDate = new DateOnly(2025, 6, 10),
+                IsCancelled = false,
+                NumberOfAdults = 1,
+                NumberOfChildren = 1,
+                Breakfast = false,
+                BookingRooms = new List<BookingRoom>
+        {
+            new BookingRoom { Room = room }
+        }
+            };
+
+            _context.Bookings.Add(booking);
+            await _context.SaveChangesAsync();
+
+            var dto = new UpdateBookingDto
+            {
+                Id = booking.Id,
+                FromDate = new DateOnly(2025, 6, 6),
+                ToDate = new DateOnly(2025, 6, 12),
+                NumberOfAdults = 2,
+                NumberOfChildren = 1,
+                Breakfast = true
+            };
+
+            // Act
+            var result = await _repository.UpdateBookingAsync(dto);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(dto.FromDate, result.FromDate);
+            Assert.AreEqual(dto.ToDate, result.ToDate);
+            Assert.AreEqual(dto.NumberOfAdults, result.NumberOfAdults);
+            Assert.AreEqual(dto.NumberOfChildren, result.NumberOfChildren);
+            Assert.AreEqual(dto.Breakfast, result.Breakfast);
+        }
+
 
     }
 }
