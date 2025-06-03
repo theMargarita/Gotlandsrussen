@@ -30,7 +30,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(await _bookingRepository.GetAllFutureBookings());
         }
 
-        [HttpGet("GetBookingsGroupedByWeek")] 
+        [HttpGet("GetBookingsGroupedByWeek")]
         public async Task<ActionResult<ICollection<BookingDto>>> GetBookingsGroupedByWeek()
         {
             var bookings = await _bookingRepository.GetAllFutureBookings();
@@ -111,7 +111,7 @@ namespace Gotlandsrussen.Controllers
                 NumberOfGuests = numberOfGuests,
                 NumberOfBreakfasts = numberOfBreakfasts,
                 BreakfastPrice = breakfastPrice,
-                TotalPrice =totalPrice
+                TotalPrice = totalPrice
             };
 
             return Ok(summary);
@@ -133,7 +133,7 @@ namespace Gotlandsrussen.Controllers
             {
                 return BadRequest(new { errorMessgae = "Cannot get past date" });
             }
-            if(fromDate > toDate)
+            if (fromDate > toDate)
             {
                 return BadRequest(new { errorMessage = "Cannot book date before start date" });
             }
@@ -210,6 +210,19 @@ namespace Gotlandsrussen.Controllers
             }
 
             return CreatedAtAction(nameof(GetAllGuests), new { id = newBooking.GuestId }, newBooking);
+        }
+
+        [HttpDelete("DeleteBooking")]
+        public async Task<IActionResult> DeleteBooking(int bookingId)
+        {
+            var booking = await _bookingRepository.GetById(bookingId);
+            if (booking == null)
+            {
+                return NotFound(new { errorMessage = "Booking not found" });
+            }
+            
+            await _bookingRepository.DeleteBooking(booking.Id);
+            return NoContent();
         }
     }
 }
