@@ -207,8 +207,8 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockGuestRepository?.Verify(repo => repo.AddGuest(It.IsAny<Guest>()), Times.Once);
         }
 
-        
 
+        // BookingId är ogiltigt
         [TestMethod]
         public async Task AddBreakfast_ShouldReturnNotFound_WhenBookingIdIsInvalid()
         {
