@@ -3,6 +3,7 @@ using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
 using Gotlandsrussen.Utilities;
 using HotelGotlandsrussen.Models.DTOs;
+using HotelGotlandsrussenLIBRARY.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,7 @@ namespace Gotlandsrussen.Controllers
     public class ManagementController : ControllerBase
     {
         private readonly IBookingRepository _bookingRepository;
+        private readonly IGuestRepository _guestRepository;
         private readonly IRoomRepository _roomRepository;
 
         public ManagementController(IBookingRepository bookingRepository, IRoomRepository roomRepository)
@@ -114,7 +116,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(summary);
         }
 
-        [HttpGet("{fromDate}/{toDate}/{adults}/{children}", Name = "GetAvailableRoomByDateAndGuests")] // Margarita
+        [HttpGet("GetAvailableRoomByDateAndGuests")] // Margarita
         public async Task<ActionResult<ICollection<RoomDto>>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
             var getDate = await _roomRepository.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children);
@@ -172,12 +174,41 @@ namespace Gotlandsrussen.Controllers
             }
         }
 
-        [HttpPost("CreateBooking")]
-        public async Task<IActionResult> CreateBooking()
+        [HttpGet("GetAllGuests")]
+        public async Task<ActionResult<ICollection<Guest>>> GetAllGuests()
         {
-            //return CreatedAtAction(nameof(GetById), new { id = booking.GuestId }, booking);
+            var guests = await _guestRepository.GetAllGuests();
+            return Ok(guests);
+        }
 
-            return Ok();
+        [HttpPost("CreateBooking")]
+        public async Task<IActionResult> CreateBooking(int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
+        {
+            var newBooking = await _bookingRepository.CreateBooking(guestId, fromDate, toDate, adults, children, breakfast);
+
+            if (guestId == null)
+            {
+                return BadRequest(new { errorMessage = "Guest not found" });
+            }
+            if (newBooking == null)
+            {
+                return BadRequest(new { errorMessage = "Date incorrectly typed" });
+            }
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            if (fromDate < today)
+            {
+                return BadRequest(new { errorMessgae = "Cannot get past date" });
+            }
+            if (fromDate > toDate)
+            {
+                return BadRequest(new { errorMessage = "Cannot book date before start date" });
+            }
+            if (adults < 0 || children < 0)
+            {
+                return BadRequest("Number of adults and children cannot be negative.");
+            }
+
+            return CreatedAtAction(nameof(GetAllGuests), new { id = newBooking.GuestId }, newBooking);
         }
     }
 }
