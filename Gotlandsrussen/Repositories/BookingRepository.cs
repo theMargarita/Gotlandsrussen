@@ -44,7 +44,7 @@ namespace Gotlandsrussen.Repositories
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
 
-        public async Task Update(Booking booking)  
+        public async Task Update(Booking booking)
         {
             _context.Bookings.Update(booking);
             await _context.SaveChangesAsync();
@@ -113,21 +113,18 @@ namespace Gotlandsrussen.Repositories
             return booking;
         }
 
-        public async Task<Booking> CreateBooking(CreateBookingDto booking) //margarita 
+        public async Task<Booking> CreateBooking(int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast) //margarita 
         {
             //check if guest exists
-            var existingGuest = await _context.Guests.AnyAsync(b => b.Id == booking.GuestId);
-
-            //gets rooms id if there is any else empty list
-            var requstRoomId = booking.Rooms?.Select(r => r.Id).ToList() ?? new List<int>();
+            var existingGuest = await _context.Guests.AnyAsync(b => b.Id == guestId);
 
             //check if room is available on the chosen dates
-            var availableRooms = await _context.Rooms
-              .Where(r => r.RoomType.NumberOfBeds >= (booking.NumberOfAdults + booking.NumberOfChildren))
+            var availableRoom = await _context.Rooms
+              .Where(r => r.RoomType.NumberOfBeds >= (adults + children))
               .Where(r => !_context.BookingRooms
                   .Any(br => br.RoomId == r.Id &&
-                     br.Booking.FromDate <= booking.ToDate &&
-                     br.Booking.ToDate >= booking.FromDate))
+                     br.Booking.FromDate <= toDate &&
+                     br.Booking.ToDate >= fromDate))
               .Select(r => new RoomDto
               {
                   Id = r.Id,
@@ -138,24 +135,36 @@ namespace Gotlandsrussen.Repositories
               })
               .FirstOrDefaultAsync();
 
-            var bookingRooms = availableRooms.Id;
+
+            // Find the first available room
+            //var availableRoom = await _context.Rooms
+            //    .Where(r => r.RoomType.NumberOfBeds >= (adults + children))
+            //    .Where(r => !_context.BookingRooms
+            //        .Any(br => br.RoomId == r.Id &&
+            //                   br.Booking.FromDate <= toDate &&
+            //                   br.Booking.ToDate >= fromDate))
+            //    .FirstOrDefaultAsync();
+
+            var bookingRooms = availableRoom.Id;
 
             var newBooking = new Booking
             {
-                GuestId = booking.GuestId,
-                FromDate = booking.FromDate,
-                ToDate = booking.ToDate,
-                NumberOfAdults = booking.NumberOfAdults,
-                NumberOfChildren = booking.NumberOfChildren,
-                Breakfast = booking.Breakfast,
-                BookingRooms = booking.Rooms
-                .Select( r => new BookingRoom
+                GuestId = guestId,
+                FromDate = fromDate,
+                ToDate = toDate,
+                NumberOfAdults = adults,
+                NumberOfChildren = children,
+                Breakfast = breakfast,
+                BookingRooms = new List<BookingRoom>
                 {
-                    Id = r.Id
-                }).ToList()
+                    new BookingRoom
+                    {
+                        RoomId = availableRoom.Id
+                    }
+                }
             };
-
-             _context.Bookings.Add(newBooking);
+           
+            _context.Bookings.Add(newBooking);
             //await _context.SaveChangesAsync();
 
             return newBooking;
