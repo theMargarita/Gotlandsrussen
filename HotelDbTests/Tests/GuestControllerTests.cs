@@ -209,7 +209,7 @@ namespace HotelGotlandsrussenTESTS.Tests
 
         // AddBreakfast test Florent
 
-        // BookingId är ogiltigt
+        // BookingId is not valid 
         [TestMethod]
         public async Task AddBreakfast_ShouldReturnNotFound_WhenBookingIdIsInvalid()
         {
@@ -228,7 +228,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual(404, notFoundResult.StatusCode);
             Assert.AreEqual("BookingId was not found", notFoundResult.Value);
         }
-
 
 
     }
