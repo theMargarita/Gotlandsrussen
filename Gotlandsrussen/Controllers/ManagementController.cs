@@ -183,9 +183,8 @@ namespace Gotlandsrussen.Controllers
         //}
 
         [HttpPost("CreateBooking")] //margarita 
-        public async Task<ActionResult<CreateBookingDto>> CreateBooking(int guestId,List<int> roomId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
+        public async Task<ActionResult<CreateBookingDto>> CreateBooking([FromQuery] int guestId, List<int> roomId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
         {
-            var availableRooms = await _roomRepository.GetAvailableRoomsAsync(fromDate, toDate);
 
             if (adults == 0)
             {
@@ -209,57 +208,82 @@ namespace Gotlandsrussen.Controllers
             {
                 return BadRequest("Number of adults and children cannot be negative.");
             }
-            if (availableRooms != null)
+
+            var availableRooms = await _roomRepository.GetAvailableRoomsAsync(fromDate, toDate);
+            if (availableRooms == null || !availableRooms.Any())
             {
                 return BadRequest(new { Message = "No available rooms on this period of time" });
             }
+
             var checkGuestId = await _guestRepository.GetAllGuests();
-            if (!checkGuestId.Any())
+            if (!checkGuestId.Any(g => g.Id == guestId))
             {
                 return NotFound("Guest not found");
             }
 
+            bool allRoomsAvailable = roomId.All(id => availableRooms.Any(r => r.Id == id));
 
-            bool allExist = roomId.All(id => availableRooms.Any(r => r.Id == id));
-
-            if (!allExist)
+            if (!allRoomsAvailable)
             {
                 return BadRequest(new { errorMessage = "All rooms are not available" });
             }
 
-            int numberOfGuests = adults + children;
+            var roomsToBook = availableRooms.Where(r => roomId.Contains(r.Id)).ToList();
 
-            //foreach (var room in roomId)
-            //{
-            //    avail
-            //}
+            //int numberOfGuests = adults + children;
+
+
+            //var roomList = new List<Room>();
 
             //foreach (int room in roomId)
             //{
-            //    int numberOfBeds = availableRooms.Where(a => a.Id == room)
-
+            //    var gotRoomId = await _roomRepository.GetRoomById(room);
+            //    roomList.Add(gotRoomId);
             //}
-            //var getRoom = List<Room>
-            foreach(int room in roomId)
-            {
-                await _
-            }
 
-            await _bookingRepository.CreateBooking(new Booking
+
+            var booking = new Booking
             {
                 GuestId = guestId,
                 FromDate = fromDate,
                 ToDate = toDate,
                 NumberOfAdults = adults,
                 NumberOfChildren = children,
-                Breakfast = breakfast
-            });
+                Breakfast = breakfast,
 
+            };
 
+            booking = await _bookingRepository.CreateBooking(booking);
 
-            //await _bookingRepository.CreateBooking
+            var bookingRooms = roomsToBook.Select(r => new BookingRoom
+            {
+                BookingId = booking.Id,
+                RoomId = r.Id
+            }).ToList();
 
-            //return CreatedAtAction(nameof(GetBookingById), new { id = newBooking.Id }, newBooking);
+            await _bookingRoomRepository.AddBookingRooms(bookingRooms);
+
+            var newBooking = new CreateBookingDto
+            {
+                BookingId = booking.Id,
+                GuestId = guestId,
+                FromDate = fromDate,
+                ToDate = toDate,
+                NumberOfAdults = adults,
+                NumberOfChildren = children,
+                Breakfast = breakfast,
+                RoomIds = roomId
+            };
+
+            //var bookingRoomList = new List<BookingRoom>();
+
+                //foreach (var room in roomList)
+                //{
+                //    var newBookingRoom = new BookingRoom { BookingId = booking.Id, RoomId = room.Id };
+                //    bookingRoomList.Add(newBookingRoom);
+                //}
+
+            return CreatedAtAction(nameof(GetBookingById), new { id = booking.Id }, new { newBooking  });
         }
     }
 }
