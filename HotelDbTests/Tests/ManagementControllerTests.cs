@@ -1,4 +1,5 @@
 ﻿using Gotlandsrussen.Controllers;
+using Gotlandsrussen.Data;
 using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
@@ -15,6 +16,7 @@ namespace HotelGotlandsrussenTESTS.Tests
     {
         private Mock<IBookingRepository>? _mockBookingRepository;
         private Mock<IRoomRepository>? _mockRoomRepository;
+        private Mock<IGuestRepository>? _mockGuestRepository;
         private ManagementController? _controller;
 
         [TestInitialize]
@@ -22,7 +24,9 @@ namespace HotelGotlandsrussenTESTS.Tests
         {
             _mockBookingRepository = new Mock<IBookingRepository>();
             _mockRoomRepository = new Mock<IRoomRepository>();
-            _controller = new ManagementController(_mockBookingRepository.Object, _mockRoomRepository.Object);
+            _mockGuestRepository = new Mock<IGuestRepository>();
+
+        _controller = new ManagementController(_mockBookingRepository.Object, _mockRoomRepository.Object, _mockGuestRepository.Object);
         }
 
         // Börja test här
@@ -259,20 +263,18 @@ namespace HotelGotlandsrussenTESTS.Tests
         public async Task DeleteBooking_DeletesExistingBooking_ReturnsOk()
         {
             // Arrange
-            var bookingId = 1;
-            _mockBookingRepository.Setup(repo => repo.DeleteBooking(bookingId))
-                .ReturnsAsync("Booking was deleted");
+            var excistingBooking = MockDataSetup.GetBookings()[0];
+
+            _mockBookingRepository
+            .Setup(repo => repo.DeleteBooking(excistingBooking.Id))
+            .Returns(Task.CompletedTask);
 
             // Act
-            var result = await _controller.DeleteBooking(bookingId);
-            var okResult = result as OkObjectResult;
-            
+            var result = await _controller.DeleteBooking(excistingBooking.Id);
+            var deletedBooking = result as NoContentResult;
+
             // Assert
-            Assert.IsNotNull(okResult, "Expected OkObjectResult");
-            Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual("Booking deleted successfully", okResult.Value);
+            Assert.AreEqual(204, deletedBooking.StatusCode);
         }
     }
-
 }
-

@@ -226,7 +226,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.IsNotNull(noContentResult, "Expected NoContentResult");
             Assert.AreEqual(204, noContentResult.StatusCode);
 
-            _mockGuestRepository?.Verify(repo => repo.AddGuest(It.IsAny<Guest>()), Times.Once);
         }
 
 

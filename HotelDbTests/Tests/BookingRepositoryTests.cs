@@ -76,7 +76,7 @@ namespace HotelGotlandsrussenTESTS.Tests
         }
 
         [TestMethod]
-        public async Task DeleteBooking_DeletesExcistingBookingAndCreatesANewBeforeRemoveIt_ReturnsNoBooking()
+        public async Task DeleteBooking_DeletesExcistingBookingsAndCreatesANewBeforeRemoveIt_ReturnsNoBooking()
         {
             // Arrange
             // Clear existing bookings.
@@ -92,13 +92,14 @@ namespace HotelGotlandsrussenTESTS.Tests
             // Act
             // Checks if bookingToDelete Excist and then Delete the booking with that id.
             var bookingToDelete = await _repository.GetById(booking.Id);
-            var deletedBooking = await _repository.DeleteBooking(booking.Id);
+            Assert.IsNotNull(bookingToDelete, "Booking should exist before deletion");
+            
+            await _repository.DeleteBooking(booking.Id);
+            var DeletetBooking = await _repository.GetById(booking.Id);
 
             // Assert
-            Assert.IsNotNull(bookingToDelete, "Booking should exist before deletion");
-            Assert.IsNull(deletedBooking, "Booking should not exist after deletion.");
+            Assert.IsNull(DeletetBooking, "Booking should not exist after deletion.");
         }
-
 
     }
 }
