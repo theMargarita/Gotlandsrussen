@@ -115,10 +115,10 @@ namespace Gotlandsrussen.Repositories
 
         public async Task<Booking> CreateBooking(Booking booking)
         {
-            await _context.Bookings.AddAsync(booking);
+            var createBooking =  await _context.Bookings.AddAsync(booking);
             await _context.SaveChangesAsync();
 
-            return booking;
+            return createBooking.Entity;
         }
 
 
