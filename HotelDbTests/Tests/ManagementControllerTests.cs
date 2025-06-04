@@ -233,7 +233,6 @@ namespace HotelGotlandsrussenTESTS.Tests
 
             _mockRoomRepository?.Setup(repo => repo.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children)).ReturnsAsync(expectedRooms);
 
-
             //Act
             var result = _controller?.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children).Result;
 
@@ -286,6 +285,15 @@ namespace HotelGotlandsrussenTESTS.Tests
         [TestMethod]
         public void GetBookingHistory_ReturnTrueWhenFindList()
         {
+            //Arrange
+            var booking = MockDataSetup.GetBookingDtos();
+            _mockBookingRepository?.Setup(repo => repo.GetBookingHistory()).ReturnsAsync(booking);
+
+            //Act
+
+
+            //Assert
+
 
         }
     }
