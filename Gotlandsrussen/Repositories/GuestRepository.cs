@@ -24,5 +24,19 @@ namespace Gotlandsrussen.Repositories
             var getAllGuests = await _context.Guests.ToListAsync();
             return getAllGuests;
         }
+
+        public async Task DeleteGuest(int guestId)
+        {
+            var guest = await _context.Guests.FindAsync(guestId);
+            
+            if (guest == null)
+            {
+                throw new KeyNotFoundException("Guest not found");
+            }
+
+            _context.Guests.Remove(guest);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }
