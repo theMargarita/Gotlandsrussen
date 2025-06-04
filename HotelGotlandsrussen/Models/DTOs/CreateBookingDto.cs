@@ -4,7 +4,6 @@ namespace HotelGotlandsrussenLIBRARY.Models.DTOs
 {
     public class CreateBookingDto
     {
-
         public int BookingId { get; set; }
         public int GuestId { get; set; }
         public DateOnly FromDate { get; set; } 
