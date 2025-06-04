@@ -2,6 +2,7 @@
 using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
 using Gotlandsrussen.Utilities;
+using GotlandsrussenAPI.Repositories;
 using HotelGotlandsrussen.Models.DTOs;
 using HotelGotlandsrussenLIBRARY.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,14 @@ namespace Gotlandsrussen.Controllers
         private readonly IBookingRepository _bookingRepository;
         private readonly IGuestRepository _guestRepository;
         private readonly IRoomRepository _roomRepository;
+        private readonly IBookingRoomRepository _bookingRoomRepository;
 
-        public ManagementController(IBookingRepository bookingRepository, IRoomRepository roomRepository, IGuestRepository guestRepository)
+        public ManagementController(IBookingRepository bookingRepository, IRoomRepository roomRepository, IGuestRepository guestRepository, IBookingRoomRepository bookingRoomRepository)
         {
             _bookingRepository = bookingRepository;
             _roomRepository = roomRepository;
             _guestRepository = guestRepository;
+            _bookingRoomRepository = bookingRoomRepository;
         }
 
         [HttpGet("GetAllFutureBookings")] // lina
@@ -183,7 +186,7 @@ namespace Gotlandsrussen.Controllers
         //}
 
         [HttpPost("CreateBooking")] //margarita 
-        public async Task<ActionResult<CreateBookingDto>> CreateBooking([FromQuery] int guestId, List<int> roomId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
+        public async Task<ActionResult<CreateBookingDto>> CreateBooking(int guestId, List<int> roomId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
         {
 
             if (adults == 0)
@@ -261,7 +264,10 @@ namespace Gotlandsrussen.Controllers
                 RoomId = r.Id
             }).ToList();
 
-            await _bookingRoomRepository.AddBookingRooms(bookingRooms);
+            foreach (var bookingRoom in bookingRooms)
+            {
+                await _bookingRoomRepository.AddBookingRooms(bookingRoom);
+            }
 
             var newBooking = new CreateBookingDto
             {
@@ -275,13 +281,6 @@ namespace Gotlandsrussen.Controllers
                 RoomIds = roomId
             };
 
-            //var bookingRoomList = new List<BookingRoom>();
-
-                //foreach (var room in roomList)
-                //{
-                //    var newBookingRoom = new BookingRoom { BookingId = booking.Id, RoomId = room.Id };
-                //    bookingRoomList.Add(newBookingRoom);
-                //}
 
             return CreatedAtAction(nameof(GetBookingById), new { id = booking.Id }, new { newBooking  });
         }
