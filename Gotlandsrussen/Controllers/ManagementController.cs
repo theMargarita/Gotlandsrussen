@@ -224,7 +224,12 @@ namespace Gotlandsrussen.Controllers
                 return BadRequest(new { errorMessage = "All rooms are not available" });
             }
 
-            var roomsToBook = availableRooms.Where(r => roomId.Contains(r.Id)).ToList();
+            bool hasDouble = roomId.GroupBy(r => r).Any(g => g.Count() > 1);
+
+            if(hasDouble ==  true)
+            {
+                return BadRequest(new { Message = "Cannot double book"});
+            }
 
             var booking = new Booking
             {
@@ -238,6 +243,8 @@ namespace Gotlandsrussen.Controllers
             };
 
             booking = await _bookingRepository.CreateBooking(booking);
+
+            var roomsToBook = availableRooms.Where(r => roomId.Contains(r.Id)).ToList();
 
             var bookingRooms = roomsToBook.Select(r => new BookingRoom
             {
