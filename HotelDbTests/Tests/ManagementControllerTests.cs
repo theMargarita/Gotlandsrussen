@@ -193,7 +193,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockBookingRepository.Verify(repo => repo.UpdateBookingAsync(mockBookingDto), Times.Once);
         }
 
-
         [TestMethod]
         public async Task GetBookingsGroupedByWeek_ReturnsOkWithExpectedBookings()
         {
@@ -259,7 +258,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockRoomRepository.Verify(repo => repo.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children), Times.Once);
         }
 
-        // Return correct grouped list
         [TestMethod]
         public async Task GetBookingsGroupedByMonth_ShouldReturnGroupedBookings_WhenDataExists()
         {
@@ -289,7 +287,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
         }
 
-        // Return empty list
         [TestMethod]
         public async Task GetBookingsGroupedByMonth_ShouldReturnEmptyList_WhenNoBookingsExist()
         {

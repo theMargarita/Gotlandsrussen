@@ -122,8 +122,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual(0, returnedRooms.Count);
         }
 
-        
-
         [TestMethod]
         public async Task CreateGuest_CreateValidGuest_ReturnsCreatedGuest()
         {
@@ -167,14 +165,12 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockGuestRepository?.Verify(repo => repo.AddGuest(It.IsAny<Guest>()), Times.Once);
         }
 
-
-        // BookingId is not valid 
         [TestMethod]
         public async Task AddBreakfast_ShouldReturnNotFound_WhenBookingIdIsInvalid()
         {
             // Arrange
             var request = new AddBreakfastRequestDto { BookingId = 0 };
-            _mockBookingRepository
+            _mockBookingRepository?
                 .Setup(r => r.GetById(It.IsAny<int>()))
                 .ReturnsAsync((Booking?)null);
 
@@ -188,7 +184,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual("BookingId was not found", notFoundResult.Value);
         }
 
-        // Breakfast already added
         [TestMethod]
         public async Task AddBreakfast_ShouldReturnConflict_WhenBreakfastAlreadyAdded()
         {
@@ -210,7 +205,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual("Breakfast is already added to the booking.", conflict.Value);
         }
 
-        // When breakfast is added correct
         [TestMethod]
         public async Task AddBreakfast_ShouldReturnOk_WhenBreakfastIsSuccessfullyAdded()
         {
@@ -221,6 +215,62 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockBookingRepository
                 .Setup(r => r.GetById(3))
                 .ReturnsAsync(booking);
+
+            // Act
+            var result = await _controller.AddBreakfast(request);
+
+            // Assert
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var dto = okResult.Value as AddBreakfastDto;
+            Assert.IsNotNull(dto);
+            Assert.AreEqual(3, dto.BookingId);
+            Assert.IsTrue(dto.Breakfast);
+            Assert.AreEqual("Breakfast has been added to the booking.", dto.Message);
+
+            _mockBookingRepository.Verify(r => r.Update(It.Is<Booking>(b => b.Id == 3 && b.Breakfast == true)), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task GetAllGuests_ShouldReturnListOfGuests_WhenGuestsExist()
+        {
+            // Arrange
+            var mockGuests = MockDataSetup.GetGuests();
+            _mockGuestRepository
+                .Setup(repo => repo.GetAllGuests())
+                .ReturnsAsync(mockGuests);
+
+            // Act
+            var result = await _controller.GetAllGuests();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Count); // Antal från MockDataSetup
+            Assert.AreEqual("Alice", result.First().FirstName);
+
+            _mockGuestRepository.Verify(repo => repo.GetAllGuests(), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task GetAllGuests_ShouldReturnEmptyList_WhenNoGuestsExist()
+        {
+            // Arrange
+            _mockGuestRepository
+                .Setup(repo => repo.GetAllGuests())
+                .ReturnsAsync(new List<Guest>());
+
+            // Act
+            var result = await _controller.GetAllGuests();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count);
+
+            _mockGuestRepository.Verify(repo => repo.GetAllGuests(), Times.Once);
+        }
+
         [TestMethod]
         public async Task DeleteGuest_DeletesExcistingGuest_ReturnsNoContent()
         {
@@ -243,64 +293,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.IsNotNull(noContentResult, "Expected NoContentResult");
             Assert.AreEqual(204, noContentResult.StatusCode);
 
-        }
-
-            // Act
-            var result = await _controller.AddBreakfast(request);
-
-            // Assert
-            var okResult = result.Result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-
-            var dto = okResult.Value as AddBreakfastDto;
-            Assert.IsNotNull(dto);
-            Assert.AreEqual(3, dto.BookingId);
-            Assert.IsTrue(dto.Breakfast);
-            Assert.AreEqual("Breakfast has been added to the booking.", dto.Message);
-
-            _mockBookingRepository.Verify(r => r.Update(It.Is<Booking>(b => b.Id == 3 && b.Breakfast == true)), Times.Once);
-        }
-
-
-        // Return correct list of guests
-        [TestMethod]
-        public async Task GetAllGuests_ShouldReturnListOfGuests_WhenGuestsExist()
-        {
-            // Arrange
-            var mockGuests = MockDataSetup.GetGuests();
-            _mockGuestRepository
-                .Setup(repo => repo.GetAllGuests())
-                .ReturnsAsync(mockGuests);
-
-            // Act
-            var result = await _controller.GetAllGuests();
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(3, result.Count); // Antal från MockDataSetup
-            Assert.AreEqual("Alice", result.First().FirstName);
-
-            _mockGuestRepository.Verify(repo => repo.GetAllGuests(), Times.Once);
-        }
-
-        // Return empty list of guests
-        [TestMethod]
-        public async Task GetAllGuests_ShouldReturnEmptyList_WhenNoGuestsExist()
-        {
-            // Arrange
-            _mockGuestRepository
-                .Setup(repo => repo.GetAllGuests())
-                .ReturnsAsync(new List<Guest>());
-
-            // Act
-            var result = await _controller.GetAllGuests();
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count);
-
-            _mockGuestRepository.Verify(repo => repo.GetAllGuests(), Times.Once);
         }
 
     }

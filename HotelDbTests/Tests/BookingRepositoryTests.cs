@@ -97,7 +97,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.IsNull(result);
         }
 
-
         [TestMethod]
         public async Task UpdateBookingAsync_ShouldThrow_WhenDateConflictExists()
         {
@@ -244,7 +243,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual(dto.NumberOfChildren, result.NumberOfChildren);
             Assert.AreEqual(dto.Breakfast, result.Breakfast);
         }
-
 
         [TestMethod]
         public async Task DeleteBooking_DeletesExcistingBookingsAndCreatesANewBeforeRemoveIt_ReturnsNoBooking()

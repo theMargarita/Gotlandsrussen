@@ -82,6 +82,7 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual("alice@example.com", result.Email);
             Assert.AreEqual("0701234567", result.Phone);
         }
+
         [TestMethod]
         public async Task DeleteGuest_DeletesAGuestFromDatabaseById_ReturnsNoGuestWithMatchingId()
         {

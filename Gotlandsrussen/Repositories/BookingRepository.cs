@@ -17,7 +17,7 @@ namespace Gotlandsrussen.Repositories
             _context = context;
         }
 
-        public async Task<ICollection<BookingDto>> GetAllFutureBookings()  //Florent
+        public async Task<ICollection<BookingDto>> GetAllFutureBookings()
         {
             return await _context.Bookings
                 .Where(b => b.FromDate >= DateOnly.FromDateTime(DateTime.Today)
@@ -50,7 +50,7 @@ namespace Gotlandsrussen.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ICollection<BookingDto>> GetBookingHistory()   //Margarita
+        public async Task<ICollection<BookingDto>> GetBookingHistory()
         {
             return await _context.Bookings
                 .Where(b => b.FromDate <= DateOnly.FromDateTime(DateTime.Today))
@@ -66,7 +66,7 @@ namespace Gotlandsrussen.Repositories
                 }).ToListAsync();
         }
 
-        public async Task<Booking?> UpdateBookingAsync(UpdateBookingDto updatedBooking)  //Florent
+        public async Task<Booking?> UpdateBookingAsync(UpdateBookingDto updatedBooking)
         {
             var booking = await _context.Bookings
                .Include(b => b.BookingRooms)
