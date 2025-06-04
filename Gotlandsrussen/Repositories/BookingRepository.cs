@@ -113,11 +113,14 @@ namespace Gotlandsrussen.Repositories
             return booking;
         }
 
-        public async Task CreateBooking(Booking booking)
+        public async Task<Booking> CreateBooking(Booking booking)
         {
             await _context.Bookings.AddAsync(booking);
             await _context.SaveChangesAsync();
+
+            return booking;
         }
+
 
         //public async Task<Booking> CreateBooking(int guestId, List<int> roomId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast) //margarita 
         //{
@@ -140,7 +143,7 @@ namespace Gotlandsrussen.Repositories
         //            //    PricePerNight = availableRoom.PricePerNight
         //            //}
         //        }
-             
+
         //    };
 
         //    var addBooking = new Booking
