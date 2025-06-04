@@ -30,7 +30,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(await _bookingRepository.GetAllFutureBookings());
         }
 
-        [HttpGet("GetBookingsGroupedByWeek")] 
+        [HttpGet("GetBookingsGroupedByWeek")]
         public async Task<ActionResult<ICollection<BookingDto>>> GetBookingsGroupedByWeek()
         {
             var bookings = await _bookingRepository.GetAllFutureBookings();
@@ -111,13 +111,13 @@ namespace Gotlandsrussen.Controllers
                 NumberOfGuests = numberOfGuests,
                 NumberOfBreakfasts = numberOfBreakfasts,
                 BreakfastPrice = breakfastPrice,
-                TotalPrice =totalPrice
+                TotalPrice = totalPrice
             };
 
             return Ok(summary);
         }
 
-        [HttpGet("GetAvailableRoomByDateAndGuests")] 
+        [HttpGet("GetAvailableRoomByDateAndGuests")]
         public async Task<ActionResult<ICollection<RoomDto>>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
             var getDate = await _roomRepository.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children);
@@ -133,7 +133,7 @@ namespace Gotlandsrussen.Controllers
             {
                 return BadRequest(new { errorMessgae = "Cannot get past date" });
             }
-            if(fromDate > toDate)
+            if (fromDate > toDate)
             {
                 return BadRequest(new { errorMessage = "Cannot book date before start date" });
             }
@@ -152,7 +152,7 @@ namespace Gotlandsrussen.Controllers
         }
 
         [HttpPut("UpdateBooking")]
-        public async Task<IActionResult> UpdateBooking([FromBody] UpdateBookingDto updatedBooking)
+        public async Task<ActionResult> UpdateBooking([FromBody] UpdateBookingDto updatedBooking)
         {
             try
             {
@@ -175,29 +175,21 @@ namespace Gotlandsrussen.Controllers
             }
         }
 
-        [HttpGet("GetAllGuests")]
-        public async Task<ActionResult<ICollection<Guest>>> GetAllGuests()
-        {
-            var guests = await _guestRepository.GetAllGuests();
-            return Ok(guests);
-        }
+        //[HttpGet("GetAllGuests")]
+        //public async Task<ActionResult<ICollection<Guest>>> GetAllGuests()
+        //{
+        //    var guests = await _guestRepository.GetAllGuests();
+        //    return Ok(guests);
+        //}
 
         [HttpPost("CreateBooking")] //margarita 
-        public async Task<IActionResult> CreateBooking(int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
+        public async Task<ActionResult<CreateBookingDto>> CreateBooking(int guestId,List<int> roomId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
         {
-            var newBooking = await _bookingRepository.CreateBooking(guestId, fromDate, toDate, adults, children, breakfast);
+            var availableRooms = await _roomRepository.GetAvailableRoomsAsync(fromDate, toDate);
 
-            if(adults == 0)
+            if (adults == 0)
             {
                 return BadRequest(new { errorMessage = "Must add atleast one adult" });
-            }
-            if (guestId == null)
-            {
-                return BadRequest(new { errorMessage = "Guest not found" });
-            }
-            if (newBooking == null)
-            {
-                return BadRequest(new { errorMessage = "Date incorrectly typed" });
             }
 
             var today = DateOnly.FromDateTime(DateTime.Now);
@@ -217,8 +209,57 @@ namespace Gotlandsrussen.Controllers
             {
                 return BadRequest("Number of adults and children cannot be negative.");
             }
+            if (availableRooms != null)
+            {
+                return BadRequest(new { Message = "No available rooms on this period of time" });
+            }
+            var checkGuestId = await _guestRepository.GetAllGuests();
+            if (!checkGuestId.Any())
+            {
+                return NotFound("Guest not found");
+            }
 
-            return CreatedAtAction(nameof(GetAllGuests), new { id = newBooking.GuestId }, newBooking);
+
+            bool allExist = roomId.All(id => availableRooms.Any(r => r.Id == id));
+
+            if (!allExist)
+            {
+                return BadRequest(new { errorMessage = "All rooms are not available" });
+            }
+
+            int numberOfGuests = adults + children;
+
+            //foreach (var room in roomId)
+            //{
+            //    avail
+            //}
+
+            //foreach (int room in roomId)
+            //{
+            //    int numberOfBeds = availableRooms.Where(a => a.Id == room)
+
+            //}
+            //var getRoom = List<Room>
+            foreach(int room in roomId)
+            {
+                await _
+            }
+
+            await _bookingRepository.CreateBooking(new Booking
+            {
+                GuestId = guestId,
+                FromDate = fromDate,
+                ToDate = toDate,
+                NumberOfAdults = adults,
+                NumberOfChildren = children,
+                Breakfast = breakfast
+            });
+
+
+
+            //await _bookingRepository.CreateBooking
+
+            //return CreatedAtAction(nameof(GetBookingById), new { id = newBooking.Id }, newBooking);
         }
     }
 }
