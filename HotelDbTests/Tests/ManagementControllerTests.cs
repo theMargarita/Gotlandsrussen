@@ -259,6 +259,102 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockRoomRepository.Verify(repo => repo.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children), Times.Once);
         }
 
+        // Return correct grouped list
+        [TestMethod]
+        public async Task GetBookingsGroupedByMonth_ShouldReturnGroupedBookings_WhenDataExists()
+        {
+            // Arrange
+            var mockBookings = MockDataSetup.GetBookingDtos(); // Bokningar med olika månader
+            _mockBookingRepository
+                .Setup(repo => repo.GetAllFutureBookings())
+                .ReturnsAsync(mockBookings);
+
+            // Act
+            var result = await _controller.GetBookingsGroupedByMonth();
+
+            // Assert
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var grouped = okResult.Value as ICollection<YearMonthBookingsDto>;
+            Assert.IsNotNull(grouped);
+            Assert.IsTrue(grouped.Count >= 1);
+
+            var firstGroup = grouped.First();
+            Assert.IsTrue(firstGroup.Year >= 2025);
+            Assert.IsTrue(firstGroup.Month >= 1 && firstGroup.Month <= 12);
+            Assert.IsTrue(firstGroup.Bookings.Count > 0);
+
+            _mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
+        }
+
+        // Return empty list
+        [TestMethod]
+        public async Task GetBookingsGroupedByMonth_ShouldReturnEmptyList_WhenNoBookingsExist()
+        {
+            // Arrange
+            _mockBookingRepository
+                .Setup(repo => repo.GetAllFutureBookings())
+                .ReturnsAsync(new List<BookingDto>());
+
+            // Act
+            var result = await _controller.GetBookingsGroupedByMonth();
+
+            // Assert
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var grouped = okResult.Value as ICollection<YearMonthBookingsDto>;
+            Assert.IsNotNull(grouped);
+            Assert.AreEqual(0, grouped.Count);
+
+            _mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task GetBookingById_ExistingId_ReturnsBookingWithCorrectData()
+        {
+            // Arrange
+            var mockBooking = MockDataSetup.GetBookings()[0];
+
+            _mockBookingRepository?
+                .Setup(repo => repo.GetById(mockBooking.Id))
+                .ReturnsAsync(mockBooking);
+
+            // Act
+            var result = await _controller.GetBookingById(mockBooking.Id);
+
+            // Assert
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult, "Expected OkObjectResult");
+
+            var returnedBooking = okResult.Value as Booking;
+            Assert.IsNotNull(returnedBooking, "Expected Booking object as Value");
+
+            Assert.AreEqual(mockBooking.Id, returnedBooking.Id);
+        }
+
+        [TestMethod]
+        public async Task GetBookingById_ShouldReturnNotFound_WhenBookingDoesNotExist()
+        {
+            // Arrange
+            _mockBookingRepository?
+                .Setup(repo => repo.GetById(It.IsAny<int>()))
+                .ReturnsAsync((Booking?)null);
+
+            // Act
+            var result = await _controller.GetBookingById(99);
+
+            // Assert
+            var notFoundResult = result.Result as NotFoundObjectResult;
+            Assert.IsNotNull(notFoundResult);
+
+            string? resultString = notFoundResult.Value?.ToString();
+            Assert.IsTrue(resultString!.Contains("Booking not found"));
+        }
+
         [TestMethod]
         public async Task DeleteBooking_DeletesExistingBooking_ReturnsOk()
         {

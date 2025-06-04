@@ -61,20 +61,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(addBreakfast);
         }
 
-        [HttpGet("GetBookingById/{id}")]
-        public async Task<ActionResult<Booking>> GetBookingById(int id)
-        {
-            var booking = await _bookingRepository.GetById(id);
-
-            if (booking == null)
-            {
-                return NotFound(new { errorMessage = "Booking not found" });
-            }
-
-            return Ok(booking);
-        }
-
-        [HttpGet("available-rooms")] // lina
+        [HttpGet("AvailableRooms")] // lina
         public async Task<IActionResult> GetAvailableRooms([FromQuery] DateOnly startDate, [FromQuery] DateOnly endDate)
         {
             if (startDate < DateOnly.FromDateTime(DateTime.Today))
@@ -88,7 +75,7 @@ namespace Gotlandsrussen.Controllers
         }
 
         [HttpPut("CancelBooking")] // Margarita
-        public async Task<IActionResult> CancelBooking(int bookingId)
+        public async Task<IActionResult> CancelBooking([FromQuery]int bookingId)
         {
             var bookingToCancel = await _bookingRepository.GetById(bookingId);
 
@@ -147,7 +134,7 @@ namespace Gotlandsrussen.Controllers
         }
         
         [HttpDelete("DeleteGuest")]
-        public async Task<IActionResult> DeleteGuest(int guestId)
+        public async Task<IActionResult> DeleteGuest([FromQuery]int guestId)
         {
             if (guestId <= 0)
             {
