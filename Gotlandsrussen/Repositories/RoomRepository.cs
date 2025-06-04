@@ -1,4 +1,5 @@
 ﻿using Gotlandsrussen.Data;
+using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
@@ -60,6 +61,9 @@ namespace Gotlandsrussen.Repositories
 
             return availableRooms;
         }
-
+        public async Task<Room> GetRoomById(int roomId)
+        {
+            return await _context.Rooms.FirstOrDefaultAsync(r => r.Id == roomId);
+        }
     }
 }

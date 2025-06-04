@@ -2,6 +2,7 @@
 using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
 using Gotlandsrussen.Utilities;
+using GotlandsrussenAPI.Repositories;
 using HotelGotlandsrussen.Models.DTOs;
 using HotelGotlandsrussenLIBRARY.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,14 @@ namespace Gotlandsrussen.Controllers
         private readonly IBookingRepository _bookingRepository;
         private readonly IGuestRepository _guestRepository;
         private readonly IRoomRepository _roomRepository;
+        private readonly IBookingRoomRepository _bookingRoomRepository;
 
-        public ManagementController(IBookingRepository bookingRepository, IRoomRepository roomRepository, IGuestRepository guestRepository)
+        public ManagementController(IBookingRepository bookingRepository, IRoomRepository roomRepository, IGuestRepository guestRepository, IBookingRoomRepository bookingRoomRepository)
         {
             _bookingRepository = bookingRepository;
             _roomRepository = roomRepository;
             _guestRepository = guestRepository;
+            _bookingRoomRepository = bookingRoomRepository;
         }
 
         [HttpGet("GetAllFutureBookings")]
@@ -175,30 +178,22 @@ namespace Gotlandsrussen.Controllers
             }
         }
 
-        [HttpGet("GetAllGuests")]
-        public async Task<ActionResult<ICollection<Guest>>> GetAllGuests()
+        [HttpPost("CreateBooking")] //margarita 
+        public async Task<ActionResult<CreateBookingDto>> CreateBooking([FromQuery]List<int> roomId, int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
         {
-            var guests = await _guestRepository.GetAllGuests();
-            return Ok(guests);
-        }
-
-        [HttpPost("CreateBooking")]
-        public async Task<IActionResult> CreateBooking([FromQuery] int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
-        {
-            var newBooking = await _bookingRepository.CreateBooking(guestId, fromDate, toDate, adults, children, breakfast);
-
-            if (guestId == null)
+            if (adults == 0)
             {
-                return BadRequest(new { errorMessage = "Guest not found" });
+                return BadRequest(new { errorMessage = "Must add atleast one adult" });
             }
-            if (newBooking == null)
-            {
-                return BadRequest(new { errorMessage = "Date incorrectly typed" });
-            }
+
             var today = DateOnly.FromDateTime(DateTime.Now);
             if (fromDate < today)
             {
                 return BadRequest(new { errorMessgae = "Cannot get past date" });
+            }
+            if (fromDate == toDate)
+            {
+                return BadRequest(new { errorMessgae = "Cannot book for the same day" });
             }
             if (fromDate > toDate)
             {
@@ -209,7 +204,72 @@ namespace Gotlandsrussen.Controllers
                 return BadRequest("Number of adults and children cannot be negative.");
             }
 
-            return CreatedAtAction(nameof(GetAllGuests), new { id = newBooking.GuestId }, newBooking);
+            var availableRooms = await _roomRepository.GetAvailableRoomsAsync(fromDate, toDate);
+            if (availableRooms == null || !availableRooms.Any())
+            {
+                return BadRequest(new { Message = "No available rooms on this period of time" });
+            }
+
+            var checkGuestId = await _guestRepository.GetAllGuests();
+            if (!checkGuestId.Any(g => g.Id == guestId))
+            {
+                return NotFound("Guest not found");
+            }
+
+            bool allRoomsAvailable = roomId.All(id => availableRooms.Any(r => r.Id == id));
+
+            if (!allRoomsAvailable)
+            {
+                return BadRequest(new { errorMessage = "All rooms are not available" });
+            }
+
+            bool hasDouble = roomId.GroupBy(r => r).Any(g => g.Count() > 1);
+
+            if(hasDouble ==  true)
+            {
+                return BadRequest(new { Message = "Cannot double book"});
+            }
+
+            var booking = new Booking
+            {
+                GuestId = guestId,
+                FromDate = fromDate,
+                ToDate = toDate,
+                NumberOfAdults = adults,
+                NumberOfChildren = children,
+                Breakfast = breakfast,
+
+            };
+
+            booking = await _bookingRepository.CreateBooking(booking);
+
+            var roomsToBook = availableRooms.Where(r => roomId.Contains(r.Id)).ToList();
+
+            var bookingRooms = roomsToBook.Select(r => new BookingRoom
+            {
+                BookingId = booking.Id,
+                RoomId = r.Id
+            }).ToList();
+
+            foreach (var bookingRoom in bookingRooms)
+            {
+                await _bookingRoomRepository.AddBookingRooms(bookingRoom);
+            }
+
+            var newBooking = new CreateBookingDto
+            {
+                BookingId = booking.Id,
+                GuestId = guestId,
+                FromDate = fromDate,
+                ToDate = toDate,
+                NumberOfAdults = adults,
+                NumberOfChildren = children,
+                Breakfast = breakfast,
+                RoomIds = roomId
+            };
+
+
+            return CreatedAtAction(nameof(GetBookingById), new { id = booking.Id }, new { newBooking  });
         }
 
         [HttpDelete("DeleteBooking")]

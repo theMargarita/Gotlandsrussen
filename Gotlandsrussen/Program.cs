@@ -1,6 +1,7 @@
 
 using Gotlandsrussen.Data;
 using Gotlandsrussen.Repositories;
+using GotlandsrussenAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -25,6 +26,7 @@ namespace Gotlandsrussen
             builder.Services.AddScoped<IBookingRepository, BookingRepository>();
             builder.Services.AddScoped<IRoomRepository, RoomRepository>();
             builder.Services.AddScoped<IGuestRepository, GuestRepository>();
+            builder.Services.AddScoped<IBookingRoomRepository, BookingRoomRepository>();
 
 
             builder.Services.AddDbContext<HotelDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));

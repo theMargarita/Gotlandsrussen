@@ -119,61 +119,12 @@ namespace Gotlandsrussen.Repositories
             return booking;
         }
 
-        public async Task<Booking> CreateBooking(int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast) //margarita 
+        public async Task<Booking> CreateBooking(Booking booking)
         {
-            //check if guest exists
-            var existingGuest = await _context.Guests.AnyAsync(b => b.Id == guestId);
+            var createBooking =  await _context.Bookings.AddAsync(booking);
+            await _context.SaveChangesAsync();
 
-            //check if room is available on the chosen dates
-            var availableRoom = await _context.Rooms
-              .Where(r => r.RoomType.NumberOfBeds >= (adults + children))
-              .Where(r => !_context.BookingRooms
-                  .Any(br => br.RoomId == r.Id &&
-                     br.Booking.FromDate <= toDate &&
-                     br.Booking.ToDate >= fromDate))
-              .Select(r => new RoomDto
-              {
-                  Id = r.Id,
-                  RoomName = r.Name,
-                  RoomTypeName = r.RoomType.Name,
-                  NumberOfBeds = r.RoomType.NumberOfBeds,
-                  PricePerNight = r.RoomType.PricePerNight
-              })
-              .FirstOrDefaultAsync();
-
-
-            // Find the first available room
-            //var availableRoom = await _context.Rooms
-            //    .Where(r => r.RoomType.NumberOfBeds >= (adults + children))
-            //    .Where(r => !_context.BookingRooms
-            //        .Any(br => br.RoomId == r.Id &&
-            //                   br.Booking.FromDate <= toDate &&
-            //                   br.Booking.ToDate >= fromDate))
-            //    .FirstOrDefaultAsync();
-
-            var bookingRooms = availableRoom.Id;
-
-            var newBooking = new Booking
-            {
-                GuestId = guestId,
-                FromDate = fromDate,
-                ToDate = toDate,
-                NumberOfAdults = adults,
-                NumberOfChildren = children,
-                Breakfast = breakfast,
-                BookingRooms = new List<BookingRoom>
-                {
-                    new BookingRoom
-                    {
-                        RoomId = availableRoom.Id
-                    }
-                }
-            };
-           
-            _context.Bookings.Add(newBooking);
-            //await _context.SaveChangesAsync();
-
-            return newBooking;
+            return createBooking.Entity;
         }
 
         public async Task DeleteBooking(int id)
