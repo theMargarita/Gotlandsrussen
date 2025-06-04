@@ -23,7 +23,8 @@ namespace Gotlandsrussen.Controllers
             _bookingRepository = bookingRepository;
             _guestRepository = guestRepository;
             _roomRepository = roomRepository;
-        }
+        }      
+
 
         [HttpPut("AddBreakfast")]
         public async Task<ActionResult<AddBreakfastDto>> AddBreakfast([FromQuery] AddBreakfastRequestDto request)
