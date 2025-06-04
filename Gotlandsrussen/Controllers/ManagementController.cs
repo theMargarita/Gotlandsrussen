@@ -181,11 +181,6 @@ namespace Gotlandsrussen.Controllers
         [HttpPost("CreateBooking")] //margarita 
         public async Task<ActionResult<CreateBookingDto>> CreateBooking([FromQuery]List<int> roomId, int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
         {
-
-        [HttpPost("CreateBooking")]
-        public async Task<IActionResult> CreateBooking([FromQuery] int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
-        {
-            var newBooking = await _bookingRepository.CreateBooking(guestId, fromDate, toDate, adults, children, breakfast);
             if (adults == 0)
             {
                 return BadRequest(new { errorMessage = "Must add atleast one adult" });
