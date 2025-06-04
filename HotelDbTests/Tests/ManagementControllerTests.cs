@@ -15,6 +15,7 @@ namespace HotelGotlandsrussenTESTS.Tests
     {
         private Mock<IBookingRepository>? _mockBookingRepository;
         private Mock<IRoomRepository>? _mockRoomRepository;
+        private Mock<IGuestRepository>? _mockGuestRepository;
         private ManagementController? _controller;
 
         [TestInitialize]
@@ -22,7 +23,8 @@ namespace HotelGotlandsrussenTESTS.Tests
         {
             _mockBookingRepository = new Mock<IBookingRepository>();
             _mockRoomRepository = new Mock<IRoomRepository>();
-            _controller = new ManagementController(_mockBookingRepository.Object, _mockRoomRepository.Object);
+            _mockGuestRepository = new Mock<IGuestRepository>();
+            _controller = new ManagementController(_mockBookingRepository.Object, _mockRoomRepository.Object, _mockGuestRepository.Object);
         }
 
         // Börja test här
@@ -309,7 +311,47 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
         }
 
+        [TestMethod]
+        public async Task GetBookingById_ExistingId_ReturnsBookingWithCorrectData()
+        {
+            // Arrange
+            var mockBooking = MockDataSetup.GetBookings()[0];
 
+            _mockBookingRepository?
+                .Setup(repo => repo.GetById(mockBooking.Id))
+                .ReturnsAsync(mockBooking);
+
+            // Act
+            var result = await _controller.GetBookingById(mockBooking.Id);
+
+            // Assert
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult, "Expected OkObjectResult");
+
+            var returnedBooking = okResult.Value as Booking;
+            Assert.IsNotNull(returnedBooking, "Expected Booking object as Value");
+
+            Assert.AreEqual(mockBooking.Id, returnedBooking.Id);
+        }
+
+        [TestMethod]
+        public async Task GetBookingById_ShouldReturnNotFound_WhenBookingDoesNotExist()
+        {
+            // Arrange
+            _mockBookingRepository?
+                .Setup(repo => repo.GetById(It.IsAny<int>()))
+                .ReturnsAsync((Booking?)null);
+
+            // Act
+            var result = await _controller.GetBookingById(99);
+
+            // Assert
+            var notFoundResult = result.Result as NotFoundObjectResult;
+            Assert.IsNotNull(notFoundResult);
+
+            string? resultString = notFoundResult.Value?.ToString();
+            Assert.IsTrue(resultString!.Contains("Booking not found"));
+        }
     }
 
 }

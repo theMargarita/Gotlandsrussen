@@ -61,20 +61,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(addBreakfast);
         }
 
-        [HttpGet("GetBookingById")]
-        public async Task<ActionResult<Booking>> GetBookingById([FromQuery]int id)
-        {
-            var booking = await _bookingRepository.GetById(id);
-
-            if (booking == null)
-            {
-                return NotFound(new { errorMessage = "Booking not found" });
-            }
-
-            return Ok(booking);
-        }
-
-        [HttpGet("available-rooms")] // lina
+        [HttpGet("AvailableRooms")] // lina
         public async Task<IActionResult> GetAvailableRooms([FromQuery] DateOnly startDate, [FromQuery] DateOnly endDate)
         {
             if (startDate < DateOnly.FromDateTime(DateTime.Today))
