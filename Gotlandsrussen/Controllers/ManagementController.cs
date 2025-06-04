@@ -178,15 +178,8 @@ namespace Gotlandsrussen.Controllers
             }
         }
 
-        //[HttpGet("GetAllGuests")]
-        //public async Task<ActionResult<ICollection<Guest>>> GetAllGuests()
-        //{
-        //    var guests = await _guestRepository.GetAllGuests();
-        //    return Ok(guests);
-        //}
-
         [HttpPost("CreateBooking")] //margarita 
-        public async Task<ActionResult<CreateBookingDto>> CreateBooking(int guestId, List<int> roomId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
+        public async Task<ActionResult<CreateBookingDto>> CreateBooking([FromQuery]List<int> roomId, int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
         {
 
             if (adults == 0)
@@ -232,18 +225,6 @@ namespace Gotlandsrussen.Controllers
             }
 
             var roomsToBook = availableRooms.Where(r => roomId.Contains(r.Id)).ToList();
-
-            //int numberOfGuests = adults + children;
-
-
-            //var roomList = new List<Room>();
-
-            //foreach (int room in roomId)
-            //{
-            //    var gotRoomId = await _roomRepository.GetRoomById(room);
-            //    roomList.Add(gotRoomId);
-            //}
-
 
             var booking = new Booking
             {
