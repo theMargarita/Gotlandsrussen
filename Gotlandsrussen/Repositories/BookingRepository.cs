@@ -113,62 +113,67 @@ namespace Gotlandsrussen.Repositories
             return booking;
         }
 
-        public async Task<Booking> CreateBooking(int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast) //margarita 
+        public async Task CreateBooking(Booking booking)
         {
-            //check if guest exists
-            var existingGuest = await _context.Guests.AnyAsync(b => b.Id == guestId);
-
-            //check if room is available on the chosen dates
-            var availableRoom = await _context.Rooms
-              .Where(r => r.RoomType.NumberOfBeds >= (adults + children))
-              .Where(r => !_context.BookingRooms
-                  .Any(br => br.RoomId == r.Id &&
-                     br.Booking.FromDate <= toDate &&
-                     br.Booking.ToDate >= fromDate))
-              .Select(r => new RoomDto
-              {
-                  Id = r.Id,
-                  RoomName = r.Name,
-                  RoomTypeName = r.RoomType.Name,
-                  NumberOfBeds = r.RoomType.NumberOfBeds,
-                  PricePerNight = r.RoomType.PricePerNight
-              })
-              .FirstOrDefaultAsync();
-
-
-            // Find the first available room
-            //var availableRoom = await _context.Rooms
-            //    .Where(r => r.RoomType.NumberOfBeds >= (adults + children))
-            //    .Where(r => !_context.BookingRooms
-            //        .Any(br => br.RoomId == r.Id &&
-            //                   br.Booking.FromDate <= toDate &&
-            //                   br.Booking.ToDate >= fromDate))
-            //    .FirstOrDefaultAsync();
-
-            var bookingRooms = availableRoom.Id;
-
-            var newBooking = new Booking
-            {
-                GuestId = guestId,
-                FromDate = fromDate,
-                ToDate = toDate,
-                NumberOfAdults = adults,
-                NumberOfChildren = children,
-                Breakfast = breakfast,
-                BookingRooms = new List<BookingRoom>
-                {
-                    new BookingRoom
-                    {
-                        RoomId = availableRoom.Id
-                    }
-                }
-            };
-           
-            _context.Bookings.Add(newBooking);
+            await _context.Bookings.AddAsync(booking);
             await _context.SaveChangesAsync();
-
-            return newBooking;
         }
+
+        //public async Task<Booking> CreateBooking(int guestId, List<int> roomId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast) //margarita 
+        //{
+        //    var newBooking = new CreateBookingDto
+        //    {
+        //        GuestId = guestId,
+        //        FromDate = fromDate,
+        //        ToDate = toDate,
+        //        NumberOfAdults = adults,
+        //        NumberOfChildren = children,
+        //        Breakfast = breakfast,
+        //        Rooms = new List<RoomDto>
+        //        {
+        //            //new RoomDto
+        //            //{
+        //            //    Id = availableRoom.Id,
+        //            //    RoomName = availableRoom.RoomName,
+        //            //    RoomTypeName = availableRoom.RoomTypeName,
+        //            //    NumberOfBeds = availableRoom.NumberOfBeds,
+        //            //    PricePerNight = availableRoom.PricePerNight
+        //            //}
+        //        }
+             
+        //    };
+
+        //    var addBooking = new Booking
+        //    {
+        //        GuestId = guestId,
+        //        FromDate = fromDate,
+        //        ToDate = toDate,
+        //        NumberOfAdults = adults,
+        //        NumberOfChildren = children,
+        //        Breakfast = breakfast,
+        //        BookingRooms = new List<BookingRoom>
+        //        {
+        //             new BookingRoom
+        //             {
+        //                 BookingId = newBooking.BookingId,
+        //                 RoomId= newBooking.RoomId
+        //             }
+        //        }
+        //    };
+
+        //    //var bookingRooms = new BookingRoom
+        //    //{
+        //    //    BookingId = newBooking.BookingId,
+        //    //    RoomId = newBooking.RoomId
+        //    //};
+
+        //    _context.Bookings.Add(addBooking);
+        //    //_context.BookingRooms.Add(bookingRooms);
+        //    //await _context.SaveChangesAsync();
+
+        //    return addBooking;
+
+        //}
 
     }
 }
