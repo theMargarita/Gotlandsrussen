@@ -1,4 +1,5 @@
-﻿using Gotlandsrussen.Models.DTOs;
+﻿using Gotlandsrussen.Models;
+using Gotlandsrussen.Models.DTOs;
 
 namespace Gotlandsrussen.Repositories
 {
@@ -8,6 +9,8 @@ namespace Gotlandsrussen.Repositories
 
 
         public Task<ICollection<RoomDto>> GetAvailableRoomsAsync(DateOnly startDate, DateOnly endDate);
+
+        public Task<Room> GetRoomById(int roomId);
 
     }
 }
