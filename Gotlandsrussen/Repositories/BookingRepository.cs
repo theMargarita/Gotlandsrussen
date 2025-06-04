@@ -17,7 +17,7 @@ namespace Gotlandsrussen.Repositories
             _context = context;
         }
 
-        public async Task<ICollection<BookingDto>> GetAllFutureBookings()  //Florent
+        public async Task<ICollection<BookingDto>> GetAllFutureBookings()
         {
             return await _context.Bookings
                 .Where(b => b.FromDate >= DateOnly.FromDateTime(DateTime.Today)
@@ -50,7 +50,7 @@ namespace Gotlandsrussen.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ICollection<BookingDto>> GetBookingHistory()   //Margarita
+        public async Task<ICollection<BookingDto>> GetBookingHistory()
         {
             return await _context.Bookings
                 .Where(b => b.FromDate <= DateOnly.FromDateTime(DateTime.Today))
@@ -66,7 +66,7 @@ namespace Gotlandsrussen.Repositories
                 }).ToListAsync();
         }
 
-        public async Task<Booking?> UpdateBookingAsync(UpdateBookingDto updatedBooking)  //Florent
+        public async Task<Booking?> UpdateBookingAsync(UpdateBookingDto updatedBooking)
         {
             var booking = await _context.Bookings
                .Include(b => b.BookingRooms)
@@ -76,6 +76,12 @@ namespace Gotlandsrussen.Repositories
 
             if (booking == null)
                 return null;
+
+            if (updatedBooking.NumberOfAdults + updatedBooking.NumberOfChildren == 0)
+                throw new InvalidOperationException("Bokningen måste innehålla minst en person.");
+
+            if (updatedBooking.FromDate < DateOnly.FromDateTime(DateTime.Today))
+                throw new InvalidOperationException("Startdatumet har redan passerat.");
 
             var roomIds = booking.BookingRooms.Select(br => br.RoomId).ToList();
 
@@ -119,6 +125,21 @@ namespace Gotlandsrussen.Repositories
             await _context.SaveChangesAsync();
 
             return createBooking.Entity;
+        }
+
+        public async Task DeleteBooking(int id)
+        {
+            var booking = await _context.Bookings
+                .Include(b => b.BookingRooms)
+                .FirstOrDefaultAsync(b => b.Id == id);
+            
+            if (booking == null)
+            {
+                throw new KeyNotFoundException("Booking not found");
+            }
+
+            _context.Bookings.Remove(booking);
+            await _context.SaveChangesAsync();
         }
     }
 }

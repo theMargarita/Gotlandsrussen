@@ -9,14 +9,11 @@ namespace Gotlandsrussen.Repositories
     {
         public Task<ICollection<BookingDto>> GetAllFutureBookings();
         public Task<ICollection<BookingDto>> GetBookingHistory();
-
         public Task<Booking> GetById(int id);
-
         public Task Update(Booking booking);
-
         public Task<Booking?> UpdateBookingAsync(UpdateBookingDto updatedBooking);
-
-        public Task<Booking> CreateBooking(Booking booking);
+        public Task<Booking> CreateBooking( int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast);
+        public Task DeleteBooking(int id);
 
     }
 }

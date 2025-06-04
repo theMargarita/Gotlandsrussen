@@ -27,7 +27,7 @@ namespace Gotlandsrussen.Controllers
             _bookingRoomRepository = bookingRoomRepository;
         }
 
-        [HttpGet("GetAllFutureBookings")] // lina
+        [HttpGet("GetAllFutureBookings")]
         public async Task<ActionResult<ICollection<BookingDto>>> GetAllFutureBookings()
         {
             return Ok(await _bookingRepository.GetAllFutureBookings());
@@ -53,7 +53,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(grouped);
         }
 
-        [HttpGet("GetBookingsGroupedByMonth")] // Florent
+        [HttpGet("GetBookingsGroupedByMonth")]
         public async Task<ActionResult<ICollection<BookingDto>>> GetBookingsGroupedByMonth()
         {
             var bookings = await _bookingRepository.GetAllFutureBookings();
@@ -73,8 +73,8 @@ namespace Gotlandsrussen.Controllers
             return Ok(grouped);
         }
 
-        [HttpGet("GetBookingById/{id}")]
-        public async Task<ActionResult<Booking>> GetBookingById(int id)
+        [HttpGet("GetBookingById")]
+        public async Task<ActionResult<Booking>> GetBookingById([FromQuery]int id)
         {
             var booking = await _bookingRepository.GetById(id);
 
@@ -86,8 +86,8 @@ namespace Gotlandsrussen.Controllers
             return Ok(booking);
         }
 
-        [HttpGet("GetTotalPrice/{BookingId}")] // lina
-        public async Task<ActionResult<TotalPriceDto>> GetTotalPrice(int BookingId)
+        [HttpGet("GetTotalPrice")]
+        public async Task<ActionResult<TotalPriceDto>> GetTotalPrice([FromQuery]int BookingId)
         {
             var booking = await _bookingRepository.GetById(BookingId);
             if (booking == null)
@@ -121,7 +121,7 @@ namespace Gotlandsrussen.Controllers
         }
 
         [HttpGet("GetAvailableRoomByDateAndGuests")]
-        public async Task<ActionResult<ICollection<RoomDto>>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
+        public async Task<ActionResult<ICollection<RoomDto>>> GetAvailableRoomByDateAndGuests([FromQuery]DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
             var getDate = await _roomRepository.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children);
 
@@ -148,14 +148,14 @@ namespace Gotlandsrussen.Controllers
             return Ok(getDate);
         }
 
-        [HttpGet("GetBookingHistory")] // Florent
+        [HttpGet("GetBookingHistory")]
         public async Task<ActionResult<ICollection<BookingDto>>> GetBookingHistory()
         {
             return Ok(await _bookingRepository.GetBookingHistory());
         }
 
         [HttpPut("UpdateBooking")]
-        public async Task<ActionResult> UpdateBooking([FromBody] UpdateBookingDto updatedBooking)
+        public async Task<IActionResult> UpdateBooking([FromQuery] UpdateBookingDto updatedBooking)
         {
             try
             {
@@ -182,6 +182,10 @@ namespace Gotlandsrussen.Controllers
         public async Task<ActionResult<CreateBookingDto>> CreateBooking([FromQuery]List<int> roomId, int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
         {
 
+        [HttpPost("CreateBooking")]
+        public async Task<IActionResult> CreateBooking([FromQuery] int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
+        {
+            var newBooking = await _bookingRepository.CreateBooking(guestId, fromDate, toDate, adults, children, breakfast);
             if (adults == 0)
             {
                 return BadRequest(new { errorMessage = "Must add atleast one adult" });
@@ -271,6 +275,25 @@ namespace Gotlandsrussen.Controllers
 
 
             return CreatedAtAction(nameof(GetBookingById), new { id = booking.Id }, new { newBooking  });
+        }
+
+        [HttpDelete("DeleteBooking")]
+        public async Task<IActionResult> DeleteBooking([FromQuery] int bookingId)
+        {
+            if (bookingId <= 0)
+            {
+                return BadRequest("Invalid booking ID");
+            }
+
+            try
+            {
+                await _bookingRepository.DeleteBooking(bookingId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound("Booking not found");
+            }
         }
     }
 }

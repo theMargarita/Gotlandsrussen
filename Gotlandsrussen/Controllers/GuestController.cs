@@ -25,8 +25,8 @@ namespace Gotlandsrussen.Controllers
             _roomRepository = roomRepository;
         }
 
-        [HttpPut("AddBreakfast")] // Florent
-        public async Task<ActionResult<AddBreakfastDto>>AddBreakfast([FromQuery] AddBreakfastRequestDto request)
+        [HttpPut("AddBreakfast")]
+        public async Task<ActionResult<AddBreakfastDto>> AddBreakfast([FromQuery] AddBreakfastRequestDto request)
         {
             var booking = await _bookingRepository.GetById(request.BookingId);
 
@@ -61,20 +61,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(addBreakfast);
         }
 
-        [HttpGet("GetBookingById/{id}")]
-        public async Task<ActionResult<Booking>> GetBookingById(int id)
-        {
-            var booking = await _bookingRepository.GetById(id);
-
-            if (booking == null)
-            {
-                return NotFound(new { errorMessage = "Booking not found" });
-            }
-
-            return Ok(booking);
-        }
-
-        [HttpGet("available-rooms")] // lina
+        [HttpGet("AvailableRooms")]
         public async Task<IActionResult> GetAvailableRooms([FromQuery] DateOnly startDate, [FromQuery] DateOnly endDate)
         {
             if (startDate < DateOnly.FromDateTime(DateTime.Today))
@@ -87,8 +74,8 @@ namespace Gotlandsrussen.Controllers
             return Ok(rooms);
         }
 
-        [HttpPut("CancelBooking")] // Margarita
-        public async Task<IActionResult> CancelBooking(int bookingId)
+        [HttpPut("CancelBooking")]
+        public async Task<IActionResult> CancelBooking([FromQuery]int bookingId)
         {
             var bookingToCancel = await _bookingRepository.GetById(bookingId);
 
@@ -96,7 +83,7 @@ namespace Gotlandsrussen.Controllers
             {
                 return NotFound(new { errorMessage = "Booking not found" });
             }
-            
+
             if (bookingToCancel.IsCancelled == true)
             {
                 return Ok(new { message = "Booking is already cancelled" });
@@ -107,7 +94,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(new { message = "Booking is cancelled" });
         }
 
-        [HttpGet("GetAllGuests")] // Florent
+        [HttpGet("GetAllGuests")]
         public async Task<ICollection<Guest>> GetAllGuests()
         {
             var getAllGest = await _guestRepository.GetAllGuests();
@@ -145,6 +132,24 @@ namespace Gotlandsrussen.Controllers
             await _guestRepository.AddGuest(guest);
             return CreatedAtAction(nameof(GetAllGuests), new { id = guest.Id }, guest);
         }
+        
+        [HttpDelete("DeleteGuest")]
+        public async Task<IActionResult> DeleteGuest([FromQuery]int guestId)
+        {
+            if (guestId <= 0)
+            {
+                return BadRequest("Invalid guest ID");
+            }
 
+            try
+            {
+                await _guestRepository.DeleteGuest(guestId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound("Guest not found");
+            }
+        }
     }
 }

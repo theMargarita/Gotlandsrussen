@@ -82,5 +82,25 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual("alice@example.com", result.Email);
             Assert.AreEqual("0701234567", result.Phone);
         }
+
+        [TestMethod]
+        public async Task DeleteGuest_DeletesAGuestFromDatabaseById_ReturnsNoGuestWithMatchingId()
+        {
+            // Arrange
+            var existingGuests = _context.Guests
+                .FirstOrDefault(g => g.Id == 1);
+
+            _context.Guests.Remove(existingGuests);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetAllGuests();
+            Assert.IsNotNull(result);
+
+            var deletedGuest = result.FirstOrDefault(g => g.Id == 1);
+
+            // Assert
+            Assert.IsNull(deletedGuest, "Expected no guest with ID 1 after deletion.");
+        }
     }
 }
