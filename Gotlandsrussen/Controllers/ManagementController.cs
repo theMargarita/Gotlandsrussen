@@ -70,8 +70,8 @@ namespace Gotlandsrussen.Controllers
             return Ok(grouped);
         }
 
-        [HttpGet("GetBookingById/{id}")]
-        public async Task<ActionResult<Booking>> GetBookingById(int id)
+        [HttpGet("GetBookingById")]
+        public async Task<ActionResult<Booking>> GetBookingById([FromQuery]int id)
         {
             var booking = await _bookingRepository.GetById(id);
 
@@ -83,8 +83,8 @@ namespace Gotlandsrussen.Controllers
             return Ok(booking);
         }
 
-        [HttpGet("GetTotalPrice/{BookingId}")] // lina
-        public async Task<ActionResult<TotalPriceDto>> GetTotalPrice(int BookingId)
+        [HttpGet("GetTotalPrice")] // lina
+        public async Task<ActionResult<TotalPriceDto>> GetTotalPrice([FromQuery]int BookingId)
         {
             var booking = await _bookingRepository.GetById(BookingId);
             if (booking == null)
@@ -118,7 +118,7 @@ namespace Gotlandsrussen.Controllers
         }
 
         [HttpGet("GetAvailableRoomByDateAndGuests")] // Margarita
-        public async Task<ActionResult<ICollection<RoomDto>>> GetAvailableRoomByDateAndGuests(DateOnly fromDate, DateOnly toDate, int adults, int children)
+        public async Task<ActionResult<ICollection<RoomDto>>> GetAvailableRoomByDateAndGuests([FromQuery]DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
             var getDate = await _roomRepository.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children);
 
@@ -152,7 +152,7 @@ namespace Gotlandsrussen.Controllers
         }
 
         [HttpPut("UpdateBooking")]
-        public async Task<IActionResult> UpdateBooking([FromBody] UpdateBookingDto updatedBooking)
+        public async Task<IActionResult> UpdateBooking([FromQuery] UpdateBookingDto updatedBooking)
         {
             try
             {
@@ -183,7 +183,7 @@ namespace Gotlandsrussen.Controllers
         }
 
         [HttpPost("CreateBooking")]
-        public async Task<IActionResult> CreateBooking(int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
+        public async Task<IActionResult> CreateBooking([FromQuery] int guestId, DateOnly fromDate, DateOnly toDate, int adults, int children, bool breakfast)
         {
             var newBooking = await _bookingRepository.CreateBooking(guestId, fromDate, toDate, adults, children, breakfast);
 
@@ -213,7 +213,7 @@ namespace Gotlandsrussen.Controllers
         }
 
         [HttpDelete("DeleteBooking")]
-        public async Task<IActionResult> DeleteBooking(int bookingId)
+        public async Task<IActionResult> DeleteBooking([FromQuery] int bookingId)
         {
             if (bookingId <= 0)
             {
