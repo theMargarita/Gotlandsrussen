@@ -80,6 +80,9 @@ namespace Gotlandsrussen.Repositories
             if (updatedBooking.NumberOfAdults + updatedBooking.NumberOfChildren == 0)
                 throw new InvalidOperationException("Bokningen måste innehålla minst en person.");
 
+            if (updatedBooking.FromDate < DateOnly.FromDateTime(DateTime.Today))
+                throw new InvalidOperationException("Startdatumet har redan passerat.");
+
             var roomIds = booking.BookingRooms.Select(br => br.RoomId).ToList();
 
             bool hasConflict = await _context.BookingRooms
