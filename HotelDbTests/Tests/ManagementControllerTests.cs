@@ -1,4 +1,5 @@
 ﻿using Gotlandsrussen.Controllers;
+using Gotlandsrussen.Data;
 using Gotlandsrussen.Models;
 using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
@@ -24,7 +25,8 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockBookingRepository = new Mock<IBookingRepository>();
             _mockRoomRepository = new Mock<IRoomRepository>();
             _mockGuestRepository = new Mock<IGuestRepository>();
-            _controller = new ManagementController(_mockBookingRepository.Object, _mockRoomRepository.Object, _mockGuestRepository.Object);
+
+        _controller = new ManagementController(_mockBookingRepository.Object, _mockRoomRepository.Object, _mockGuestRepository.Object);
         }
 
         // Börja test här
@@ -191,7 +193,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockBookingRepository.Verify(repo => repo.UpdateBookingAsync(mockBookingDto), Times.Once);
         }
 
-
         [TestMethod]
         public async Task GetBookingsGroupedByWeek_ReturnsOkWithExpectedBookings()
         {
@@ -257,7 +258,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockRoomRepository.Verify(repo => repo.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children), Times.Once);
         }
 
-        // Return correct grouped list
         [TestMethod]
         public async Task GetBookingsGroupedByMonth_ShouldReturnGroupedBookings_WhenDataExists()
         {
@@ -287,7 +287,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             _mockBookingRepository.Verify(repo => repo.GetAllFutureBookings(), Times.Once);
         }
 
-        // Return empty list
         [TestMethod]
         public async Task GetBookingsGroupedByMonth_ShouldReturnEmptyList_WhenNoBookingsExist()
         {
@@ -352,7 +351,23 @@ namespace HotelGotlandsrussenTESTS.Tests
             string? resultString = notFoundResult.Value?.ToString();
             Assert.IsTrue(resultString!.Contains("Booking not found"));
         }
+
+        [TestMethod]
+        public async Task DeleteBooking_DeletesExistingBooking_ReturnsOk()
+        {
+            // Arrange
+            var excistingBooking = MockDataSetup.GetBookings()[0];
+
+            _mockBookingRepository
+            .Setup(repo => repo.DeleteBooking(excistingBooking.Id))
+            .Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.DeleteBooking(excistingBooking.Id);
+            var deletedBooking = result as NoContentResult;
+
+            // Assert
+            Assert.AreEqual(204, deletedBooking.StatusCode);
+        }
     }
-
 }
-

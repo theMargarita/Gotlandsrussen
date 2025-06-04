@@ -24,7 +24,7 @@ namespace Gotlandsrussen.Controllers
             _guestRepository = guestRepository;
         }
 
-        [HttpGet("GetAllFutureBookings")] // lina
+        [HttpGet("GetAllFutureBookings")]
         public async Task<ActionResult<ICollection<BookingDto>>> GetAllFutureBookings()
         {
             return Ok(await _bookingRepository.GetAllFutureBookings());
@@ -50,7 +50,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(grouped);
         }
 
-        [HttpGet("GetBookingsGroupedByMonth")] // Florent
+        [HttpGet("GetBookingsGroupedByMonth")]
         public async Task<ActionResult<ICollection<BookingDto>>> GetBookingsGroupedByMonth()
         {
             var bookings = await _bookingRepository.GetAllFutureBookings();
@@ -83,7 +83,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(booking);
         }
 
-        [HttpGet("GetTotalPrice")] // lina
+        [HttpGet("GetTotalPrice")]
         public async Task<ActionResult<TotalPriceDto>> GetTotalPrice([FromQuery]int BookingId)
         {
             var booking = await _bookingRepository.GetById(BookingId);
@@ -117,7 +117,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(summary);
         }
 
-        [HttpGet("GetAvailableRoomByDateAndGuests")] // Margarita
+        [HttpGet("GetAvailableRoomByDateAndGuests")]
         public async Task<ActionResult<ICollection<RoomDto>>> GetAvailableRoomByDateAndGuests([FromQuery]DateOnly fromDate, DateOnly toDate, int adults, int children)
         {
             var getDate = await _roomRepository.GetAvailableRoomByDateAndGuests(fromDate, toDate, adults, children);
@@ -145,7 +145,7 @@ namespace Gotlandsrussen.Controllers
             return Ok(getDate);
         }
 
-        [HttpGet("GetBookingHistory")] // Florent
+        [HttpGet("GetBookingHistory")]
         public async Task<ActionResult<ICollection<BookingDto>>> GetBookingHistory()
         {
             return Ok(await _bookingRepository.GetBookingHistory());
