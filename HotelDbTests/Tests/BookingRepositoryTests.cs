@@ -293,5 +293,38 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual(0, result.NumberOfChildren);
             Assert.AreEqual(false, result.Breakfast);
         }
+
+        [TestMethod]
+        public async Task CreateBooking_WhenBookingFails_ShouldNotMatchExpectedValues()
+        {
+            //Arrange
+            _context.Bookings.RemoveRange(_context.Bookings);
+            await _context.SaveChangesAsync();
+
+            Booking failedBooking = new Booking
+            {
+                GuestId = 1,
+                FromDate = new DateOnly(2024, 05, 24),
+                ToDate = new DateOnly(2024, 05, 24),
+                NumberOfAdults = 0, //must be above 0
+                NumberOfChildren = 1,
+                Breakfast = false
+            };
+
+            //Act
+            var result = await _repository.CreateBooking(failedBooking);
+            var saveBooking = _context.Bookings.FirstOrDefault();
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(saveBooking);
+            Assert.AreNotEqual(8, failedBooking.GuestId);
+            Assert.AreNotEqual(new DateOnly(2025,06,12), failedBooking.FromDate);
+            Assert.AreNotEqual(new DateOnly(2025, 06, 14), failedBooking.ToDate);
+            Assert.AreNotEqual(1, failedBooking.NumberOfAdults);
+            Assert.AreNotEqual(2, failedBooking.NumberOfChildren);
+            Assert.AreNotEqual(true, failedBooking.Breakfast);
+
+        }
     }
 }
