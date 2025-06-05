@@ -2,246 +2,559 @@
 
 ---
 
-## Översikt
-| Metod | Endpoint                                         | Beskrivning                                      |
-|-------|--------------------------------------------------|--------------------------------------------------|
-| GET   | `/api/person`                                    | Hämtar alla personer                             |
-| GET   | `/api/person/{id}`                               | Hämtar intressen för en person                   |
-| GET   | `/api/person/{personId}/link`                    | Hämtar alla URL:er kopplade till en persons intressen |
-| POST  | `/api/person/{personId}/add-interest`            | Lägg till ett nytt intresse till en person      |
-| POST  | `/api/person/{personId}/interests/{interestId}/add-link` | Lägg till en URL till ett persons intresse |
-
+|      | Endpoint                                           | Parameters                                                        | Description                                        |
+|------|----------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------|
+| GET  | `/api/Guest/GetAllGuests`                          |                                                                   | Gets all guests                                    |
+| GET  | `/api/Guest/AvailableRooms`                        | startDate, endDate                                                | Gets available rooms for a specific period of days |
+| PUT  | `/api/Guest/AddBreakfast`                          | BookingId                                                         | Adds breakfast to a specific booking               |
+| PUT  | `/api/Guest/CancelBooking`                         | bookingId                                                         | Cancels a specific booking                         |
+| POST | `/api/Guest/CreateGuest`                           | FirstName, LastName, Email, Phone                                 | Creates a new guest                                |
+| DEL  | `/api/Guest/DeleteGuest`                           | guestId                                                           | Deletes a guest by id                              |
+|      |                                                    |                                                                   |                                                    |
+| GET  | `/api/Management/GetAllFutureBookings`             |                                                                   | Gets all future bookings                           |
+| GET  | `/api/Management/GetBookingsGroupedByWeek`         |                                                                   | Gets future bookings grouped by week               |
+| GET  | `/api/Management/GetBookingsGroupedByMonth`        |                                                                   | Gets future bookings grouped by month              |
+| GET  | `/api/Management/GetBookingById`                   | id                                                                | Gets a booking with specific id                    |
+| GET  | `/api/Management/GetTotalPrice`                    | BookingId                                                         | Gets the total sum for a specific booking          |
+| GET  | `/api/Management/GetAvailableRoomsByDateAndGuests` | fromDate, toDate, adults, children                                | Gets available rooms by specific conditions        |
+| GET  | `/api/Management/GetBookingHistory`                |                                                                   | Gets all past bookings                             |
+| PUT  | `/api/Management/UpdateBooking`                    | Id, FromDate, ToDate, NumberOfAdults, NumberOfChildren, Breakfast | Updates a booking                                  |
+| POST | `/api/Management/CreateBooking`                    | roomId, guestId, fromDate, toDate, adults, children, breakfast    | Creates a new booking                              |
+| DEL  | `/api/Management/DeleteBooking`                    | bookingId                                                         | Deletes a booking                                  |
 ---
 <details close>
-<summary>Hämta alla personer</summary>
+<summary>See all guests</summary>
 <br>
   
 ````
-[GET] /api/person
+[GET] /api/Guest/GetAllGuests
 ````
 **Request URL**
 ````
-https://localhost:7072/api/Person
-````
-**Request**
-````json
-{
-  "id": "int",
-  "firstName": "string",
-  "lastName": "string",
-  "telefonnummer": "string",
-  "email": "string"
-}
-````
-**Beskrivning**
-````
-Hämtar alla personer som ligger i databasen.
+https://localhost:7072/api/Guest/GetAllGuests
 ````
 
-**Exempel Response:**
+**Example Response**
 ````
 [
-  {
-    "id": 1,
-    "firstName": "Kim",
-    "lastName": "Andersson",
-    "telefonnummer": "0701234560",
-    "email": "kim@example.com"
-  }
+    {
+        "id": 2,
+        "firstName": "Bob",
+        "lastName": "Bengtsson",
+        "email": "bob@example.com",
+        "phone": "0702345678",
+        "bookings": null
+    }
 ]
 ````
 </details>
 
 <details close>
-<summary>Hämtar intressen för en person</summary>
+<summary>See available rooms</summary>
 <br>
   
 ````
-[GET] /api/person/{personId}/Interest
+[GET] /api/Guest/GetAvailableRooms
 ````
-**Request URL**
+**Example Request URL**
 ````
-https://localhost:7072/api/Person/{personId}/Interest
-````
-**Request**
-````
-{
-  "firstName": "string",
-  "lastName": "string",
-  "interests": [
-    {
-      "id": int,
-      "title": "string",
-      "description": "string",
-      "url": [
-        "string"
-      ]
-    }
-  ]
-}
-````
-**Beskrivning**
-````
-Hämtar intressen för en person genom att ange personens ID.
+https://localhost:7047/api/Guest/available-rooms?startDate=2025-08-01&endDate=2025-08-03
 ````
 
-**Exempel Response:**
+**Example Response**
 ````
-{
-  "firstName": "Kim",
-  "lastName": "Andersson",
-  "interests": [
+[
     {
-      "id": 12,
-      "title": "ölhävning",
-      "description": "Dricker mängder med öl",
-      "url": [
-        "https://www.bordershop.com/se"
-      ]
+        "id": 5,
+        "roomName": "105",
+        "roomTypeName": "Single",
+        "numberOfBeds": 1,
+        "pricePerNight": 500.00
     }
-  ]
-}
+]
 ````
 </details>
 
 <details close>
-<summary>Hämta en person's länkar</summary>
+<summary>Add breakfast to a booking</summary>
 <br>
   
 ````
-[GET] /api/person/{personId}/Link
+[PUT] /api/Guest/AddBreakfast
 ````
-**Request URL**
+**Example Request URL**
 ````
-https://localhost:7072/api/Person/{personId}/Link
+https://localhost:7047/api/Guest/AddBreakfast?BookingId=18
 ````
-**Request**
+**Example Response**
 ````
-[
-  {
-    "url": "string"
-  }
-}
-````
-**Beskrivning**
-````
-Hämtar alla länkar som är kopplade till en person's intressen.
-````
-
-**Exempel Response:**
-````
-[
-  {
-    "url": "www.test.com"
-  }
+{
+    "bookingId": 18,
+    "breakfast": true,
+    "message": "Breakfast has been added to the booking."
 }
 ````
 
 </details>
 
 <details close>
-<summary>Lägg till ett nytt intresse</summary>
+<summary>Cancel a booking</summary>
 <br>
   
 ````
-[POST] /api/person/{personId}/idd-interest
+[PUT] /api/Guest/CancelBooking
+````
+**Example Request URL**
+````
+https://localhost:7047/api/Guest/CancelBooking?bookingId=10
+````
+
+**Example Response**
+````
+{
+    "message": "Booking is cancelled"
+}
+
+````
+</details>
+
+<details close>
+<summary>Add a guest</summary>
+<br>
+  
+````
+[POST] /api/Guest/CreateGuest
+````
+**Example Request URL**
+````
+https://localhost:7047/api/Guest/CreateGuest?FirstName=Test&LastName=Testsson&Email=test%40testmail.com&Phone=555-444333
+````
+
+**Example Response**
+````
+{
+  "id": 23,
+  "firstName": "Test",
+  "lastName": "Testsson",
+  "email": "test@testmail.com",
+  "phone": "555-444333",
+  "bookings": null
+}
+````
+</details>
+
+
+<details close>
+<summary>Delete a guest</summary>
+<br>
+  
+````
+[DEL] /api/Guest/DeleteGuest
+````
+**Example Request URL**
+````
+https://localhost:7047/api/Guest/DeleteGuest?guestId=5
+````
+
+**Example Response**
+````
+No response body
+````
+</details>
+
+<details close>
+<summary>See all future bookings</summary>
+<br>
+  
+````
+[GET] /api/Management/GetAllFutureBookings
+````
+
+**Request URL**
+````
+https://localhost:7047/api/Management/GetAllFutureBookings
+````
+
+**Example Response**
+````
+[
+    {
+        "id": 3,
+        "guestName": "Larsson, Tom",
+        "roomNames": [
+            "103"
+        ],
+        "bookedFromDate": "2025-06-11",
+        "bookedToDate": "2025-06-13",
+        "numberOfAdults": 1,
+        "numberOfChildren": 0
+    }
+]
+
+````
+</details>
+
+<details close>
+<summary>See all future bookings grouped by week</summary>
+<br>
+  
+````
+[GET] /api/Management/GetBookingsGroupedByWeek
 ````
 **Request URL**
 ````
-https://localhost:7072/api/Person/{personId}/add-interest
-````
-**Request**
-````
-{
-  "title": "string",
-  "description": "string"
-}
-````
-**Beskrivning**
-````
-Kopplar ett nytt intresse till en person.
+https://localhost:7047/api/Management/GetBookingsGroupedByWeek
 ````
 
-**Exempel Response:**
+**Example Response**
+````
+[
+    {
+        "year": 2025,
+        "week": 25,
+        "bookings": [
+            {
+                "id": 4,
+                "guestName": "Helgesson, Lisa",
+                "roomNames": [
+                    "106"
+                ],
+                "bookedFromDate": "2025-06-20",
+                "bookedToDate": "2025-06-25",
+                "numberOfAdults": 1,
+                "numberOfChildren": 0
+            },
+            {
+                "id": 7,
+                "guestName": "Johansson, Oscar",
+                "roomNames": [
+                    "109"
+                ],
+                "bookedFromDate": "2025-06-16",
+                "bookedToDate": "2025-06-18",
+                "numberOfAdults": 2,
+                "numberOfChildren": 0
+            }
+        ]
+    }
+]
+````
+</details>
+
+<details close>
+<summary>See all future bookings grouped by month</summary>
+<br>
+  
+````
+[GET] /api/Management/GetBookingsGroupedByMonth
+````
+**Request URL**
+````
+https://localhost:7047/api/Management/GetBookingsGroupedByMonth
+````
+
+**Example Response**
+````
+[
+    {
+        "year": 2025,
+        "month": 6,
+        "bookings": [
+            {
+                "id": 3,
+                "guestName": "Larsson, Tom",
+                "roomNames": [
+                    "103"
+                ],
+                "bookedFromDate": "2025-06-11",
+                "bookedToDate": "2025-06-13",
+                "numberOfAdults": 1,
+                "numberOfChildren": 0
+            },
+            {
+                "id": 4,
+                "guestName": "Helgesson, Lisa",
+                "roomNames": [
+                    "106"
+                ],
+                "bookedFromDate": "2025-06-20",
+                "bookedToDate": "2025-06-25",
+                "numberOfAdults": 1,
+                "numberOfChildren": 0
+            },
+        ]
+    }
+]
+   
+
+````
+</details>
+
+<details close>
+<summary>Get a booking by id</summary>
+<br>
+  
+````
+[GET] /api/Management/GetBookingById
+````
+**Example Request URL**
+````
+https://localhost:7047/api/Management/GetBookingById?id=10
+````
+
+**Example Response**
 ````
 {
-  "id": 16,
-  "personId": 1,
-  "person": {
+  "id": 10,
+  "guestId": 10,
+  "fromDate": "2025-07-01",
+  "toDate": "2025-07-05",
+  "numberOfAdults": 2,
+  "numberOfChildren": 2,
+  "isCancelled": true,
+  "breakfast": false,
+  "guest": {
+    "id": 10,
+    "firstName": "Maja",
+    "lastName": "Gustafsson",
+    "email": "maja@example.com",
+    "phone": "0702345686",
+    "bookings": [
+      null
+    ]
+  },
+  "bookingRooms": [
+    {
+      "id": 10,
+      "bookingId": 10,
+      "booking": null,
+      "roomId": 13,
+      "room": {
+        "id": 13,
+        "name": "113",
+        "roomTypeId": 3,
+        "roomType": {
+          "id": 3,
+          "name": "Family",
+          "numberOfBeds": 4,
+          "pricePerNight": 1500,
+          "rooms": [
+            null
+          ]
+        },
+        "bookingRooms": [
+          null
+        ]
+      }
+    }
+  ]
+}
+
+````
+</details>
+
+<details close>
+<summary>See the total price for a booking</summary>
+<br>
+  
+````
+[GET] /api/Management/GetTotalPrice?BookingId=3
+````
+**Example Request URL**
+````
+https://localhost:7047/api/Management/GetTotalPrice?BookingId=3
+````
+
+**Example Response**
+````
+{
+  "bookingId": 3,
+  "rooms": [
+    {
+      "roomType": "Single",
+      "pricePerNight": 500
+    }
+  ],
+  "numberOfNights": 2,
+  "numberOfGuests": 1,
+  "numberOfBreakfasts": 0,
+  "breakfastPrice": 50,
+  "totalPrice": 1000
+}
+````
+</details>
+
+<details close>
+<summary>See available rooms by date and number of guests</summary>
+<br>
+  
+````
+[GET] /api/Management/GetAvailableRoomByDateAndGuests
+````
+**Example Request URL**
+````
+https://localhost:7047/api/Management/GetAvailableRoomByDateAndGuests?fromDate=2025-09-12&toDate=2025-09-15&adults=2&children=2
+````
+
+**Example Response**
+````
+[
+  {
+    "id": 20,
+    "roomName": "120",
+    "roomTypeName": "Family",
+    "numberOfBeds": 4,
+    "pricePerNight": 1500
+  },
+  {
+    "id": 19,
+    "roomName": "119",
+    "roomTypeName": "Family",
+    "numberOfBeds": 4,
+    "pricePerNight": 1500
+  }
+]
+
+````
+</details>
+
+
+<details close>
+<summary>See the booking history</summary>
+<br>
+  
+````
+[GET] /api/Management/GetBookingHistory
+````
+**Request URL**
+````
+https://localhost:7047/api/Management/GetBookingHistory
+````
+
+**Example Response**
+````
+[
+  {
     "id": 1,
-    "firstName": "Kim",
-    "lastName": "Andersson",
-    "telefonnummer": "0701234560",
-    "email": "kim@example.com",
-    "personInterests": [
-      null
+    "guestName": "Andersson, Anna",
+    "roomNames": [
+      "102"
+    ],
+    "bookedFromDate": "2025-06-05",
+    "bookedToDate": "2025-06-06",
+    "numberOfAdults": 1,
+    "numberOfChildren": 0
+  }
+]
+
+````
+</details>
+
+<details close>
+<summary>Update a booking</summary>
+<br>
+  
+````
+[PUT] /api/Management/UpdateBooking
+````
+**Example Request URL**
+````
+https://localhost:7047/api/Management/UpdateBooking?Id=4&FromDate=2026-08-17&ToDate=2026-08-18&NumberOfAdults=2&NumberOfChildren=0&Breakfast=true
+````
+
+**Example Response**
+````
+{
+  "id": 4,
+  "guestId": 4,
+  "fromDate": "2026-08-17",
+  "toDate": "2026-08-18",
+  "numberOfAdults": 2,
+  "numberOfChildren": 0,
+  "isCancelled": false,
+  "breakfast": true,
+  "guest": null,
+  "bookingRooms": [
+    {
+      "id": 4,
+      "bookingId": 4,
+      "booking": null,
+      "roomId": 6,
+      "room": {
+        "id": 6,
+        "name": "106",
+        "roomTypeId": 2,
+        "roomType": {
+          "id": 2,
+          "name": "Double",
+          "numberOfBeds": 2,
+          "pricePerNight": 900,
+          "rooms": [
+            null
+          ]
+        },
+        "bookingRooms": [
+          null
+        ]
+      }
+    }
+  ]
+}
+````
+</details>
+
+<details close>
+<summary>Create a new booking</summary>
+<br>
+  
+````
+[POST] /api/Management/CreateBooking
+````
+**Example Request URL**
+````
+https://localhost:7047/api/Management/CreateBooking?roomId=8&guestId=9&fromDate=2027-08-10&toDate=2027-08-13&adults=2&children=0&breakfast=true
+````
+
+**Example Response**
+````
+{
+  "newBooking": {
+    "bookingId": 21,
+    "guestId": 9,
+    "fromDate": "2027-08-10",
+    "toDate": "2027-08-13",
+    "numberOfAdults": 2,
+    "numberOfChildren": 0,
+    "breakfast": true,
+    "roomIds": [
+      8
     ]
-  },
-  "interestId": 11,
-  "interest": {
-    "id": 11,
-    "title": "biljakt",
-    "description": "Stannar inte för någon",
-    "personInterests": [
-      null
-    ]
-  },
-  "link": null
+  }
 }
 
 ````
 </details>
 
 <details close>
-<summary>Lägg till en URL</summary>
+<summary>Delete a booking</summary>
 <br>
   
 ````
-[POST] /api/Person/{personId}/interests/{InterestId}/add-link
+[DEL] /api/Management/DeleteBooking
 ````
-**Request URL**
+**Example Request URL**
 ````
-https://localhost:7072//api/Person/{personId}/interests/{InterestId}/add-link
-````
-**Request**
-````
-{
-  "url": "string"
-}
-````
-**Beskrivning**
-````
-Lägger till en ny länk till ett intresse som är kopplat till en person.
+https://localhost:7047/api/Management/DeleteBooking?bookingId=5
 ````
 
-**Exempel Response**
+**Example Response**
 ````
-{
-  "id": 21,
-  "personInterestId": 7,
-  "personInterest": {
-    "id": 7,
-    "personId": 5,
-    "person": {
-      "id": 5,
-      "firstName": "Max",
-      "lastName": "Bengtsson",
-      "telefonnummer": "0701234564",
-      "email": "max@example.com",
-      "personInterests": [
-        null
-      ]
-    },
-    "interestId": 2,
-    "interest": null,
-    "link": [
-      null
-    ]
-  },
-  "url": "www.fz.com"
-}
+No response body
 ````
 </details>
+
+<details close>
+
 
 ---
 
