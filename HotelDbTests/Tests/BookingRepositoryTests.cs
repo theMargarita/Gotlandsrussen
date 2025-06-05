@@ -262,7 +262,7 @@ namespace HotelGotlandsrussenTESTS.Tests
             // Checks if bookingToDelete Excist and then Delete the booking with that id.
             var bookingToDelete = await _repository.GetById(booking.Id);
             Assert.IsNotNull(bookingToDelete, "Booking should exist before deletion");
-            
+
             await _repository.DeleteBooking(booking.Id);
             var DeletetBooking = await _repository.GetById(booking.Id);
 
@@ -270,5 +270,28 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.IsNull(DeletetBooking, "Booking should not exist after deletion.");
         }
 
+        [TestMethod]
+        public async Task CreateBooking_ShouldCreatABookingWithAnExistingGuestId_ShouldReturnANewBooking()
+        {
+            //Arrange
+            var existingBookings = _context.Bookings.ToList();
+            _context.RemoveRange(existingBookings);
+            await _context.SaveChangesAsync();
+
+            var getBooking = MockDataSetup.GetBookings()[0];
+
+            //Act
+            var addBooking = _repository.CreateBooking(getBooking);
+            var result = _context.Bookings.FirstOrDefault();
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.GuestId);
+            Assert.AreEqual(new DateOnly(2025, 6, 10), result.FromDate);
+            Assert.AreEqual(new DateOnly(2025, 6, 11), result.ToDate);
+            Assert.AreEqual(1, result.NumberOfAdults);
+            Assert.AreEqual(0, result.NumberOfChildren);
+            Assert.AreEqual(false, result.Breakfast);
+        }
     }
 }
