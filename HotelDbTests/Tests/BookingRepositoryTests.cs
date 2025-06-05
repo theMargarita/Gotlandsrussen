@@ -271,7 +271,7 @@ namespace HotelGotlandsrussenTESTS.Tests
         }
 
         [TestMethod]
-        public async Task CreateBooking_ShouldCreatABookingWithAnExistingGuestId_ShouldReturnANewBooking()
+        public async Task CreateBooking_ShouldCreatABookingWithAnExistingGuestId_ShouldReturnCorrectValueOfNewBooking()
         {
             //Arrange
             var existingBookings = _context.Bookings.ToList();
