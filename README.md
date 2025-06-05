@@ -2,12 +2,10 @@
 
 ---
 
-## Översikt
 |      | Endpoint                                           | Parameters                                                        | Description                                        |
 |------|----------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------|
 | GET  | `/api/Guest/GetAllGuests`                          |                                                                   | Gets all guests                                    |
-| GET  | `/api/Guest/GetBookingById`                        | bookingId - TA BORT?                                              | Gets a booking with specific id                    |
-| GET  | `/api/Guest/GetAvailableRooms`                     | startDate, endDate                                                | Gets available rooms for a specific period of days |
+| GET  | `/api/Guest/AvailableRooms`                        | startDate, endDate                                                | Gets available rooms for a specific period of days |
 | PUT  | `/api/Guest/AddBreakfast`                          | BookingId                                                         | Adds breakfast to a specific booking               |
 | PUT  | `/api/Guest/CancelBooking`                         | bookingId                                                         | Cancels a specific booking                         |
 | POST | `/api/Guest/CreateGuest`                           | FirstName, LastName, Email, Phone                                 | Creates a new guest                                |
@@ -21,11 +19,11 @@
 | GET  | `/api/Management/GetAvailableRoomsByDateAndGuests` | fromDate, toDate, adults, children                                | Gets available rooms by specific conditions        |
 | GET  | `/api/Management/GetBookingHistory`                |                                                                   | Gets all past bookings                             |
 | PUT  | `/api/Management/UpdateBooking`                    | Id, FromDate, ToDate, NumberOfAdults, NumberOfChildren, Breakfast | Updates a booking                                  |
-| POST | `/api/Management/CreateBooking`                    | xxxxxxxx                                                          | Creates a new booking                              |
+| POST | `/api/Management/CreateBooking`                    | roomId, guestId, fromDate, toDate, adults, children, breakfast    | Creates a new booking                              |
 | DEL  | `/api/Management/DeleteBooking`                    | bookingId                                                         | Deletes a booking                                  |
 ---
 <details close>
-<summary>Get All Guests</summary>
+<summary>See all guests</summary>
 <br>
   
 ````
@@ -36,7 +34,7 @@
 https://localhost:7072/api/Guest/GetAllGuests
 ````
 
-**Example Response:**
+**Example Response**
 ````
 [
     {
@@ -52,7 +50,7 @@ https://localhost:7072/api/Guest/GetAllGuests
 </details>
 
 <details close>
-<summary>Get Available Rooms</summary>
+<summary>See available rooms</summary>
 <br>
   
 ````
@@ -63,7 +61,7 @@ https://localhost:7072/api/Guest/GetAllGuests
 https://localhost:7047/api/Guest/available-rooms?startDate=2025-08-01&endDate=2025-08-03
 ````
 
-**Example Response:**
+**Example Response**
 ````
 [
     {
@@ -78,7 +76,7 @@ https://localhost:7047/api/Guest/available-rooms?startDate=2025-08-01&endDate=20
 </details>
 
 <details close>
-<summary>Add Breakfast</summary>
+<summary>Add breakfast to a booking</summary>
 <br>
   
 ````
@@ -100,18 +98,18 @@ https://localhost:7047/api/Guest/AddBreakfast?BookingId=18
 </details>
 
 <details close>
-<summary>Cancel Booking</summary>
+<summary>Cancel a booking</summary>
 <br>
   
 ````
-[POST] /api/Guest/CancelBooking
+[PUT] /api/Guest/CancelBooking
 ````
-** Example Request URL**
+**Example Request URL**
 ````
 https://localhost:7047/api/Guest/CancelBooking?bookingId=10
 ````
 
-**Example Response:**
+**Example Response**
 ````
 {
     "message": "Booking is cancelled"
@@ -121,7 +119,7 @@ https://localhost:7047/api/Guest/CancelBooking?bookingId=10
 </details>
 
 <details close>
-<summary>Create Guest</summary>
+<summary>Add a guest</summary>
 <br>
   
 ````
@@ -147,7 +145,7 @@ https://localhost:7047/api/Guest/CreateGuest?FirstName=Test&LastName=Testsson&Em
 
 
 <details close>
-<summary>Delete Guest</summary>
+<summary>Delete a guest</summary>
 <br>
   
 ````
@@ -160,24 +158,24 @@ https://localhost:7047/api/Guest/DeleteGuest?guestId=5
 
 **Example Response**
 ````
-No response
+No response body
 ````
 </details>
 
 <details close>
-<summary>GetAllFutureBookings</summary>
+<summary>See all future bookings</summary>
 <br>
   
 ````
 [GET] /api/Management/GetAllFutureBookings
 ````
 
-**Example Request URL**
+**Request URL**
 ````
 https://localhost:7047/api/Management/GetAllFutureBookings
 ````
 
-**Example Response:**
+**Example Response**
 ````
 [
     {
@@ -197,7 +195,7 @@ https://localhost:7047/api/Management/GetAllFutureBookings
 </details>
 
 <details close>
-<summary>Get future bookings grouped by week</summary>
+<summary>See all future bookings grouped by week</summary>
 <br>
   
 ````
@@ -208,7 +206,7 @@ https://localhost:7047/api/Management/GetAllFutureBookings
 https://localhost:7047/api/Management/GetBookingsGroupedByWeek
 ````
 
-**Example Response:**
+**Example Response**
 ````
 [
     {
@@ -244,7 +242,7 @@ https://localhost:7047/api/Management/GetBookingsGroupedByWeek
 </details>
 
 <details close>
-<summary>Get future bookings grouped by month</summary>
+<summary>See all future bookings grouped by month</summary>
 <br>
   
 ````
@@ -255,7 +253,7 @@ https://localhost:7047/api/Management/GetBookingsGroupedByWeek
 https://localhost:7047/api/Management/GetBookingsGroupedByMonth
 ````
 
-**Example Response:**
+**Example Response**
 ````
 [
     {
@@ -293,458 +291,270 @@ https://localhost:7047/api/Management/GetBookingsGroupedByMonth
 </details>
 
 <details close>
-<summary>Cancel Booking</summary>
+<summary>Get a booking by id</summary>
 <br>
   
 ````
-[POST] /api/Guest/CancelBooking
+[GET] /api/Management/GetBookingById
 ````
-** Example Request URL**
+**Example Request URL**
 ````
-https://localhost:7047/api/Guest/CancelBooking?bookingId=10
+https://localhost:7047/api/Management/GetBookingById?id=10
 ````
 
-**Example Response:**
+**Example Response**
 ````
 {
-    "message": "Booking is cancelled"
-}
-
-````
-</details>
-
-<details close>
-<summary>Lägg till en URL</summary>
-<br>
-  
-````
-[POST] /api/Person/{personId}/interests/{InterestId}/add-link
-````
-**Request URL**
-````
-https://localhost:7072//api/Person/{personId}/interests/{InterestId}/add-link
-````
-**Request**
-````
-{
-  "url": "string"
-}
-````
-**Beskrivning**
-````
-Lägger till en ny länk till ett intresse som är kopplat till en person.
-````
-
-**Exempel Response**
-````
-{
-  "id": 21,
-  "personInterestId": 7,
-  "personInterest": {
-    "id": 7,
-    "personId": 5,
-    "person": {
-      "id": 5,
-      "firstName": "Max",
-      "lastName": "Bengtsson",
-      "telefonnummer": "0701234564",
-      "email": "max@example.com",
-      "personInterests": [
-        null
-      ]
-    },
-    "interestId": 2,
-    "interest": null,
-    "link": [
+  "id": 10,
+  "guestId": 10,
+  "fromDate": "2025-07-01",
+  "toDate": "2025-07-05",
+  "numberOfAdults": 2,
+  "numberOfChildren": 2,
+  "isCancelled": true,
+  "breakfast": false,
+  "guest": {
+    "id": 10,
+    "firstName": "Maja",
+    "lastName": "Gustafsson",
+    "email": "maja@example.com",
+    "phone": "0702345686",
+    "bookings": [
       null
     ]
   },
-  "url": "www.fz.com"
+  "bookingRooms": [
+    {
+      "id": 10,
+      "bookingId": 10,
+      "booking": null,
+      "roomId": 13,
+      "room": {
+        "id": 13,
+        "name": "113",
+        "roomTypeId": 3,
+        "roomType": {
+          "id": 3,
+          "name": "Family",
+          "numberOfBeds": 4,
+          "pricePerNight": 1500,
+          "rooms": [
+            null
+          ]
+        },
+        "bookingRooms": [
+          null
+        ]
+      }
+    }
+  ]
 }
+
 ````
 </details>
 
 <details close>
-<summary>Cancel Booking</summary>
+<summary>See the total price for a booking</summary>
 <br>
   
 ````
-[POST] /api/Guest/CancelBooking
+[GET] /api/Management/GetTotalPrice?BookingId=3
 ````
-** Example Request URL**
+**Example Request URL**
 ````
-https://localhost:7047/api/Guest/CancelBooking?bookingId=10
+https://localhost:7047/api/Management/GetTotalPrice?BookingId=3
 ````
 
-**Example Response:**
+**Example Response**
 ````
 {
-    "message": "Booking is cancelled"
+  "bookingId": 3,
+  "rooms": [
+    {
+      "roomType": "Single",
+      "pricePerNight": 500
+    }
+  ],
+  "numberOfNights": 2,
+  "numberOfGuests": 1,
+  "numberOfBreakfasts": 0,
+  "breakfastPrice": 50,
+  "totalPrice": 1000
 }
+````
+</details>
+
+<details close>
+<summary>See available rooms by date and number of guests</summary>
+<br>
+  
+````
+[GET] /api/Management/GetAvailableRoomByDateAndGuests
+````
+**Example Request URL**
+````
+https://localhost:7047/api/Management/GetAvailableRoomByDateAndGuests?fromDate=2025-09-12&toDate=2025-09-15&adults=2&children=2
+````
+
+**Example Response**
+````
+[
+  {
+    "id": 20,
+    "roomName": "120",
+    "roomTypeName": "Family",
+    "numberOfBeds": 4,
+    "pricePerNight": 1500
+  },
+  {
+    "id": 19,
+    "roomName": "119",
+    "roomTypeName": "Family",
+    "numberOfBeds": 4,
+    "pricePerNight": 1500
+  }
+]
 
 ````
 </details>
 
 
 <details close>
-<summary>Cancel Booking</summary>
+<summary>See the booking history</summary>
 <br>
   
 ````
-[POST] /api/Guest/CancelBooking
-````
-** Example Request URL**
-````
-https://localhost:7047/api/Guest/CancelBooking?bookingId=10
-````
-
-**Example Response:**
-````
-{
-    "message": "Booking is cancelled"
-}
-
-````
-</details>
-
-<details close>
-<summary>Lägg till en URL</summary>
-<br>
-  
-````
-[POST] /api/Person/{personId}/interests/{InterestId}/add-link
+[GET] /api/Management/GetBookingHistory
 ````
 **Request URL**
 ````
-https://localhost:7072//api/Person/{personId}/interests/{InterestId}/add-link
-````
-**Request**
-````
-{
-  "url": "string"
-}
-````
-**Beskrivning**
-````
-Lägger till en ny länk till ett intresse som är kopplat till en person.
+https://localhost:7047/api/Management/GetBookingHistory
 ````
 
-**Exempel Response**
+**Example Response**
+````
+[
+  {
+    "id": 1,
+    "guestName": "Andersson, Anna",
+    "roomNames": [
+      "102"
+    ],
+    "bookedFromDate": "2025-06-05",
+    "bookedToDate": "2025-06-06",
+    "numberOfAdults": 1,
+    "numberOfChildren": 0
+  }
+]
+
+````
+</details>
+
+<details close>
+<summary>Update a booking</summary>
+<br>
+  
+````
+[PUT] /api/Management/UpdateBooking
+````
+**Example Request URL**
+````
+https://localhost:7047/api/Management/UpdateBooking?Id=4&FromDate=2026-08-17&ToDate=2026-08-18&NumberOfAdults=2&NumberOfChildren=0&Breakfast=true
+````
+
+**Example Response**
 ````
 {
-  "id": 21,
-  "personInterestId": 7,
-  "personInterest": {
-    "id": 7,
-    "personId": 5,
-    "person": {
-      "id": 5,
-      "firstName": "Max",
-      "lastName": "Bengtsson",
-      "telefonnummer": "0701234564",
-      "email": "max@example.com",
-      "personInterests": [
-        null
-      ]
-    },
-    "interestId": 2,
-    "interest": null,
-    "link": [
-      null
+  "id": 4,
+  "guestId": 4,
+  "fromDate": "2026-08-17",
+  "toDate": "2026-08-18",
+  "numberOfAdults": 2,
+  "numberOfChildren": 0,
+  "isCancelled": false,
+  "breakfast": true,
+  "guest": null,
+  "bookingRooms": [
+    {
+      "id": 4,
+      "bookingId": 4,
+      "booking": null,
+      "roomId": 6,
+      "room": {
+        "id": 6,
+        "name": "106",
+        "roomTypeId": 2,
+        "roomType": {
+          "id": 2,
+          "name": "Double",
+          "numberOfBeds": 2,
+          "pricePerNight": 900,
+          "rooms": [
+            null
+          ]
+        },
+        "bookingRooms": [
+          null
+        ]
+      }
+    }
+  ]
+}
+````
+</details>
+
+<details close>
+<summary>Create a new booking</summary>
+<br>
+  
+````
+[POST] /api/Management/CreateBooking
+````
+**Example Request URL**
+````
+https://localhost:7047/api/Management/CreateBooking?roomId=8&guestId=9&fromDate=2027-08-10&toDate=2027-08-13&adults=2&children=0&breakfast=true
+````
+
+**Example Response**
+````
+{
+  "newBooking": {
+    "bookingId": 21,
+    "guestId": 9,
+    "fromDate": "2027-08-10",
+    "toDate": "2027-08-13",
+    "numberOfAdults": 2,
+    "numberOfChildren": 0,
+    "breakfast": true,
+    "roomIds": [
+      8
     ]
-  },
-  "url": "www.fz.com"
-}
-````
-</details>
-
-<details close>
-<summary>Cancel Booking</summary>
-<br>
-  
-````
-[POST] /api/Guest/CancelBooking
-````
-** Example Request URL**
-````
-https://localhost:7047/api/Guest/CancelBooking?bookingId=10
-````
-
-**Example Response:**
-````
-{
-    "message": "Booking is cancelled"
+  }
 }
 
 ````
 </details>
 
 <details close>
-<summary>Lägg till en URL</summary>
+<summary>Delete a booking</summary>
 <br>
   
 ````
-[POST] /api/Person/{personId}/interests/{InterestId}/add-link
+[DEL] /api/Management/DeleteBooking
 ````
-**Request URL**
+**Example Request URL**
 ````
-https://localhost:7072//api/Person/{personId}/interests/{InterestId}/add-link
-````
-**Request**
-````
-{
-  "url": "string"
-}
-````
-**Beskrivning**
-````
-Lägger till en ny länk till ett intresse som är kopplat till en person.
+https://localhost:7047/api/Management/DeleteBooking?bookingId=5
 ````
 
-**Exempel Response**
+**Example Response**
 ````
-{
-  "id": 21,
-  "personInterestId": 7,
-  "personInterest": {
-    "id": 7,
-    "personId": 5,
-    "person": {
-      "id": 5,
-      "firstName": "Max",
-      "lastName": "Bengtsson",
-      "telefonnummer": "0701234564",
-      "email": "max@example.com",
-      "personInterests": [
-        null
-      ]
-    },
-    "interestId": 2,
-    "interest": null,
-    "link": [
-      null
-    ]
-  },
-  "url": "www.fz.com"
-}
+No response body
 ````
 </details>
 
 <details close>
-<summary>Cancel Booking</summary>
-<br>
-  
-````
-[POST] /api/Guest/CancelBooking
-````
-** Example Request URL**
-````
-https://localhost:7047/api/Guest/CancelBooking?bookingId=10
-````
 
-**Example Response:**
-````
-{
-    "message": "Booking is cancelled"
-}
-
-````
-</details>
-
-<details close>
-<summary>Lägg till en URL</summary>
-<br>
-  
-````
-[POST] /api/Person/{personId}/interests/{InterestId}/add-link
-````
-**Request URL**
-````
-https://localhost:7072//api/Person/{personId}/interests/{InterestId}/add-link
-````
-**Request**
-````
-{
-  "url": "string"
-}
-````
-**Beskrivning**
-````
-Lägger till en ny länk till ett intresse som är kopplat till en person.
-````
-
-**Exempel Response**
-````
-{
-  "id": 21,
-  "personInterestId": 7,
-  "personInterest": {
-    "id": 7,
-    "personId": 5,
-    "person": {
-      "id": 5,
-      "firstName": "Max",
-      "lastName": "Bengtsson",
-      "telefonnummer": "0701234564",
-      "email": "max@example.com",
-      "personInterests": [
-        null
-      ]
-    },
-    "interestId": 2,
-    "interest": null,
-    "link": [
-      null
-    ]
-  },
-  "url": "www.fz.com"
-}
-````
-</details>
-
-<details close>
-<summary>Cancel Booking</summary>
-<br>
-  
-````
-[POST] /api/Guest/CancelBooking
-````
-** Example Request URL**
-````
-https://localhost:7047/api/Guest/CancelBooking?bookingId=10
-````
-
-**Example Response:**
-````
-{
-    "message": "Booking is cancelled"
-}
-
-````
-</details>
-
-<details close>
-<summary>Lägg till en URL</summary>
-<br>
-  
-````
-[POST] /api/Person/{personId}/interests/{InterestId}/add-link
-````
-**Request URL**
-````
-https://localhost:7072//api/Person/{personId}/interests/{InterestId}/add-link
-````
-**Request**
-````
-{
-  "url": "string"
-}
-````
-**Beskrivning**
-````
-Lägger till en ny länk till ett intresse som är kopplat till en person.
-````
-
-**Exempel Response**
-````
-{
-  "id": 21,
-  "personInterestId": 7,
-  "personInterest": {
-    "id": 7,
-    "personId": 5,
-    "person": {
-      "id": 5,
-      "firstName": "Max",
-      "lastName": "Bengtsson",
-      "telefonnummer": "0701234564",
-      "email": "max@example.com",
-      "personInterests": [
-        null
-      ]
-    },
-    "interestId": 2,
-    "interest": null,
-    "link": [
-      null
-    ]
-  },
-  "url": "www.fz.com"
-}
-````
-</details>
-
-<details close>
-<summary>Cancel Booking</summary>
-<br>
-  
-````
-[POST] /api/Guest/CancelBooking
-````
-** Example Request URL**
-````
-https://localhost:7047/api/Guest/CancelBooking?bookingId=10
-````
-
-**Example Response:**
-````
-{
-    "message": "Booking is cancelled"
-}
-
-````
-</details>
-
-<details close>
-<summary>Lägg till en URL</summary>
-<br>
-  
-````
-[POST] /api/Person/{personId}/interests/{InterestId}/add-link
-````
-**Request URL**
-````
-https://localhost:7072//api/Person/{personId}/interests/{InterestId}/add-link
-````
-**Request**
-````
-{
-  "url": "string"
-}
-````
-**Beskrivning**
-````
-Lägger till en ny länk till ett intresse som är kopplat till en person.
-````
-
-**Exempel Response**
-````
-{
-  "id": 21,
-  "personInterestId": 7,
-  "personInterest": {
-    "id": 7,
-    "personId": 5,
-    "person": {
-      "id": 5,
-      "firstName": "Max",
-      "lastName": "Bengtsson",
-      "telefonnummer": "0701234564",
-      "email": "max@example.com",
-      "personInterests": [
-        null
-      ]
-    },
-    "interestId": 2,
-    "interest": null,
-    "link": [
-      null
-    ]
-  },
-  "url": "www.fz.com"
-}
-````
-</details>
 
 ---
 
