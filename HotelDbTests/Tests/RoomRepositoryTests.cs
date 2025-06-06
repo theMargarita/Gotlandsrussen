@@ -1,14 +1,8 @@
 ﻿using Gotlandsrussen.Data;
 using Gotlandsrussen.Models;
-using Gotlandsrussen.Models.DTOs;
 using Gotlandsrussen.Repositories;
 using HotelGotlandsrussenTESTS.TestSetup;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HotelGotlandsrussenTESTS.Tests
 {
@@ -178,6 +172,20 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreEqual("Testrumstyp", dto.RoomTypeName);
             Assert.AreEqual(2, dto.NumberOfBeds);
             Assert.AreEqual(900, dto.PricePerNight);
+        }
+
+        [TestMethod]
+        public async Task GetRoomById_WhenCallingMethodd_ReturnsCorrectId()
+        {
+            //Arrange
+            var roomId = 1;
+
+            //Act
+            var result = _repository.GetRoomById(roomId);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Id);
         }
     }
 }

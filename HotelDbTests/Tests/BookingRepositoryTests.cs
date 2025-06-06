@@ -262,7 +262,7 @@ namespace HotelGotlandsrussenTESTS.Tests
             // Checks if bookingToDelete Excist and then Delete the booking with that id.
             var bookingToDelete = await _repository.GetById(booking.Id);
             Assert.IsNotNull(bookingToDelete, "Booking should exist before deletion");
-            
+
             await _repository.DeleteBooking(booking.Id);
             var DeletetBooking = await _repository.GetById(booking.Id);
 
@@ -270,5 +270,61 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.IsNull(DeletetBooking, "Booking should not exist after deletion.");
         }
 
+        [TestMethod]
+        public async Task CreateBooking_ShouldCreatABookingWithAnExistingGuestId_ShouldReturnCorrectValueOfNewBooking()
+        {
+            //Arrange
+            var existingBookings = _context.Bookings.ToList();
+            _context.RemoveRange(existingBookings);
+            await _context.SaveChangesAsync();
+
+            var getBooking = MockDataSetup.GetBookings()[0];
+
+            //Act
+            var addBooking = _repository.CreateBooking(getBooking);
+            var result = _context.Bookings.FirstOrDefault();
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.GuestId);
+            Assert.AreEqual(new DateOnly(2025, 6, 10), result.FromDate);
+            Assert.AreEqual(new DateOnly(2025, 6, 11), result.ToDate);
+            Assert.AreEqual(1, result.NumberOfAdults);
+            Assert.AreEqual(0, result.NumberOfChildren);
+            Assert.AreEqual(false, result.Breakfast);
+        }
+
+        [TestMethod]
+        public async Task CreateBooking_WhenBookingFails_ShouldNotMatchExpectedValues()
+        {
+            //Arrange
+            _context.Bookings.RemoveRange(_context.Bookings);
+            await _context.SaveChangesAsync();
+
+            Booking failedBooking = new Booking
+            {
+                GuestId = 1,
+                FromDate = new DateOnly(2024, 05, 24),
+                ToDate = new DateOnly(2024, 05, 24),
+                NumberOfAdults = 0, //must be above 0
+                NumberOfChildren = 1,
+                Breakfast = false
+            };
+
+            //Act
+            var result = await _repository.CreateBooking(failedBooking);
+            var saveBooking = _context.Bookings.FirstOrDefault();
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(saveBooking);
+            Assert.AreNotEqual(8, failedBooking.GuestId);
+            Assert.AreNotEqual(new DateOnly(2025,06,12), failedBooking.FromDate);
+            Assert.AreNotEqual(new DateOnly(2025, 06, 14), failedBooking.ToDate);
+            Assert.AreNotEqual(1, failedBooking.NumberOfAdults);
+            Assert.AreNotEqual(2, failedBooking.NumberOfChildren);
+            Assert.AreNotEqual(true, failedBooking.Breakfast);
+
+        }
     }
 }

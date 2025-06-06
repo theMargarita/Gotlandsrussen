@@ -269,7 +269,7 @@ namespace Gotlandsrussen.Controllers
             };
 
 
-            return CreatedAtAction(nameof(GetBookingById), new { id = booking.Id }, new { newBooking  });
+            return CreatedAtAction(nameof(GetBookingById), new { id = booking.Id }, newBooking  );
         }
 
         [HttpDelete("DeleteBooking")]
