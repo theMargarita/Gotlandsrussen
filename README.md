@@ -1,7 +1,14 @@
 # Gotlandsrussen
 
----
+<details close>
+<summary>Project description</summary>
 
+</details>
+
+<details close>
+<summary>API documentation</summary>
+
+---
 |      | Endpoint                                           | Parameters                                                        | Description                                        |
 |------|----------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------|
 | GET  | `/api/Guest/GetAllGuests`                          |                                                                   | Gets all guests                                    |
@@ -552,10 +559,37 @@ https://localhost:7047/api/Management/DeleteBooking?bookingId=5
 No response body
 ````
 </details>
+</details>
 
 <details close>
+<summary>Test strategy</summary>
+  
+---
+  
+### Unit Tests for Controller
+To test our controllers, we used Moq to mock dependencies from the repository classes. We could simulate various scenarios and ensure that the appropriate HTTP responses were returned.
+
+---
+### Unit Tests for Repositories
+For repository testing we used an in-memory database (InMemoryDatabase from Entity Framework). This allowed us to verify data database communication without depending on a real database.
+
+---
+### Integration Tests
+For integration testing we used Postman by sending real HTTP requests to the API. This helped us verify that all endpoints worked as expected, including correct status codes, response bodies, and error handling. We used Postman to test full flows, such as creating bookings, finding available rooms, and cancelling bookings.
+
+---
+### Test Results
+A few bugs were detected during testing. One example is that breakfast costs were included in the total booking amount, even when the customer had chosen to book without breakfast. These bugs were corrected during the testing phase.
+
+We do not have full test coverage for all methods, mainly due to time constraints. Several new methods were added toward the end of the project, and we did not have enough time to implement tests for all of them. However, all members of the project group contributed to writing both controller and repository tests, and we prioritized testing our initial methods.
 
 
+</details>
+
+
+
+
+<details close>
 ---
 
 # Markdown Cheat Sheet
