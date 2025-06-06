@@ -86,7 +86,12 @@ namespace Gotlandsrussen.Data
                 new Booking { Id = 17, GuestId = 2, FromDate = new DateOnly(2025, 8, 05), ToDate = new DateOnly(2025, 8, 07), NumberOfAdults = 4, NumberOfChildren = 0, IsCancelled = false, Breakfast = false },
                 new Booking { Id = 18, GuestId = 3, FromDate = new DateOnly(2025, 8, 10), ToDate = new DateOnly(2025, 8, 13), NumberOfAdults = 3, NumberOfChildren = 3, IsCancelled = false, Breakfast = false },
                 new Booking { Id = 19, GuestId = 4, FromDate = new DateOnly(2025, 8, 12), ToDate = new DateOnly(2025, 8, 13), NumberOfAdults = 4, NumberOfChildren = 8, IsCancelled = false, Breakfast = false },
-                new Booking { Id = 20, GuestId = 5, FromDate = new DateOnly(2025, 8, 15), ToDate = new DateOnly(2025, 8, 20), NumberOfAdults = 2, NumberOfChildren = 5, IsCancelled = false, Breakfast = true }
+                new Booking { Id = 20, GuestId = 5, FromDate = new DateOnly(2025, 8, 15), ToDate = new DateOnly(2025, 8, 20), NumberOfAdults = 2, NumberOfChildren = 5, IsCancelled = false, Breakfast = true },
+
+
+                new Booking { Id = 21, GuestId = 1, FromDate = new DateOnly(2025, 5, 1), ToDate = new DateOnly(2025, 5, 17), NumberOfAdults = 2, NumberOfChildren = 1, IsCancelled = false, Breakfast = true },
+                new Booking { Id = 22, GuestId = 2, FromDate = new DateOnly(2025, 4, 20), ToDate = new DateOnly(2025, 4, 22), NumberOfAdults = 1, NumberOfChildren = 2, IsCancelled = false, Breakfast = false },
+                 new Booking { Id = 23, GuestId = 3, FromDate = new DateOnly(2025, 1, 5), ToDate = new DateOnly(2025, 6, 6), NumberOfAdults = 1, NumberOfChildren = 0, IsCancelled = false, Breakfast = true }
             );
 
             // BookingRooms
