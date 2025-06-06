@@ -259,10 +259,10 @@ namespace HotelGotlandsrussenTESTS.Tests
         }
 
         [TestMethod]
-        public void CreateBooking_ReturnsIn()
+        public void CreateBooking_WithInput_ReturnsCreatedBooking()
         {
             //Arrange
-            var roomId = new List<int> { 1, 2 }; //inparametern för createbooking parametern
+            var roomId = new List<int> { 1, 2 }; //inparametern för createbooking
             int guestId = 1;
             var fromDate = new DateOnly(2025, 06, 10);
             var toDate = new DateOnly(2025, 06, 11);
@@ -275,7 +275,7 @@ namespace HotelGotlandsrussenTESTS.Tests
 
             Booking booking = new Booking
             {
-                Id = 100, //?
+                //Id = 1,
                 GuestId = guestId,
                 FromDate = fromDate,
                 ToDate = toDate,
@@ -284,6 +284,42 @@ namespace HotelGotlandsrussenTESTS.Tests
                 Breakfast = breakfast
             };
 
+            _mockGuestRepository?.Setup(repo => repo.GetAllGuests()).ReturnsAsync(getGuests);
+
+            _mockRoomRepository?.Setup(repo => repo.GetAvailableRoomsAsync(fromDate, toDate)).ReturnsAsync(expectedRooms);
+
+            _mockBookingRepository?.Setup(repo => repo.CreateBooking(It.IsAny<Booking>())).ReturnsAsync(booking);
+
+            _mockBookingRoomRepository?.Setup(repo => repo.AddBookingRooms(It.IsAny<BookingRoom>()));
+
+            //Act
+            var result = _controller?.CreateBooking(roomId, guestId, fromDate, toDate, adults, children, breakfast).Result;
+
+            //Assert
+            var okResult = result?.Result as CreatedAtActionResult;
+            Assert.IsNotNull(okResult?.Value);
+            Assert.AreEqual(201, okResult.StatusCode);
+
+            var createdResult = okResult.Value as CreateBookingDto;
+            Assert.IsNotNull(createdResult);
+
+            Assert.AreEqual(booking.Id, createdResult.BookingId);
+            Assert.AreEqual(guestId, booking.GuestId);
+            Assert.AreEqual(fromDate, booking.FromDate);
+            Assert.AreEqual(toDate, booking.ToDate);
+            Assert.AreEqual(adults, booking.NumberOfAdults);
+            Assert.AreEqual(children, booking.NumberOfChildren);
+            Assert.AreEqual(adults, booking.NumberOfAdults);
+            Assert.AreEqual(breakfast, booking.Breakfast);
+
+            //check roomids 
+            Assert.AreEqual(2, createdResult.RoomIds?.Count);
+            Assert.IsTrue(createdResult.RoomIds?.Contains(1));
+            Assert.IsTrue(createdResult.RoomIds?.Contains(2));
+
+            _mockBookingRepository?.Verify(repo => repo.CreateBooking(It.IsAny<Booking>()), Times.Once);
+
+            _mockBookingRoomRepository?.Verify(repo => repo.AddBookingRooms(It.IsAny<BookingRoom>()), Times.Exactly(roomId.Count));
         }
 
         [TestMethod] //dont forget this
