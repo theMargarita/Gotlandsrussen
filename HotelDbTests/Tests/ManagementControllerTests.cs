@@ -275,7 +275,6 @@ namespace HotelGotlandsrussenTESTS.Tests
 
             Booking booking = new Booking
             {
-                //Id = 1,
                 GuestId = guestId,
                 FromDate = fromDate,
                 ToDate = toDate,
@@ -304,12 +303,11 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.IsNotNull(createdResult);
 
             Assert.AreEqual(booking.Id, createdResult.BookingId);
-            Assert.AreEqual(guestId, booking.GuestId);
-            Assert.AreEqual(fromDate, booking.FromDate);
-            Assert.AreEqual(toDate, booking.ToDate);
-            Assert.AreEqual(adults, booking.NumberOfAdults);
-            Assert.AreEqual(children, booking.NumberOfChildren);
-            Assert.AreEqual(adults, booking.NumberOfAdults);
+            Assert.AreEqual(guestId, createdResult.GuestId);
+            Assert.AreEqual(fromDate, createdResult.FromDate);
+            Assert.AreEqual(toDate, createdResult.ToDate);
+            Assert.AreEqual(adults, createdResult.NumberOfAdults);
+            Assert.AreEqual(children, createdResult.NumberOfChildren);
             Assert.AreEqual(breakfast, booking.Breakfast);
 
             //check roomids 
