@@ -115,9 +115,9 @@ namespace HotelGotlandsrussenTESTS.Tests
                 NumberOfChildren = 0,
                 Breakfast = false,
                 BookingRooms = new List<BookingRoom>
-        {
-            new BookingRoom { Room = room }
-        }
+                {
+                    new BookingRoom { Room = room }
+                }
             };
 
             _context.Bookings.Add(existingBooking);
@@ -132,9 +132,9 @@ namespace HotelGotlandsrussenTESTS.Tests
                 NumberOfChildren = 0,
                 Breakfast = false,
                 BookingRooms = new List<BookingRoom>
-        {
-            new BookingRoom { Room = room }
-        }
+                {
+                    new BookingRoom { Room = room }
+                }
             };
 
             _context.Bookings.Add(conflictingBooking);
@@ -173,9 +173,9 @@ namespace HotelGotlandsrussenTESTS.Tests
                 NumberOfChildren = 0,
                 Breakfast = false,
                 BookingRooms = new List<BookingRoom>
-        {
-            new BookingRoom { Room = room }
-        }
+                {
+                   new BookingRoom { Room = room }
+                }
             };
 
             _context.Bookings.Add(booking);
@@ -214,9 +214,9 @@ namespace HotelGotlandsrussenTESTS.Tests
                 NumberOfChildren = 1,
                 Breakfast = false,
                 BookingRooms = new List<BookingRoom>
-        {
-            new BookingRoom { Room = room }
-        }
+                {
+                    new BookingRoom { Room = room }
+                }
             };
 
             _context.Bookings.Add(booking);
@@ -225,8 +225,8 @@ namespace HotelGotlandsrussenTESTS.Tests
             var dto = new UpdateBookingDto
             {
                 Id = booking.Id,
-                FromDate = new DateOnly(2025, 6, 6),
-                ToDate = new DateOnly(2025, 6, 12),
+                FromDate = new DateOnly(2025, 6, 20),
+                ToDate = new DateOnly(2025, 6, 21),
                 NumberOfAdults = 2,
                 NumberOfChildren = 1,
                 Breakfast = true
@@ -306,7 +306,7 @@ namespace HotelGotlandsrussenTESTS.Tests
                 GuestId = 1,
                 FromDate = new DateOnly(2024, 05, 24),
                 ToDate = new DateOnly(2024, 05, 24),
-                NumberOfAdults = 0, //must be above 0
+                NumberOfAdults = 0,
                 NumberOfChildren = 1,
                 Breakfast = false
             };
@@ -324,7 +324,6 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.AreNotEqual(1, failedBooking.NumberOfAdults);
             Assert.AreNotEqual(2, failedBooking.NumberOfChildren);
             Assert.AreNotEqual(true, failedBooking.Breakfast);
-
         }
     }
 }
