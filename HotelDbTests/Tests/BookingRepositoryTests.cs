@@ -225,8 +225,8 @@ namespace HotelGotlandsrussenTESTS.Tests
             var dto = new UpdateBookingDto
             {
                 Id = booking.Id,
-                FromDate = new DateOnly(2025, 6, 6),
-                ToDate = new DateOnly(2025, 6, 12),
+                FromDate = new DateOnly(2025, 6, 20),
+                ToDate = new DateOnly(2025, 6, 21),
                 NumberOfAdults = 2,
                 NumberOfChildren = 1,
                 Breakfast = true
