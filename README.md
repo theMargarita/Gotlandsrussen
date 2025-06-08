@@ -2,6 +2,69 @@
 
 <details close>
 <summary>Project description</summary>
+|| Project Description ||
+  
+Gotlandsrussen is a RESTful hotel booking API built using ASP.NET Core (.NET 8). It simulates a full booking flow, allowing guests to; Book, Update, Cancel and Query available rooms. They can also calculate prises based on date and guest count. The API supports both guest and administrative endpoints. 
+
+This project was developed by a team of code students for a school assignment. Focus was on clean architecture, data validation and test-driven development using both MSTest and Postman for flow validation. 
+
+---
+|| Architecture Overview ||
+
+The project is structured into the following main components: 
+
+## GotlandsrussenAPI
+Handles HTTP requests and acts as the web layer. It includes: 
+
+Controllers
+- GuestController.cs: Endpoints for guests (create booking, cancel bookings, etc.)
+- ManagementController.cs: Admin operations (view bookings, update booking, etc.)
+
+Repositories
+- Implements the repository pattern to abstract data acces (BookingRepository, RoomRepository, etc.)
+
+Data
+- HotelDbContext.cs: EF Core DbContext
+- SeedData.cs: Populates data with initial data
+
+Migrations
+- Entity Framework migration tracking
+
+Utilities
+- Help classes handling logic such as data manipulation
+
+## HotelGotlandsrussenLIBRARY
+Contains core models and DTOs used across the entire application:
+
+- Models: Domain entities (Booking, Room, RoomType, Guest)
+- DTOs: Input/output data transfer objects (UpdateBookingDto, RoomDto, etc.)
+
+## HotelGotlandsRussenTESTS
+Handles automated unit testing using MSTest: 
+
+- MockDataSetup.cs: Test setup with in-memory database.
+- TestSetup: Base setup for shares test logic
+- Tests: Contains all controller and repository test files
+
+## Functional Flow (Postman)
+A full end-to-end test suite was created using Postman. It covers following: 
+
+- Create a new guest
+- Create booking (with or without breakfast)
+- Add Breakfast to a booking
+- Update Booking
+- Cancel a booking
+- Get total price
+- Check available rooms by dates and guests
+- Delete guest and booking
+
+  ## Tech Stack
+  - ASP.NET Core (.NET 8)
+  - Entity Framework Core (EF Core)
+  - PostgreSQL
+  - MSTest (Unit testing)
+  - Swagger (API docs)
+  - Postman (Integration testing)
 
 </details>
 
