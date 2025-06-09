@@ -6,7 +6,7 @@
   
 Gotlandsrussen is a RESTful hotel booking API built using ASP.NET Core (.NET 8). It simulates a full booking flow, allowing guests to; Book, Update, Cancel and Query available rooms. They can also calculate prises based on date and guest count. The API supports both guest and administrative endpoints. 
 
-This project was developed by a team of code students for a school assignment. Focus was on clean architecture, data validation and test-driven development using both MSTest and Postman for flow validation. 
+This project was developed by a team of code students for a school assignment. Focus was on clean architecture and data validation using both MSTest and Postman for flow validation. 
 
 ---
 || Architecture Overview ||
@@ -30,9 +30,6 @@ Data
 Migrations
 - Entity Framework migration tracking
 
-Utilities
-- Help classes handling logic such as data manipulation
-
 ## HotelGotlandsrussenLIBRARY
 Contains core models and DTOs used across the entire application:
 
@@ -42,12 +39,12 @@ Contains core models and DTOs used across the entire application:
 ## HotelGotlandsRussenTESTS
 Handles automated unit testing using MSTest: 
 
-- MockDataSetup.cs: Test setup with in-memory database.
-- TestSetup: Base setup for shares test logic
+- TestSetup: Base setup for shared tests objects
 - Tests: Contains all controller and repository test files
 
 ## Functional Flow (Postman)
-A full end-to-end test suite was created using Postman. It covers following: 
+A full end-to-end test suite was created using Postman. 
+It covers following: 
 
 - Create a new guest
 - Create booking (with or without breakfast)
@@ -648,129 +645,3 @@ We do not have full test coverage for all methods, mainly due to time constraint
 
 
 </details>
-
-
-
-
-<details close>
----
-
-# Markdown Cheat Sheet
-
-Thanks for visiting [The Markdown Guide](https://www.markdownguide.org)!
-
-This Markdown cheat sheet provides a quick overview of all the Markdown syntax elements. It can’t cover every edge case, so if you need more information about any of these elements, refer to the reference guides for [basic syntax](https://www.markdownguide.org/basic-syntax/) and [extended syntax](https://www.markdownguide.org/extended-syntax/).
-
-## Basic Syntax
-
-These are the elements outlined in John Gruber’s original design document. All Markdown applications support these elements.
-
-### Heading
-
-# H1
-## H2
-### H3
-
-### Bold
-
-**bold text**
-
-### Italic
-
-*italicized text*
-
-### Blockquote
-
-> blockquote
-
-### Ordered List
-
-1. First item
-2. Second item
-3. Third item
-
-### Unordered List
-
-- First item
-- Second item
-- Third item
-
-### Code
-
-`code`
-
-### Horizontal Rule
-
----
-
-### Link
-
-[Markdown Guide](https://www.markdownguide.org)
-
-### Image
-
-![alt text](https://www.markdownguide.org/assets/images/tux.png)
-
-## Extended Syntax
-
-These elements extend the basic syntax by adding additional features. Not all Markdown applications support these elements.
-
-### Table
-
-| Syntax | Description |
-| ----------- | ----------- |
-| Header | Title |
-| Paragraph | Text |
-
-### Fenced Code Block
-
-```
-{
-  "firstName": "John",
-  "lastName": "Smith",
-  "age": 25
-}
-```
-
-### Footnote
-
-Here's a sentence with a footnote. [^1]
-
-[^1]: This is the footnote.
-
-### Heading ID
-
-### My Great Heading {#custom-id}
-
-### Definition List
-
-term
-: definition
-
-### Strikethrough
-
-~~The world is flat.~~
-
-### Task List
-
-- [x] Write the press release
-- [ ] Update the website
-- [ ] Contact the media
-
-### Emoji
-
-That is so funny! :joy:
-
-(See also [Copying and Pasting Emoji](https://www.markdownguide.org/extended-syntax/#copying-and-pasting-emoji))
-
-### Highlight
-
-I need to highlight these ==very important words==.
-
-### Subscript
-
-H~2~O
-
-### Superscript
-
-X^2^
