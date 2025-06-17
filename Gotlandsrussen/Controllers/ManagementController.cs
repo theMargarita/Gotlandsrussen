@@ -33,6 +33,14 @@ namespace Gotlandsrussen.Controllers
             return Ok(await _bookingRepository.GetAllFutureBookings());
         }
 
+        [HttpGet("clean-rooms")]
+        public async Task<ActionResult<ICollection<RoomDto>>> GetCleanRooms()
+        {
+            var cleanRooms = await _roomRepository.GetCleanRooms();
+            return Ok(cleanRooms);
+        }
+
+
         [HttpGet("GetBookingsGroupedByWeek")]
         public async Task<ActionResult<ICollection<BookingDto>>> GetBookingsGroupedByWeek()
         {
