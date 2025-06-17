@@ -65,5 +65,20 @@ namespace Gotlandsrussen.Repositories
         {
             return await _context.Rooms.FirstOrDefaultAsync(r => r.Id == roomId);
         }
+
+        public async Task<ICollection<RoomDto>> GetCleanRooms()
+        {
+            return await _context.Rooms
+                .Where(r => r.IsCleaned)
+                .Include(r => r.RoomType)
+                .Select(r => new RoomDto
+                {
+                    Id = r.Id,
+                    RoomName = r.Name,
+                    RoomTypeName = r.RoomType.Name,
+                    NumberOfBeds = r.RoomType.NumberOfBeds,
+                    PricePerNight = r.RoomType.PricePerNight
+                }).ToListAsync();
+        }
     }
 }
