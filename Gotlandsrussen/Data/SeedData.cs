@@ -37,32 +37,33 @@ namespace Gotlandsrussen.Data
 
             // Rooms
             modelBuilder.Entity<Room>().HasData(
-                new Room { Id = 1, Name = "101", RoomTypeId = 1 },
-                new Room { Id = 2, Name = "102", RoomTypeId = 1 },
-                new Room { Id = 3, Name = "103", RoomTypeId = 1 },
-                new Room { Id = 4, Name = "104", RoomTypeId = 1 },
-                new Room { Id = 5, Name = "105", RoomTypeId = 1 },
-                new Room { Id = 6, Name = "106", RoomTypeId = 2 },
-                new Room { Id = 7, Name = "107", RoomTypeId = 2 },
-                new Room { Id = 8, Name = "108", RoomTypeId = 2 },
-                new Room { Id = 9, Name = "109", RoomTypeId = 2 },
-                new Room { Id = 10, Name = "110", RoomTypeId = 2 },
-                new Room { Id = 11, Name = "111", RoomTypeId = 3 },
-                new Room { Id = 12, Name = "112", RoomTypeId = 3 },
-                new Room { Id = 13, Name = "113", RoomTypeId = 3 },
-                new Room { Id = 14, Name = "114", RoomTypeId = 3 },
-                new Room { Id = 15, Name = "115", RoomTypeId = 3 },
-                new Room { Id = 16, Name = "116", RoomTypeId = 3 },
-                new Room { Id = 17, Name = "117", RoomTypeId = 3 },
-                new Room { Id = 18, Name = "118", RoomTypeId = 3 },
-                new Room { Id = 19, Name = "119", RoomTypeId = 3 },
-                new Room { Id = 20, Name = "120", RoomTypeId = 3 },
-                new Room { Id = 21, Name = "121", RoomTypeId = 4 },
-                new Room { Id = 22, Name = "122", RoomTypeId = 4 },
-                new Room { Id = 23, Name = "123", RoomTypeId = 4 },
-                new Room { Id = 24, Name = "124", RoomTypeId = 4 },
-                new Room { Id = 25, Name = "125", RoomTypeId = 5 }
+                new Room { Id = 1, Name = "101", RoomTypeId = 1, IsCleaned = false },
+                new Room { Id = 2, Name = "102", RoomTypeId = 1, IsCleaned = true },
+                new Room { Id = 3, Name = "103", RoomTypeId = 1, IsCleaned = false },
+                new Room { Id = 4, Name = "104", RoomTypeId = 1, IsCleaned = true },
+                new Room { Id = 5, Name = "105", RoomTypeId = 1, IsCleaned = false },
+                new Room { Id = 6, Name = "106", RoomTypeId = 2, IsCleaned = true },
+                new Room { Id = 7, Name = "107", RoomTypeId = 2, IsCleaned = false },
+                new Room { Id = 8, Name = "108", RoomTypeId = 2, IsCleaned = true },
+                new Room { Id = 9, Name = "109", RoomTypeId = 2, IsCleaned = false },
+                new Room { Id = 10, Name = "110", RoomTypeId = 2, IsCleaned = true },
+                new Room { Id = 11, Name = "111", RoomTypeId = 3, IsCleaned = false },
+                new Room { Id = 12, Name = "112", RoomTypeId = 3, IsCleaned = true },
+                new Room { Id = 13, Name = "113", RoomTypeId = 3, IsCleaned = false },
+                new Room { Id = 14, Name = "114", RoomTypeId = 3, IsCleaned = true },
+                new Room { Id = 15, Name = "115", RoomTypeId = 3, IsCleaned = false },
+                new Room { Id = 16, Name = "116", RoomTypeId = 3, IsCleaned = true },
+                new Room { Id = 17, Name = "117", RoomTypeId = 3, IsCleaned = false },
+                new Room { Id = 18, Name = "118", RoomTypeId = 3, IsCleaned = true },
+                new Room { Id = 19, Name = "119", RoomTypeId = 3, IsCleaned = false },
+                new Room { Id = 20, Name = "120", RoomTypeId = 3, IsCleaned = true },
+                new Room { Id = 21, Name = "121", RoomTypeId = 4, IsCleaned = false },
+                new Room { Id = 22, Name = "122", RoomTypeId = 4, IsCleaned = true },
+                new Room { Id = 23, Name = "123", RoomTypeId = 4, IsCleaned = false },
+                new Room { Id = 24, Name = "124", RoomTypeId = 4, IsCleaned = true },
+                new Room { Id = 25, Name = "125", RoomTypeId = 5, IsCleaned = false }
             );
+
 
 
             // Bookings
