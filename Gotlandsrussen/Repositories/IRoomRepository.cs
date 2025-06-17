@@ -10,5 +10,7 @@ namespace Gotlandsrussen.Repositories
 
         public Task<Room> GetRoomById(int roomId);
 
+        Task<ICollection<RoomDto>> GetCleanRooms();
+
     }
 }
