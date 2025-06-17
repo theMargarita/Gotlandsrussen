@@ -187,6 +187,40 @@ namespace HotelGotlandsrussenTESTS.Tests
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Id);
         }
+
+        [TestMethod] 
+        public async Task GetCleanRooms_ShouldReturnOnlyCleanedRooms()
+        {
+            // Arrange – rensa databasen från seedade rum
+            var existingRooms = _context.Rooms.ToList();
+            _context.Rooms.RemoveRange(existingRooms);
+            await _context.SaveChangesAsync();
+
+            // Lägg till testdata
+            var roomType = new RoomType { Name = "Single", NumberOfBeds = 1, PricePerNight = 500m };
+            _context.RoomTypes.Add(roomType);
+            await _context.SaveChangesAsync();
+
+            var rooms = new List<Room>
+            {
+                new Room { Name = "101", RoomTypeId = roomType.Id, IsCleaned = true },
+                new Room { Name = "102", RoomTypeId = roomType.Id, IsCleaned = false },
+                new Room { Name = "103", RoomTypeId = roomType.Id, IsCleaned = true }
+            };
+
+            _context.Rooms.AddRange(rooms);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetCleanRooms();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count); // Endast 2 av 3 rum är städade
+            Assert.IsTrue(result.All(r => r.RoomName == "101" || r.RoomName == "103"));
+        }
+
+
     }
 }
 

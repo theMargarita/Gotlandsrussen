@@ -9,6 +9,7 @@ using HotelGotlandsrussenTESTS.TestSetup;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
+
 namespace HotelGotlandsrussenTESTS.Tests
 {
     [TestClass]
@@ -459,5 +460,37 @@ namespace HotelGotlandsrussenTESTS.Tests
             // Assert
             Assert.AreEqual(204, deletedBooking.StatusCode);
         }
+
+        [TestMethod]
+        public async Task GetCleanRooms_ReturnsOkWithOnlyCleanedRooms()
+        {
+            // Arrange
+            var mockRooms = new List<RoomDto>
+            {
+                new RoomDto { Id = 1, RoomName = "101", RoomTypeName = "Single", NumberOfBeds = 1, PricePerNight = 500 },
+                new RoomDto { Id = 3, RoomName = "103", RoomTypeName = "Single", NumberOfBeds = 1, PricePerNight = 500 }
+            };
+
+            _mockRoomRepository!
+                .Setup(repo => repo.GetCleanRooms())
+                .ReturnsAsync(mockRooms);
+
+            // Act
+            var result = await _controller!.GetCleanRooms();
+            var okResult = result.Result as OkObjectResult; // FIX: cast from .Result
+
+            // Assert
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedRooms = okResult.Value as ICollection<RoomDto>;
+            Assert.IsNotNull(returnedRooms);
+            Assert.AreEqual(2, returnedRooms.Count);
+            Assert.IsTrue(returnedRooms.Any(r => r.RoomName == "101"));
+            Assert.IsTrue(returnedRooms.Any(r => r.RoomName == "103"));
+
+            _mockRoomRepository.Verify(repo => repo.GetCleanRooms(), Times.Once);
+        }
+
     }
 }
