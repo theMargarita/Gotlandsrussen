@@ -36,8 +36,21 @@ namespace Gotlandsrussen.Controllers
         [HttpGet("clean-rooms")]
         public async Task<ActionResult<ICollection<RoomDto>>> GetCleanRooms()
         {
-            var cleanRooms = await _roomRepository.GetCleanRooms();
-            return Ok(cleanRooms);
+            try
+            {
+                var cleanRooms = await _roomRepository.GetCleanRooms();
+
+                if (cleanRooms == null || !cleanRooms.Any())
+                {
+                    return NotFound(new { message = "Inga städade rum hittades." });
+                }
+
+                return Ok(cleanRooms);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Ett oväntat fel uppstod.", details = ex.Message });
+            }
         }
 
 
