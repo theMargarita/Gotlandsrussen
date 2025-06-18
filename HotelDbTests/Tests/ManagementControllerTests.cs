@@ -477,7 +477,7 @@ namespace HotelGotlandsrussenTESTS.Tests
 
             // Act
             var result = await _controller!.GetCleanRooms();
-            var okResult = result.Result as OkObjectResult; // FIX: cast from .Result
+            var okResult = result.Result as OkObjectResult; 
 
             // Assert
             Assert.IsNotNull(okResult);

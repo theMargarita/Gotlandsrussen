@@ -7,5 +7,7 @@
         public string RoomTypeName { get; set; }
         public int NumberOfBeds { get; set; }
         public decimal PricePerNight { get; set; }
+        public bool IsCleaned { get; set; }
+
     }
 }

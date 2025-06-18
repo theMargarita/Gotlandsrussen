@@ -77,7 +77,8 @@ namespace Gotlandsrussen.Repositories
                     RoomName = r.Name,
                     RoomTypeName = r.RoomType.Name,
                     NumberOfBeds = r.RoomType.NumberOfBeds,
-                    PricePerNight = r.RoomType.PricePerNight
+                    PricePerNight = r.RoomType.PricePerNight,
+                    IsCleaned = r.IsCleaned  
                 }).ToListAsync();
         }
     }

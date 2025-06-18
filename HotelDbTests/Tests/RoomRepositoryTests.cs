@@ -191,7 +191,7 @@ namespace HotelGotlandsrussenTESTS.Tests
         [TestMethod] 
         public async Task GetCleanRooms_ShouldReturnOnlyCleanedRooms()
         {
-            // Arrange – rensa databasen från seedade rum
+            // Arrange
             var existingRooms = _context.Rooms.ToList();
             _context.Rooms.RemoveRange(existingRooms);
             await _context.SaveChangesAsync();
@@ -216,7 +216,7 @@ namespace HotelGotlandsrussenTESTS.Tests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Count); // Endast 2 av 3 rum är städade
+            Assert.AreEqual(2, result.Count); 
             Assert.IsTrue(result.All(r => r.RoomName == "101" || r.RoomName == "103"));
         }
 
